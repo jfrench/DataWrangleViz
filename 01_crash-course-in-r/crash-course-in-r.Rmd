@@ -1,10 +1,12 @@
 ---
 title: "Crash Course in R"
 author: "Joshua French"
-date: 2021-01-18
+date: '2021-01-18'
 output:
   html_notebook: default
   pdf_document: default
+  html_document:
+    df_print: default
 ---
 ```{css, echo=FALSE}
 .action {
@@ -109,6 +111,21 @@ You should see something like this.
 ```{r, echo=FALSE, results='markup'}
 library(tidyverse)
 ```
+
+## Comments
+A comment refers to internal documentation that the compiler/interpreter should not execute. Comments are essentially reminders to yourself or others about what the code is supposed to do, why you did it a certain way, etc.
+
+A comment is indicated by the `#` symbol. Nothing to the right of the `#` is executed in the Console.
+
+To comment (or uncomment) multiple lines in R, highlight the code you want to comment and press "Ctrl + Shift + c" on a PC or "Cmd + Shift + c" on a Mac.
+
+An examples:
+
+```{r}
+1 + 1 # adding 1 + 1
+# 2 + 2 (not adding 2 + 2 because of the #)
+```
+
 
 # Getting help
 
@@ -493,6 +510,7 @@ Usage: `read.table(file, header = TRUE, sep = ",")`
   * If each column of data in the file is separated by a comma, then use `sep = ","`
   * If each column of data in the file is separated by a tab, then use `sep = "\t"`.
 
+Here is an example reading a csv (comma separated file) with a header:
 ```{r}
 dtf <- read.table(file = "https://raw.githubusercontent.com/jfrench/DataWrangleViz/master/data/covid_dec4.csv",
                   header = TRUE,
@@ -534,6 +552,7 @@ Note that `==` means equal to and `!=` means not equal to.
 ## Your turn {.action}
 
 Execute the following commands in R and see what you get. What is each statement performing?
+
 * `a > 10`
 * `a <= 4`
 * `a == 10`
@@ -547,6 +566,7 @@ More complicated logical statements can be made using `&` and `|`.
 ## Your turn {.action}
 
 Execute the following commands in R and see what you get. What is each statement performing?
+
 * `(a > 6) & (a <= 10)`
 * `(a <= 4)|(a >= 12)`
 
@@ -555,6 +575,7 @@ Execute the following commands in R and see what you get. What is each statement
 Logical statements can be used to return parts of an object satisfying the appropriate criteria. Specifically, we pass logical statements within the square brackets used to access part of a data structure.
 
 Some examples:
+
 * `a[a < 6]`: Return elements of a less than 6.
 * `a[a == 10]`: Return elements of a equal to 10.
 * `a[(a < 6)|(a == 10)]`: Return elements of a less than 6 or equal to 10.
@@ -571,14 +592,11 @@ myfunction <- function(arg1, arg2, arg3) {
 }
 ```
 
-The name of the function is `myfunction`. To use this function, I need to supply 3 arguments.
+The name of the function is `myfunction`. To use this function, I type the name of the function and supply the 3 arguments in parentheses in the R Console, e.g., `myfunction(x1, x2, x3)`.
 
 A function may or may not return something back that you can store for later use.
 
-To use the function, you simply type `myfunction(arg1, arg2, arg3)` into the R console.
-
-Let's perform an example of a function that returns the standard deviation of a vector `x`.
-
+Let's perform an example of a function that returns the sample  standard deviation of a vector `x`. Recall that $$SD(x) = \sqrt{\sum_{i=1}^n{\frac{(x_i - \bar{x})^2}{n-1}}}.$$
 The sole argument is will be, `x`, a vector of numeric values.
 
 ```{r}
@@ -605,9 +623,10 @@ stdev(z)
 ## Your turn {.action}
 
 Create a function that returns the density of a normal random variable with mean `mu` and standard deviation `sigma` for a vector `x`. Recall that the density function of 
-a normal random variable is $$f(x) = \frac{1}{\sigma \sqrt{2 \pi}} exp\left(-\frac{1}{2 \sigma^2} (x - \mu)^2\right).$$
+a normal random variable is $$f(x) = \frac{1}{\sigma \sqrt{2 \pi}} \exp\left(-\frac{1}{2 \sigma^2} (x - \mu)^2\right).$$
 
 The arguments should be:
+
 * `x`: the vector of values at which I want to determine the density
 * `mu`, the mean of the normal distribution
 * `sigma`, the standard deviation of the normal distribution
