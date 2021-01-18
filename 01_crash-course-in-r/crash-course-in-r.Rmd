@@ -493,6 +493,14 @@ Usage: `read.table(file, header = TRUE, sep = ",")`
   * If each column of data in the file is separated by a comma, then use `sep = ","`
   * If each column of data in the file is separated by a tab, then use `sep = "\t"`.
 
+```{r}
+dtf <- read.table(file = "https://raw.githubusercontent.com/jfrench/DataWrangleViz/master/data/covid_dec4.csv",
+                  header = TRUE,
+                  sep = ",")
+str(dtf)
+```
+
+
 # Accessing elements of a data structure with logical statements
 
 Subsets of the elements of a vector may be selected by appending to the name of the vector an index vector in square brackets `[]`.
