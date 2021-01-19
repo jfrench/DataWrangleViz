@@ -41,7 +41,7 @@ R may be downloaded from the R Project's [website](https://www.r-project.org/). 
 for downloading the software.
 
 ## R Studio
-R Studio Desktop is a free "front end" for R provided by [R Studio](https://rstudio.com/products/rstudio/download/). R Studio Desktop makes doing data science with R much easier by adding an Integrated Development Environment (IDE) and providing many other features. Currently, you may download R Studio at this [link](https://rstudio.com/products/rstudio/download/). You may need to navigate the R Studio website directly.
+R Studio Desktop is a free "front end" for R provided by [R Studio](https://rstudio.com/). R Studio Desktop makes doing data science with R much easier by adding an Integrated Development Environment (IDE) and providing many other features. Currently, you may download R Studio at this [link](https://rstudio.com/products/rstudio/download/). You may need to navigate the R Studio website directly.
 
 R Studio has four panes:
 
@@ -50,7 +50,7 @@ R Studio has four panes:
 3. Environment/History: the pane where you can see all the objects in your workspace, your command history, and other things in other contexts.
 4. The Files/Plot/Packages/Help: the pane where you navigate between directories, where plots can be viewed, where you can see the packages available to be loaded, and where you can get help.
 
-![R Studio panes](rstudio_panes.png)
+![RStudio panes](rstudio_panes.png)
 
 ## Running code and scripts
 Code is executed in R by typing it in the console and hitting enter.
@@ -86,7 +86,7 @@ Packages are collections of functions, data, and other objects that extend the f
 R packages can be installed using the `install.packages` function and loaded using the `library` function.
 
 ## Your turn {.action}
-The **tidyverse** [www.tidyverse.org](www.tidyverse.org) is an ecosystem of R packages that we will use extensively in this class. Currently, the **tidyverse** is comprised of the following packages:
+The **tidyverse** [https://www.tidyverse.org](https://www.tidyverse.org) is an ecosystem of R packages that we will use extensively in this class. Currently, the **tidyverse** is comprised of the following packages:
 
 * **ggplot2** - A package for plotting based on the "Grammar of Graphics".
 * **purrr** - A complete and consistent functional programming toolkit for R.
@@ -227,7 +227,7 @@ Some examples:
 * `rep(1:3, each = 3)`: Repeat each element of the sequence 1, 2, 3 three times.
 
 ## Your turn {.action}
-Execute the six commands above in the R Console to see what you get.
+Execute the seven commands above in the R Console to see what you get.
 
 ## Assignment
 
