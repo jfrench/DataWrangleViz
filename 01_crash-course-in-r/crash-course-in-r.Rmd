@@ -3,10 +3,12 @@ title: "Crash Course in R"
 author: "Joshua French"
 date: '2021-01-18'
 output:
-  html_notebook: default
-  pdf_document: default
+  md_document:
+    variant: markdown_github  
   html_document:
     df_print: default
+  pdf_document: default
+  html_notebook: default
 ---
 ```{css, echo=FALSE}
 .action {
