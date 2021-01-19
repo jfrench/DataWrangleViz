@@ -35,12 +35,11 @@ R Studio
 --------
 
 R Studio Desktop is a free “front end” for R provided by [R
-Studio](https://rstudio.com/products/rstudio/download/). R Studio
-Desktop makes doing data science with R much easier by adding an
-Integrated Development Environment (IDE) and providing many other
-features. Currently, you may download R Studio at this
-[link](https://rstudio.com/products/rstudio/download/). You may need to
-navigate the R Studio website directly.
+Studio](https://rstudio.com/). R Studio Desktop makes doing data science
+with R much easier by adding an Integrated Development Environment (IDE)
+and providing many other features. Currently, you may download R Studio
+at this [link](https://rstudio.com/products/rstudio/download/). You may
+need to navigate the R Studio website directly.
 
 R Studio has four panes:
 
@@ -54,7 +53,7 @@ R Studio has four panes:
     directories, where plots can be viewed, where you can see the
     packages available to be loaded, and where you can get help.
 
-![R Studio panes](rstudio_panes.png)
+![RStudio panes](rstudio_panes.png)
 
 Running code and scripts
 ------------------------
@@ -115,8 +114,8 @@ loaded using the `library` function.
 Your turn
 ---------
 
-The **tidyverse** [www.tidyverse.org](www.tidyverse.org) is an ecosystem
-of R packages that we will use extensively in this class. Currently, the
+The **tidyverse** <https://www.tidyverse.org> is an ecosystem of R
+packages that we will use extensively in this class. Currently, the
 **tidyverse** is comprised of the following packages:
 
 -   **ggplot2** - A package for plotting based on the “Grammar of
@@ -348,7 +347,7 @@ Some examples:
 Your turn
 ---------
 
-Execute the six commands above in the R Console to see what you get.
+Execute the seven commands above in the R Console to see what you get.
 
 Assignment
 ----------
@@ -967,13 +966,13 @@ function and the `stdev` function.
 sd(z)
 ```
 
-    ## [1] 1.318318
+    ## [1] 0.7988809
 
 ``` r
 stdev(z)
 ```
 
-    ## [1] 1.318318
+    ## [1] 0.7988809
 
 Your turn
 ---------
@@ -1011,32 +1010,32 @@ ms(z)
 ```
 
     ## $m
-    ## [1] -0.032556
+    ## [1] -0.05202864
     ## 
     ## $s
-    ## [1] 1.318318
+    ## [1] 0.7988809
 
 ``` r
 ms_z <- ms(z)
 ms_z$m
 ```
 
-    ## [1] -0.032556
+    ## [1] -0.05202864
 
 ``` r
 ms_z[[1]]
 ```
 
-    ## [1] -0.032556
+    ## [1] -0.05202864
 
 ``` r
 ms_z$s
 ```
 
-    ## [1] 1.318318
+    ## [1] 0.7988809
 
 ``` r
 ms_z[[2]]
 ```
 
-    ## [1] 1.318318
+    ## [1] 0.7988809
