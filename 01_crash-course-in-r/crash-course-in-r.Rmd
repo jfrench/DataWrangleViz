@@ -336,6 +336,7 @@ Execute the following commands in R to see the output.
 * `dbinom(2, size = 20, prob = .2)` returns the probability that $P(X=2)$) for $X∼\textrm{Binom}(n=20,\pi=0.2)$.
 * `dexp(1, rate = 2)` evaluates the density of an exponential random variable with mean = 1/2 at $x=1$.
 * `rchisq(100, df = 5)` returns a sample of 100 observations from a chi-squared random variable with 5 degrees of freedom.
+* Run the last command and assign it the name `x`. Then apply all of the "General Functions" to `x`.
 
 # Plotting with base
 
