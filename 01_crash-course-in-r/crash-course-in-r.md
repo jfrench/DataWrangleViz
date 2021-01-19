@@ -1,15 +1,9 @@
-<style type="text/css">
-.action {
-    # margin: 2em;
-    padding: 2em;
-    border: 1px solid grey;
-    border-radius: 5px;
-    background: #eeeeee;
-}
-</style>
-
 This notebook is intended to help you quickly learn how to productively
 use R.
+
+An accompanying YouTube playlist that walks through this notebook is
+available by following the link
+[here](https://www.youtube.com/playlist?list=PLkrJrLs7xfbUNe79bzEetcE0g-vHZT8XR).
 
 # Introduction
 
@@ -868,8 +862,10 @@ statement performing?
 
 ## And and Or statements
 
-More complicated logical statements can be made using `&` and `|`. \*
-`&` means “and” \* `|` means “or”
+More complicated logical statements can be made using `&` and `|`.
+
+  - `&` means “and”
+  - `|` means “or”
 
 ## Your turn
 
@@ -914,7 +910,7 @@ later use.
 
 Let’s perform an example of a function that returns the sample standard
 deviation of a vector `x`. Recall that
-\[SD(x) = \sqrt{\sum_{i=1}^n \frac{(x_i - \bar{x})^2}{n-1}}.\] The sole
+\[SD(x) = \sqrt{\frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2}.\] The sole
 argument is will be, `x`, a vector of numeric values.
 
 ``` r
@@ -939,13 +935,13 @@ function and the `stdev` function.
 sd(z)
 ```
 
-    ## [1] 0.8109361
+    ## [1] 0.9911449
 
 ``` r
 stdev(z)
 ```
 
-    ## [1] 0.8109361
+    ## [1] 0.9911449
 
 ## Your turn
 
@@ -981,32 +977,32 @@ ms(z)
 ```
 
     ## $m
-    ## [1] 0.1407996
+    ## [1] -0.1326079
     ## 
     ## $s
-    ## [1] 0.8109361
+    ## [1] 0.9911449
 
 ``` r
 ms_z <- ms(z)
 ms_z$m
 ```
 
-    ## [1] 0.1407996
+    ## [1] -0.1326079
 
 ``` r
 ms_z[[1]]
 ```
 
-    ## [1] 0.1407996
+    ## [1] -0.1326079
 
 ``` r
 ms_z$s
 ```
 
-    ## [1] 0.8109361
+    ## [1] 0.9911449
 
 ``` r
 ms_z[[2]]
 ```
 
-    ## [1] 0.8109361
+    ## [1] 0.9911449
