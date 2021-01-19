@@ -515,6 +515,8 @@ Execute the following commands in R to see the output.
     variable with mean = 1/2 at \(x=1\).
   - `rchisq(100, df = 5)` returns a sample of 100 observations from a
     chi-squared random variable with 5 degrees of freedom.
+  - Run the last command and assign it the name `x`. Then apply all of
+    the “General Functions” to `x`.
 
 # Plotting with base
 
@@ -937,13 +939,13 @@ function and the `stdev` function.
 sd(z)
 ```
 
-    ## [1] 0.9638778
+    ## [1] 0.8109361
 
 ``` r
 stdev(z)
 ```
 
-    ## [1] 0.9638778
+    ## [1] 0.8109361
 
 ## Your turn
 
@@ -979,32 +981,32 @@ ms(z)
 ```
 
     ## $m
-    ## [1] 0.2290953
+    ## [1] 0.1407996
     ## 
     ## $s
-    ## [1] 0.9638778
+    ## [1] 0.8109361
 
 ``` r
 ms_z <- ms(z)
 ms_z$m
 ```
 
-    ## [1] 0.2290953
+    ## [1] 0.1407996
 
 ``` r
 ms_z[[1]]
 ```
 
-    ## [1] 0.2290953
+    ## [1] 0.1407996
 
 ``` r
 ms_z$s
 ```
 
-    ## [1] 0.9638778
+    ## [1] 0.8109361
 
 ``` r
 ms_z[[2]]
 ```
 
-    ## [1] 0.9638778
+    ## [1] 0.8109361
