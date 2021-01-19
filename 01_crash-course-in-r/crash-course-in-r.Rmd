@@ -598,7 +598,7 @@ The name of the function is `myfunction`. To use this function, I type the name 
 
 A function may or may not return something back that you can store for later use.
 
-Let's perform an example of a function that returns the sample  standard deviation of a vector `x`. Recall that $$SD(x) = \sqrt{\sum_{i=1}^n{\frac{(x_i - \bar{x})^2}{n-1}}}.$$
+Let's perform an example of a function that returns the sample  standard deviation of a vector `x`. Recall that $$SD(x) = \sqrt{\sum_{i=1}^n \frac{(x_i - \bar{x})^2}{n-1}}.$$
 The sole argument is will be, `x`, a vector of numeric values.
 
 ```{r}
