@@ -10,6 +10,7 @@ output:
   pdf_document: default
   html_notebook: default
 ---
+<!-- # add Your turn block -->
 ```{css, include=FALSE}
 .action {
     # margin: 2em;
@@ -18,6 +19,11 @@ output:
     border-radius: 5px;
     background: #eeeeee;
 }
+```
+
+```{r, include=FALSE}
+# change Console output behavior
+knitr::opts_chunk$set(comment = "#>", collapse = TRUE)
 ```
 
 This notebook is intended to help you quickly learn how to productively use R.
@@ -56,7 +62,7 @@ R Studio has four panes:
 ![RStudio panes](rstudio_panes.png)
 
 ## Running code and scripts
-Code is executed in R by typing it in the console and hitting enter.
+Code is executed in R by typing it in the Console and hitting enter.
 
 ### Your turn {.action}
 Type `1+1` in the R Console and hit enter.
@@ -151,16 +157,70 @@ Suppose you want to change the x-axis label of a plot in R. Do a web search to s
 
 # Data types and structures
 
-## Data types
-R has 6 basic [data types](https://swcarpentry.github.io/r-novice-inflammation/13-supp-data-structures/):
+## Basic data types
+R has 6 basic ("atomic") [vector types](https://cran.r-project.org/doc/manuals/r-release/R-lang.html#Basic-types):
 
-* character
-* numeric (double)
-* integer
-* logical
-* complex
+1. character - collections of characters. E.g., `"a"`, "hello world!"
+2. double - decimal numbers. e.g., `1.2`, `1.0`
+3. integer - whole numbers. In R, you must add `L` to the end of a number to specify it as an integer. E.g., `1L` is an integer but `1` is a double.
+4. logical - boolean values, `TRUE` and `FALSE`
+5. complex - complex numbers. E.g., `1+3i`
+6. raw - a type to hold raw bytes. 
 
-In addition to the five listed above, there is also raw which will not be discussed.
+Both double and integer values are specific types of numeric values.
+
+The `typeof` function returns the R internal type or storage mode of any object.
+
+```{r}
+typeof(1)
+typeof(1L)
+typeof("hello world!")
+```
+
+## Other important object types
+
+There are other important types of objects in R that are not basic. We will discuss a few. The [R Project manual](https://cran.r-project.org/doc/manuals/r-release/R-lang.html#Basic-types) provides additional information about available types.
+
+### Numeric
+An object is `numeric` if it is of type `integer` or `double`. In that case, it's `mode` is said to be `numeric`. 
+
+The `is.numeric` function tests whether an object can be interpreted as numbers. We can use it to determine whether an object is `numeric`. Alternatively, we can use the `mode` function to get the type or storage mode of an object.
+
+Some examples:
+```{r}
+mode("hello world!")
+is.numeric(1)
+mode(1)
+is.numeric(1L)
+mode(1)
+```
+
+### `NULL`
+`NULL` is a special object to indicate the object is absent. An object having a length of zero is not the same thing as an object being absent.
+
+### `NA`
+A "missing value" occurs when the value of something isn't known. R uses the special object `NA` to represent missing value.
+
+Technically, an `NA` value is a logical constant of length 1 that contains a missing value indicator. In practice, R knows that an `NA` value can represent a `character` `integer`, `double`, or `complex` value depending on the context. R will automatically convert `NA` to `NA_character_`, `NA_integer_`, `NA_real_`, and `NA_complex_` as needed to represent missing values for `character`, `integer`, `double`, and `complex` values, respectively. There is no `NA` for the `raw` type.
+
+If you have a missing value, you should represent that value as `NA`. Note: `"NA"` is not the same thing as `NA`.
+
+```{r}
+typeof(NA)
+typeof(NA_character_)
+typeof(NA_integer_)
+typeof(NA_real_)
+typeof(NA_complex_)
+```
+### Functions
+A function is an object the performs a certain action or set of actions based on objects it receives from its arguments.
+A function has type `closure` and mode `function`. 
+
+The `mean` function computes the sample mean of a relevant object. Consider the type and mode of the `mean` function.
+```{r}
+typeof(mean)
+mode(mean)
+```
 
 ## Data structures
 
@@ -176,9 +236,9 @@ R has 5 basic data structures:
 
 Vectors, matrices, and arrays are homogeneous objects that can only store a single data type at a time.
 
-Data frames and lists can store multiple data types
+Data frames and lists can store multiple data types.
 
-Vectors and lists are considered one-dimensional objects.
+Vectors and lists are considered one-dimensional objects. A list is technically a vector. Vectors of a single type are atomic vectors. (https://cran.r-project.org/doc/manuals/r-release/R-lang.html#List-objects)
 
 Matrices and data frames are considered two-dimensional objects.
 
