@@ -1,7 +1,12 @@
 ---
 title: "Joshua French"
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
-output: html_notebook
+output:
+  word_document: default
+  pdf_document: default
+  html_notebook: default
+  html_document:
+    df_print: paged
 ---
 
 ```{css, include=FALSE}
@@ -67,7 +72,7 @@ Headings and sections of different levels are created with `#`.
 * Escaping special characters \*, \_, \$, \\, `` ` ``: `\*`, `\_`, `\$`,  `\\`, ``` `` ` `` ```
 * Footnote^[This is a footnote]: `Footnote^[This is a footnote]`
 
-Math is rendered using $\LaTeX$ (which is [pronounced](https://www.latex-project.org/about/) "Lah-tech" or "Lay-tech"). So you can use \$ and \$\$ to render inline math and display math like you would in $\LaTeX$.
+Math is rendered using LaTeX (which is [pronounced](https://www.latex-project.org/about/) "Lah-tech" or "Lay-tech"). So you can use \$ and \$\$ to render inline math and display math like you would in LaTeX.
 
 E.g., Typing "The regression coefficient \$\\beta\$" will produce "The regression coefficient $\beta$".
 
@@ -125,7 +130,7 @@ A numbered list with subnumbering.
 ```
 
 Result:
-Some text with bullets.
+Some text with numbering.
 
 1. Item 1
     a. Sub-item 1
@@ -143,23 +148,23 @@ Unordered lists with sub-bullets:
 ```{r, eval=FALSE}
 A numbered list with subnumbering.
 
-1. Item 1
-    a. Sub-item 1 # two tabs, not one
-    b. Sub-item 2
-        i. Sub-sub-item 1 # four tabs, not two
-2. Item 2
-    a. Sub-item 1
+* Item 1
+  * Sub-item 1
+  * Sub-item 2
+    * Sub-sub-item 1
+* Item 2
+  * Sub-item 1
 ```
 
 Result:
 Some text with bullets.
 
-1. Item 1
-    a. Sub-item 1
-    b. Sub-item 2
-        i. Sub-sub-item 1
-2. Item 2
-    a. Sub-item 1
+* Item 1
+  * Sub-item 1
+  * Sub-item 2
+    * Sub-sub-item 1
+* Item 2
+  * Sub-item 1
 
 Note: There must be a line between any text and the \*.
 
@@ -221,105 +226,83 @@ Other options: `warning`, `error`, `messages` (TRUE) determine whether warnings,
   * `'hide'`: Hide all plots.
   * `'animate'`: Combine and animate the plots
 * `fig.align`: (`'default'`). A character vector specifying how to align the figures.
-  * Allowablve values are: `'default'`, `'left'`, `'right'`, and `'center'`.
+  * Allowable values are: `'default'`, `'left'`, `'right'`, and `'center'`.
 * `fig.width`, `fig.height`: (7). A numeric value indicating the width and height of the result figures.
 * `fig.cap`: (NULL). A caption for the figure.
 
 
 ### Your turn
 
-Copy and paste the following code into an R Markdown document and then either knit or preview it to see what you get.
+Copy and paste the code at [https://github.com/jfrench/DataWrangleViz/blob/master/rmd-chunks-viz.Rmd](https://github.com/jfrench/DataWrangleViz/blob/master/rmd-chunks-viz.Rmd) into an R Markdown document and then Knit the file to see visual examples of teh options described above.
+
+
+### Some general options not discussed
+
+* Caching: This has to do with saving previous code that has been evaluated. This is important for documents with lots of code that is time consuming to run.
+* Animation: You can add plot animations if you have the FFMpeg program installed [https://ffmpeg.org/](https://ffmpeg.org/).
+
+
+### Inline code
+
+You can run code in the middle of text using something like `` `r knitr::inline_expr("mean(1:3)")` ``.
+
+For example, `` `r knitr::inline_expr("1 + 1")` `` will produce `r 1 + 1`.
+
+## YAML header
+
+The YAML (Yet Another Markdown Language) header controls many aspects of the document below. Unless you're using R Markdown for advanced purposes (books, blogs, websites, running the same file with multiple input parameters) then you probably don't need to know a lot about the YAML header at this stage. 
+
+And if you do need to know about the YAML header in detail, then you probably need a more advanced introduction to R Markdown!
+
+### References
+You can add a bibliography to your document using the YAML.
+
+## Tables
+
+By default, R will print tables (like data frames) exactly like you would see them in the Console output.
+
+For example:
 
 ````
-# Evaluation
-
-`eval = TRUE`
-```{r, eval = TRUE}`r ''`
-1 + 1
+```{r}`r ''`
+head(cars)
+```
+````
+```{r}
+head(cars)
 ```
 
-`eval = FALSE`
-```{r, eval = FALSE}`r ''`
-1 + 1
-```
-
-```{r, eval = 1:2}`r ''`
-1 + 1
-2 + 2
-3 + 3
-```
-
-```{r, eval = -c(1, 3)}`r ''`
-1 + 1
-2 + 2
-3 + 3
-```
-
-# Text output
-
-## Echo
-`echo = TRUE`
-```{r, echo = TRUE}`r ''`
-1:3
-```
-
-`echo = FALSE`
-```{r, echo = FALSE}`r ''`
-1:3
-```
-
-`echo = 1:2`
-```{r, echo = 1:2}`r ''`
-1:3
-4:6
-7:9
-```
-
-`echo = -1`
-```{r, echo = -1}`r ''`
-1:3
-4:6
-7:9
-```
-
-### results
-
-`results = 'markup'`
-```{r, results = 'markup'}`r ''`
-1:3
-4:6
-7:9
-
-`results = 'asis'`
-```{r, results = 'asis'}`r ''`
-1:3
-4:6
-7:9
-```
-
-`results = 'hold'`
-```{r, results = 'hold'}`r ''`
-1:3
-4:6
-7:9
-```
-
-`results = 'hide'`
-```{r, results = 'hide'}`r ''`
-1:3
-4:6
-7:9
-```
+The formatting can be improved with the `kable` function in the `knitr` package.
 
 ````
+```{r}`r ''`
+knitr::kable(cars[1:6,], caption = "Kable table")
+```
+````
 
+```{r}
+knitr::kable(cars[1:6,], caption = "Kable table")
+```
 
-### Options not discussed
+## Producing different document types
 
-* Caching: This has to do with saving previous code that has been evaluated.
+One of the incredible features of R Markdown is that you can easily produce multiple file types with a single click of the "Knit" button.
 
+e.g. adding/updating
+`
+output:
+  pdf_document: default
+  html_notebook: default
+  html_document:
+    df_print: paged
+  word_document: default
+`
+in the YAML header will produce a a pdf document, and html notebook, and an html document, and a Microsoft Word document, all with one click of the Knit button!
 
-
-
-
+* `pdf_document`: Excellent for distributing a static (unchanging) document. Also great for submitting homework solutions to your instructor!
+* `html_document`: Excellent for sharing interactive files. Can be viewed in a web browser.
+* `html_notebook`: The excellent "R notebook".
+  * It's like an `html_document` but can be edited directly using R Studio and it can be used to reproduce the source code of the file generating it.
+  * Great to share with collaborators because they can update the document, add analysis, etc.
+* `word_document`: If you have to have Microsoft Word editing capabilities, for some reason.
 
