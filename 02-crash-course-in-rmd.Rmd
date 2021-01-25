@@ -2,11 +2,11 @@
 title: "Joshua French"
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
 output:
-  html_document:
-    df_print: paged
+  html_notebook: default
   pdf_document: default
   word_document: default
-  html_notebook: default
+  html_document:
+    df_print: paged
 ---
 
 ```{css, include=FALSE}
@@ -52,7 +52,7 @@ An R Markdown document has three components:
 
 Since the YAML header is optional, we'll talk about it last.
 
-## Formatting text in R Markdown.
+## Formatting text in R Markdown
 
 ### Headings and sections
 Headings and sections of different levels are created with `#`.
@@ -61,12 +61,29 @@ Headings and sections of different levels are created with `#`.
 * `##` being the second level
 * etc.
 
+The words after the `#` will be larger than the regular text.
+
+Note: In R Scripts and the R Console, the `#` symbol denotes a comment. In R Markdown files (.Rmd or .rmd),
+a comment is created by placing `<!--` and `-->` to the left and right, respectively, of the text you want to comment.
+
+e.g.,
+```{r, eval = FALSE}
+<!-- comment text -->
+```
+would comment the text "comment text".
+
+The easiest way to comment text in R Markdown documents is to highlight the text and then press Ctrl/Cmd + Shift + c.
+
+### Your turn
+
+Practice commenting some text in R Markdown.
+
 ### Font styles and effects
 
 * *Italic text*: `*text*` or `_text_`.
 * **Bold text**: `**text**` or `__text__` (two underscores on each side)
 * `Typewriter (code) text`: `` `text` ``
-* Endash (--), emdash (--): `--` and `---`.
+* Endash (--), emdash (---): `--` and `---`.
 * ^superscript^ and ~subscript~: `^superscript^` and `~subscript~`
 * ~~strikethrough~~: `~~strikethrough~~`
 * Escaping special characters \*, \_, \$, \\, `` ` ``: `\*`, `\_`, `\$`,  `\\`, ``` `` ` `` ```
@@ -115,9 +132,9 @@ But I guess this will just be an unpleasant footnote^[unpleasant footnote].
 3. Save the file (Ctrl/Cmd + s) with the name "bad_jokes.Rmd".
 4. Click the Preview button and view the results.
 
-## Numbered and unordered lists
+## Numbered/ordered and unordered lists
 
-### Numbered lists
+### Numbered/ordered lists
 Numbered lists with sub-bullets:
 
 ```{r, eval=FALSE}
@@ -132,7 +149,7 @@ A numbered list with subnumbering.
 ```
 
 Result:
-Some text with numbering.
+A numbered list with subnumbering.
 
 1. Item 1
     a. Sub-item 1
@@ -148,7 +165,7 @@ Note: There must be a line between any text and the number `1`.
 Unordered lists with sub-bullets:
 
 ```{r, eval=FALSE}
-A numbered list with subnumbering.
+Some text with bullets.
 
 * Item 1
   * Sub-item 1

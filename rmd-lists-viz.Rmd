@@ -1,0 +1,59 @@
+---
+title: "Visualizing lists"
+output: html_notebook
+---
+
+A numbered/ordered list:
+
+1. Top level
+    a. Second level
+    b. Second level
+        i. Third level
+            a) Fourth level
+2. Top level
+    a. Second level
+
+
+A broken ordered list:
+1. Top level
+2. Top level
+
+An unordered list:
+
+* Top level
+  * Second level
+* Top level
+  * Second level
+    * Third level
+  * Second level
+* Top level
+
+An unordered list:
+
++ Top level
+  + Second level
++ Top level
+  + Second level
+    + Third level
+  + Second level
++ Top level
+
+An unordered list:
+
+- Top level
+  - Second level
+- Top level
+  - Second level
+    - Third level
+  - Second level
+- Top level
+
+An unordered list:
+
+* Top level
+  + Second level
+* Top level
+  + Second level
+    - Third level
+  + Second level
+* Top level
