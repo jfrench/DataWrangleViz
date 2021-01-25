@@ -2,9 +2,9 @@
 title: "Joshua French"
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
 output:
-  word_document: default
-  pdf_document: default
   html_notebook: default
+  pdf_document: default
+  word_document: default
   html_document:
     df_print: paged
 ---
@@ -25,10 +25,10 @@ output:
 
 R Markdown is a tool for dynamic, reproducible creation of data-centric documents that include text, code, the results of executed code.
 
-* R Markdown was created by [R Studio](https://www.rstudio.com) in 2014 (or at least that's the oldest discussion I can find).
-* It is a variant of Markdown, which was created by John Gruber (of [Daring Fireball](https://daringfireball.net/) fame) and Aaron Swartz (co-creator of [Reddit](https://www.reddit.com)) as a lightweight markup language for creating formatted text using a plain-text editor.
+* R Markdown was created by R Studio] ([https://www.rstudio.com](https://www.rstudio.com)) in 2014 (or at least that's the oldest discussion I can find).
+* It is a variant of Markdown, which was created by John Gruber (creator of Daring Fireball ([https://daringfireball.net/](https://daringfireball.net/))) and Aaron Swartz (co-creator of Reddit ([https://www.reddit.com/](https://www.reddit.com)) as a lightweight markup language for creating formatted text using a plain-text editor.
 * In general, a markdown language is a language that is written in plain-text but that is rendered different based on "markups" in the text.
-* Has some capabilities similar to [Jupyter](https://jupyter.org/) notebooks.
+* Has some capabilities similar to Jupyter ([https://jupyter.org/](https://jupyter.org/)) notebooks.
 
 R Markdown is a great way to:
 
@@ -165,8 +165,11 @@ Some text with bullets.
     * Sub-sub-item 1
 * Item 2
   * Sub-item 1
+  
+Notes:
 
-Note: There must be a line between any text and the \*.
+* There must be a line between any text and the \*.
+* You can use `+` or `-` instead of `*` when creating unordered lists with the same result.
 
 ### Your turn
 
@@ -230,11 +233,9 @@ Other options: `warning`, `error`, `messages` (TRUE) determine whether warnings,
 * `fig.width`, `fig.height`: (7). A numeric value indicating the width and height of the result figures.
 * `fig.cap`: (NULL). A caption for the figure.
 
-
 ### Your turn
 
 Copy and paste the code at [https://github.com/jfrench/DataWrangleViz/blob/master/rmd-chunks-viz.Rmd](https://github.com/jfrench/DataWrangleViz/blob/master/rmd-chunks-viz.Rmd) into an R Markdown document and then Knit the file to see visual examples of teh options described above.
-
 
 ### Some general options not discussed
 
@@ -248,16 +249,7 @@ You can run code in the middle of text using something like `` `r knitr::inline_
 
 For example, `` `r knitr::inline_expr("1 + 1")` `` will produce `r 1 + 1`.
 
-## YAML header
-
-The YAML (Yet Another Markdown Language) header controls many aspects of the document below. Unless you're using R Markdown for advanced purposes (books, blogs, websites, running the same file with multiple input parameters) then you probably don't need to know a lot about the YAML header at this stage. 
-
-And if you do need to know about the YAML header in detail, then you probably need a more advanced introduction to R Markdown!
-
-### References
-You can add a bibliography to your document using the YAML.
-
-## Tables
+### Tables
 
 By default, R will print tables (like data frames) exactly like you would see them in the Console output.
 
@@ -284,7 +276,38 @@ knitr::kable(cars[1:6,], caption = "Kable table")
 knitr::kable(cars[1:6,], caption = "Kable table")
 ```
 
-## Producing different document types
+## YAML header
+
+The YAML (Yet Another Markdown Language) header controls many aspects of the document below. Unless you're using R Markdown for advanced purposes (books, blogs, websites, running the same file with multiple input parameters) then you probably don't need to know a lot about the YAML header at this stage. 
+
+And if you do need to know about the YAML header in detail, then you probably need a more advanced introduction to R Markdown!
+
+### References
+You can add a bibliography to your document using the YAML header.
+
+You need to add something like: `bibliography: filename.filetype` to the header.
+
+ * Many biblgiography types are supported. A list of supported file types is currently available at [https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html](https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html)
+ 
+Citations must be placed in square brackets.
+
+* Multiple citation should be separated by semicolons. 
+
+A citation will have a key associated with it in the bibliography file, and you must use `@key` to cite the relevant reference.
+
+Here are some examples from the R Studio website:
+
+```{r, eval = FALSE}
+Blah blah [see @doe99, pp. 33-35; also @smith04, ch. 1].
+
+Blah blah [@doe99, pp. 33-35, 38-39 and *passim*].
+
+Blah blah [@smith04; @doe99].
+```
+
+Many for details about bibliographies with R Markdown are available on the R Studio website, and are currently found at [https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html](https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html)
+
+### Producing different document types
 
 One of the incredible features of R Markdown is that you can easily produce multiple file types with a single click of the "Knit" button.
 
@@ -302,7 +325,27 @@ in the YAML header will produce a a pdf document, and html notebook, and an html
 * `pdf_document`: Excellent for distributing a static (unchanging) document. Also great for submitting homework solutions to your instructor!
 * `html_document`: Excellent for sharing interactive files. Can be viewed in a web browser.
 * `html_notebook`: The excellent "R notebook".
-  * It's like an `html_document` but can be edited directly using R Studio and it can be used to reproduce the source code of the file generating it.
+  * It's like an `html_document` but the source code can be downloaded by toggling the "Code" button in the upper right hand corner of the file.
   * Great to share with collaborators because they can update the document, add analysis, etc.
 * `word_document`: If you have to have Microsoft Word editing capabilities, for some reason.
+
+### Your turn
+
+* Execute the command `download.file("https://raw.githubusercontent.com/jfrench/DataWrangleViz/master/02-crash-course-in-rmd.nb.html", destfile = "02-crash-course-in-rmd.nb.html")` in the Console.
+* Close R Studio.
+* Find the downloaded file.
+* Toggle the "Code" button in the right hand corner of the file to download the original source code.
+
+### Other things you can create in R Markdown:
+
+* Presentation: Use the `ioslides_presentation` or the `slidy_presentation` output type (there are others) to create a presentation.
+  * Use `#` to start a new slide with a title.
+  * Use `***` to start a new slide without a title.
+  * Use `##` for a second level header.
+* Shiny apps: This is essentially an interactive web app created using R Markdown.
+* Websites
+* Books (**bookdown**)
+* Blogs (**blogdown**)
+* Dashboards (**flexdashboard**)
+* html_widgets (various packages)
 
