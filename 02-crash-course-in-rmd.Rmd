@@ -2,11 +2,11 @@
 title: "Joshua French"
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
 output:
-  html_notebook: default
-  pdf_document: default
-  word_document: default
   html_document:
     df_print: paged
+  pdf_document: default
+  word_document: default
+  html_notebook: default
 ---
 
 ```{css, include=FALSE}
@@ -25,7 +25,7 @@ output:
 
 R Markdown is a tool for dynamic, reproducible creation of data-centric documents that include text, code, the results of executed code.
 
-* R Markdown was created by R Studio] ([https://www.rstudio.com](https://www.rstudio.com)) in 2014 (or at least that's the oldest discussion I can find).
+* R Markdown was created by R Studio ([https://www.rstudio.com](https://www.rstudio.com)) in 2014 (or at least that's the oldest discussion I can find).
 * It is a variant of Markdown, which was created by John Gruber (creator of Daring Fireball ([https://daringfireball.net/](https://daringfireball.net/))) and Aaron Swartz (co-creator of Reddit ([https://www.reddit.com/](https://www.reddit.com)) as a lightweight markup language for creating formatted text using a plain-text editor.
 * In general, a markdown language is a language that is written in plain-text but that is rendered different based on "markups" in the text.
 * Has some capabilities similar to Jupyter ([https://jupyter.org/](https://jupyter.org/)) notebooks.
@@ -50,7 +50,7 @@ An R Markdown document has three components:
 2. Formatted text.
 3. **Chunks** of computer code.
 
-Since the YAML header is option, we'll talk about it last.
+Since the YAML header is optional, we'll talk about it last.
 
 ## Formatting text in R Markdown.
 
