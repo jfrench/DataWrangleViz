@@ -25,4 +25,4 @@ Wow, two bad jokes in a row. I'd like to strike ~~that~~ from my memory.
 
 I wish I could \*escape\* these bad jokes.
 
-But I guess this will just be an unpleasant footnote^[unpleasand footnote].
+But I guess this will just be an unpleasant footnote^[unpleasant footnote].

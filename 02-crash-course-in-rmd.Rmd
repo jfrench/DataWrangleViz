@@ -92,6 +92,8 @@ output: html_notebook
 
 ### Third level
 
+This document is intended to help you see the effect of markup on a rendered document.
+  
 *This is italic text*
 
 **This is bold text**
@@ -108,7 +110,7 @@ Wow, two bad jokes in a row. I'd like to strike ~~that~~ from my memory.
 
 I wish I could \*escape\* these bad jokes.
 
-But I guess this will just be an unpleasant footnote^[unpleasand footnote].
+But I guess this will just be an unpleasant footnote^[unpleasant footnote].
 ```
 3. Save the file (Ctrl/Cmd + s) with the name "bad_jokes.Rmd".
 4. Click the Preview button and view the results.
