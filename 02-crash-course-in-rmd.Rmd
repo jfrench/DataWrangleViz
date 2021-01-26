@@ -213,7 +213,7 @@ Note: each label should be unique within the document. I don't recommend adding 
 ### Chunk options
 Code chunks have many options that can be used to customize the code. We will cover many important ones below.  I will specify the default option in parentheses, (), after the option. So this is what will be used by default if you don't specify anything.
 
-Yuhui Xie, creator of **knitr**, provides a [complete list])(https://yihui.org/knitr/options/) of chunk options on his [website](https://yihui.org/).
+Yuhui Xie, creator of **knitr**, provides a complete list ([https://yihui.org/knitr/options/](https://yihui.org/knitr/options/)) of chunk options on his website ([https://yihui.org/](https://yihui.org/)).
 
 ### Code evaluation
 
@@ -226,19 +226,20 @@ Yuhui Xie, creator of **knitr**, provides a [complete list])(https://yihui.org/k
   * You can also echo **selected lines** if you provide a numeric vector. e.g., `echo = 1:3` would echolines 1 through 3
 * `results`: (`'markup'`). Determines hwo the results are displayed.
   * Other options are `'asis'`, `'hold'`, `'hide'`.
-* `collapse`: (`FALSE`). A logical value indicating whether the output should be collapsed.
-* `include`: (`TRUE`) A logical value indicating whether to include the chunk output.    * Set to `FALSE` when you want something to run but not be shown.
+* `collapse`: (`FALSE`). A logical value indicating whether the source and output should be collapsed into a single block.
+* `include`: (`TRUE`) A logical value indicating whether to include the chunk output.
+  * Set to `FALSE` when you want something to run but not be shown.
 
-Other options: `warning`, `error`, `messages` (TRUE) determine whether warnings, errors, and messages will be displayed, respectively.
+Other options: `warning`, `error`, `messages` (`TRUE`) determine whether warnings, errors, and messages will be displayed, respectively.
 
 ### Code styling
 
-* `highlight`: (TRUE) A logical value indicating whether the source code syntax should be highlighted with different colors.
+* `highlight`: (`TRUE`) A logical value indicating whether the source code syntax should be highlighted with different colors.
 * `comment`: (`##`) The text that will be shown prior to evaluated code in the output block. 
   * Use `##` or `#>` to make the code blocks easier to copy and paste into the Console. `#>` is closer to what the Console output actually looks like.
-* `tidy`: (FALSE) A logical value indicating whether the source code be automatically reformatted.
-* `tidy.opts`: (NULL) A list of options that can be used to customize the `tidy` option above.
-  * e.g., `tidy.opts = list(width.cutoff = 60)` controls the length of the code and trys to cute the code lines at 60 characters.
+* `tidy`: (`FALSE`) A logical value indicating whether the source code be automatically reformatted.
+* `tidy.opts`: (`NULL`) A list of options that can be used to customize the `tidy` option above.
+  * e.g., `tidy.opts = list(width.cutoff = 60)` controls the length of the code and tries to cut the code lines at 60 characters.
 
 ### Plots
 
@@ -250,11 +251,11 @@ Other options: `warning`, `error`, `messages` (TRUE) determine whether warnings,
 * `fig.align`: (`'default'`). A character vector specifying how to align the figures.
   * Allowable values are: `'default'`, `'left'`, `'right'`, and `'center'`.
 * `fig.width`, `fig.height`: (7). A numeric value indicating the width and height of the result figures.
-* `fig.cap`: (NULL). A caption for the figure.
+* `fig.cap`: (`NULL`). A caption for the figure.
 
 ### Your turn
 
-Copy and paste the code at [https://github.com/jfrench/DataWrangleViz/blob/master/rmd-chunks-viz.Rmd](https://github.com/jfrench/DataWrangleViz/blob/master/rmd-chunks-viz.Rmd) into an R Markdown document and then Knit the file to see visual examples of teh options described above.
+Copy and paste the code at [https://github.com/jfrench/DataWrangleViz/blob/master/rmd-chunks-viz.Rmd](https://github.com/jfrench/DataWrangleViz/blob/master/rmd-chunks-viz.Rmd) into an R Markdown document and then Knit the file to see visual examples of the options described above.
 
 ### Some general options not discussed
 
@@ -283,7 +284,7 @@ head(cars)
 head(cars)
 ```
 
-The formatting can be improved with the `kable` function in the `knitr` package.
+The formatting can be improved with the `kable` function in the **knitr** package.
 
 ````
 ```{r}`r ''`
@@ -331,14 +332,14 @@ Many for details about bibliographies with R Markdown are available on the R Stu
 One of the incredible features of R Markdown is that you can easily produce multiple file types with a single click of the "Knit" button.
 
 e.g. adding/updating
-`
+```{r, eval = FALSE}
 output:
   pdf_document: default
   html_notebook: default
   html_document:
     df_print: paged
   word_document: default
-`
+```
 in the YAML header will produce a a pdf document, and html notebook, and an html document, and a Microsoft Word document, all with one click of the Knit button!
 
 * `pdf_document`: Excellent for distributing a static (unchanging) document. Also great for submitting homework solutions to your instructor!
@@ -346,6 +347,7 @@ in the YAML header will produce a a pdf document, and html notebook, and an html
 * `html_notebook`: The excellent "R notebook".
   * It's like an `html_document` but the source code can be downloaded by toggling the "Code" button in the upper right hand corner of the file.
   * Great to share with collaborators because they can update the document, add analysis, etc.
+  * Make sure to "Run All Code" using Ctrl/Cmd + Alt + r prior to "Previewing" the document or the code chunk output will not be included.
 * `word_document`: If you have to have Microsoft Word editing capabilities, for some reason.
 
 ### Your turn

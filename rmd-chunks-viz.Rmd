@@ -2,18 +2,18 @@
 author: "Joshua French"
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
 output:
+  pdf_document: default
   html_document:
     df_print: paged
-  pdf_document: default
   html_notebook: default
 ---
 # Rmd code chunk options visualized
 
-This document is mean to help you visualize code chunk options in R Markdown. The behavior of the output changes depending on whether you "Knit" the document (to html, pdf, word, etc.) or use as an R Notebook (`output: html_notebook` in the header) or using the "Preview" button, so make sure to "Knit" the document.
+This document is meant to help you visualize code chunk options in R Markdown. The behavior of the output changes depending on whether you "Knit" the document (to html, pdf, word, etc.) or use as an R Notebook (`output: html_notebook` in the header) or using the "Preview" button, so make sure to "Knit" the document.
 
-collapse all the source and output blocks from one code chunk into a single block
+The source code for this document may be accessed at [https://github.com/jfrench/DataWrangleViz/blob/master/rmd-chunks-viz.Rmd](https://github.com/jfrench/DataWrangleViz/blob/master/rmd-chunks-viz.Rmd). Knit the file (preferably to a pdf) to see visual examples of the options described below.
 
-By default, the code to be evaluated (the source) is shown in a "source block" with a gray background in typewriter front and looks 
+By default, the code to be evaluated (the source) is shown in a "source block" with a gray background in typewriter font and looks 
 ```{r, eval=FALSE}
 "like this."
 ```
@@ -29,7 +29,7 @@ The evaluated code results (the output) are shown with `##` in front of it so th
 All code lines are evaluated (and shown by default) when `eval = TRUE`.
 ````
 ```{r, eval = TRUE}`r ''`
-1
+1 + 1
 ```
 ````
 ```{r, eval = TRUE}
@@ -244,13 +244,29 @@ There are too many options to list here, but here is an example using `blank` an
 
 Compare the results of the following two source blocks when printed. Notice that in the first, the source block code is allowed to run off the page and blank lines are preserved. In the second, the code is automatically wrapped after 30 characters and the blank line is removed.
 
+````
+```{r}`r ''`
+# This is an outrageously long comment. For no real reason. Except the fact that I need to illustrate a point.
+
+mean(1:3) # Blank line above
+```
+````
+
 ```{r}
 # This is an outrageously long comment. For no real reason. Except the fact that I need to illustrate a point.
 
 mean(1:3) # Blank line above
 ```
 
+````
 
+```{r, tidy = TRUE, tidy.opts = list(blank = FALSE, width.cutoff = 30)}`r ''`
+# This is an outrageously long comment. For no real reason. Except the fact that I need to illustrate a point.
+
+mean(1:3) # Blank line above
+```
+
+````
 ```{r, tidy = TRUE, tidy.opts = list(blank = FALSE, width.cutoff = 30)}
 # This is an outrageously long comment. For no real reason. Except the fact that I need to illustrate a point.
 
@@ -299,6 +315,12 @@ plot(weight ~ Time, data = ChickWeight, pch = as.numeric(ChickWeight$Diet))
 
 ### Figure alignment, captions, and size
 We'll demonstrate how to align figures, change the caption, and change the size with the example below, with the relevant option name being obvious.
+
+````
+```{r, fig.align='center', fig.cap = 'Fig 1: Figure duex?', fig.height = 4, fig.width = 4}`r ''`
+plot(weight ~ Time, data = ChickWeight)
+```
+````
 
 ```{r, fig.align='center', fig.cap = 'Fig 1: Figure duex?', fig.height = 4, fig.width = 4}
 plot(weight ~ Time, data = ChickWeight)
