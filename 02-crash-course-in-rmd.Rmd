@@ -298,20 +298,24 @@ knitr::kable(cars[1:6,], caption = "Kable table")
 
 ## YAML header
 
-The YAML (Yet Another Markdown Language) header controls many aspects of the document below. Unless you're using R Markdown for advanced purposes (books, blogs, websites, running the same file with multiple input parameters) then you probably don't need to know a lot about the YAML header at this stage. 
+The YAML (Yet Another Markdown Language) header controls many aspects of the R Markdown document. 
+Unless you're using R Markdown for advanced purposes (books, blogs, websites, running the same file with multiple input parameters) then you probably don't need to know a lot about the YAML header at this stage. 
 
 And if you do need to know about the YAML header in detail, then you probably need a more advanced introduction to R Markdown!
 
 ### References
 You can add a bibliography to your document using the YAML header.
 
-You need to add something like: `bibliography: filename.filetype` to the header.
+You need to add something like the following to the header:
+```{r, eval = FALSE}
+bibliography: filename.filetype
+```
 
- * Many biblgiography types are supported. A list of supported file types is currently available at [https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html](https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html)
+Many bibliography types are supported. A list of supported file types is currently available at [https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html](https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html)
  
 Citations must be placed in square brackets.
 
-* Multiple citation should be separated by semicolons. 
+* Multiple citations should be separated by semicolons. 
 
 A citation will have a key associated with it in the bibliography file, and you must use `@key` to cite the relevant reference.
 
@@ -331,7 +335,7 @@ Many for details about bibliographies with R Markdown are available on the R Stu
 
 One of the incredible features of R Markdown is that you can easily produce multiple file types with a single click of the "Knit" button.
 
-e.g. adding/updating
+Adding the following code in the YAML header will produce a pdf document, an html notebook, an html document, and a Microsoft Word document, all with one click of the Knit button!
 ```{r, eval = FALSE}
 output:
   pdf_document: default
@@ -340,7 +344,6 @@ output:
     df_print: paged
   word_document: default
 ```
-in the YAML header will produce a a pdf document, and html notebook, and an html document, and a Microsoft Word document, all with one click of the Knit button!
 
 * `pdf_document`: Excellent for distributing a static (unchanging) document. Also great for submitting homework solutions to your instructor!
 * `html_document`: Excellent for sharing interactive files. Can be viewed in a web browser.
@@ -359,7 +362,7 @@ in the YAML header will produce a a pdf document, and html notebook, and an html
 
 ### Other things you can create in R Markdown:
 
-* Presentation: Use the `ioslides_presentation` or the `slidy_presentation` output type (there are others) to create a presentation.
+* Presentations: Use the `ioslides_presentation` or the `slidy_presentation` output type (there are others) to create a presentation.
   * Use `#` to start a new slide with a title.
   * Use `***` to start a new slide without a title.
   * Use `##` for a second level header.
