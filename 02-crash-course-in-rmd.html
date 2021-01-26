@@ -1721,8 +1721,8 @@ summary {
 </ol>
 <p>Since the YAML header is optional, we’ll talk about it last.</p>
 </div>
-<div id="formatting-text-in-r-markdown." class="section level2">
-<h2>Formatting text in R Markdown.</h2>
+<div id="formatting-text-in-r-markdown" class="section level2">
+<h2>Formatting text in R Markdown</h2>
 <div id="headings-and-sections" class="section level3">
 <h3>Headings and sections</h3>
 <p>Headings and sections of different levels are created with <code>#</code>.</p>
@@ -1731,6 +1731,16 @@ summary {
 <li><code>##</code> being the second level</li>
 <li>etc.</li>
 </ul>
+<p>The words after the <code>#</code> will be larger than the regular text.</p>
+<p>Note: In R Scripts and the R Console, the <code>#</code> symbol denotes a comment. In R Markdown files (.Rmd or .rmd), a comment is created by placing <code>&lt;!--</code> and <code>--&gt;</code> to the left and right, respectively, of the text you want to comment.</p>
+<p>e.g.,</p>
+<pre class="r"><code>&lt;!-- comment text --&gt;</code></pre>
+<p>would comment the text “comment text”.</p>
+<p>The easiest way to comment text in R Markdown documents is to highlight the text and then press Ctrl/Cmd + Shift + c.</p>
+</div>
+<div id="your-turn-1" class="section level3">
+<h3>Your turn</h3>
+<p>Practice commenting some text in R Markdown.</p>
 </div>
 <div id="font-styles-and-effects" class="section level3">
 <h3>Font styles and effects</h3>
@@ -1738,7 +1748,7 @@ summary {
 <li><em>Italic text</em>: <code>*text*</code> or <code>_text_</code>.</li>
 <li><strong>Bold text</strong>: <code>**text**</code> or <code>__text__</code> (two underscores on each side)</li>
 <li><code>Typewriter (code) text</code>: <code>`text`</code></li>
-<li>Endash (–), emdash (–): <code>--</code> and <code>---</code>.</li>
+<li>Endash (–), emdash (—): <code>--</code> and <code>---</code>.</li>
 <li><sup>superscript</sup> and <sub>subscript</sub>: <code>^superscript^</code> and <code>~subscript~</code></li>
 <li><del>strikethrough</del>: <code>~~strikethrough~~</code></li>
 <li>Escaping special characters *, _, $, \, <code>`</code>: <code>\*</code>, <code>\_</code>, <code>\$</code>, <code>\\</code>, <code>`` ` ``</code></li>
@@ -1747,7 +1757,7 @@ summary {
 <p>Math is rendered using LaTeX (which is <a href="https://www.latex-project.org/about/">pronounced</a> “Lah-tech” or “Lay-tech”). So you can use $ and $$ to render inline math and display math like you would in LaTeX.</p>
 <p>E.g., Typing “The regression coefficient $\beta$” will produce “The regression coefficient <span class="math inline">\(\beta\)</span>”.</p>
 </div>
-<div id="your-turn-1" class="section level3 action">
+<div id="your-turn-2" class="section level3 action">
 <h3>Your turn</h3>
 <ol style="list-style-type: decimal">
 <li>Create a new R Script (Ctrl/Cmd + Shift + n).</li>
@@ -1764,6 +1774,8 @@ output: html_notebook
 
 ### Third level
 
+This document is intended to help you see the effect of markup on a rendered document.
+  
 *This is italic text*
 
 **This is bold text**
@@ -1780,17 +1792,17 @@ Wow, two bad jokes in a row. I&#39;d like to strike ~~that~~ from my memory.
 
 I wish I could \*escape\* these bad jokes.
 
-But I guess this will just be an unpleasant footnote^[unpleasand footnote].</code></pre>
+But I guess this will just be an unpleasant footnote^[unpleasant footnote].</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li>Save the file (Ctrl/Cmd + s) with the name “bad_jokes.Rmd”.</li>
 <li>Click the Preview button and view the results.</li>
 </ol>
 </div>
 </div>
-<div id="numbered-and-unordered-lists" class="section level2">
-<h2>Numbered and unordered lists</h2>
-<div id="numbered-lists" class="section level3">
-<h3>Numbered lists</h3>
+<div id="numberedordered-and-unordered-lists" class="section level2">
+<h2>Numbered/ordered and unordered lists</h2>
+<div id="numberedordered-lists" class="section level3">
+<h3>Numbered/ordered lists</h3>
 <p>Numbered lists with sub-bullets:</p>
 <pre class="r"><code>A numbered list with subnumbering.
 
@@ -1800,7 +1812,7 @@ But I guess this will just be an unpleasant footnote^[unpleasand footnote].</cod
         i. Sub-sub-item 1 # four tabs, not two
 2. Item 2
     a. Sub-item 1</code></pre>
-<p>Result: Some text with numbering.</p>
+<p>Result: A numbered list with subnumbering.</p>
 <ol style="list-style-type: decimal">
 <li>Item 1
 <ol style="list-style-type: lower-alpha">
@@ -1820,7 +1832,7 @@ But I guess this will just be an unpleasant footnote^[unpleasand footnote].</cod
 <div id="unordered-lists" class="section level3">
 <h3>Unordered lists</h3>
 <p>Unordered lists with sub-bullets:</p>
-<pre class="r"><code>A numbered list with subnumbering.
+<pre class="r"><code>Some text with bullets.
 
 * Item 1
   * Sub-item 1
@@ -1849,7 +1861,7 @@ But I guess this will just be an unpleasant footnote^[unpleasand footnote].</cod
 <li>You can use <code>+</code> or <code>-</code> instead of <code>*</code> when creating unordered lists with the same result.</li>
 </ul>
 </div>
-<div id="your-turn-2" class="section level3">
+<div id="your-turn-3" class="section level3">
 <h3>Your turn</h3>
 <p>Create an example of a numbered list with 4 levels and an unordered list with 3 levels.</p>
 </div>
@@ -1866,7 +1878,7 @@ But I guess this will just be an unpleasant footnote^[unpleasand footnote].</cod
 <div id="chunk-options" class="section level3">
 <h3>Chunk options</h3>
 <p>Code chunks have many options that can be used to customize the code. We will cover many important ones below. I will specify the default option in parentheses, (), after the option. So this is what will be used by default if you don’t specify anything.</p>
-<p>Yuhui Xie, creator of <strong>knitr</strong>, provides a [complete list])(<a href="https://yihui.org/knitr/options/" class="uri">https://yihui.org/knitr/options/</a>) of chunk options on his <a href="https://yihui.org/">website</a>.</p>
+<p>Yuhui Xie, creator of <strong>knitr</strong>, provides a complete list (<a href="https://yihui.org/knitr/options/">https://yihui.org/knitr/options/</a>) of chunk options on his website (<a href="https://yihui.org/">https://yihui.org/</a>).</p>
 </div>
 <div id="code-evaluation" class="section level3">
 <h3>Code evaluation</h3>
@@ -1888,23 +1900,26 @@ But I guess this will just be an unpleasant footnote^[unpleasand footnote].</cod
 <ul>
 <li>Other options are <code>&#39;asis&#39;</code>, <code>&#39;hold&#39;</code>, <code>&#39;hide&#39;</code>.</li>
 </ul></li>
-<li><code>collapse</code>: (<code>FALSE</code>). A logical value indicating whether the output should be collapsed.</li>
-<li><code>include</code>: (<code>TRUE</code>) A logical value indicating whether to include the chunk output. * Set to <code>FALSE</code> when you want something to run but not be shown.</li>
+<li><code>collapse</code>: (<code>FALSE</code>). A logical value indicating whether the source and output should be collapsed into a single block.</li>
+<li><code>include</code>: (<code>TRUE</code>) A logical value indicating whether to include the chunk output.
+<ul>
+<li>Set to <code>FALSE</code> when you want something to run but not be shown.</li>
+</ul></li>
 </ul>
-<p>Other options: <code>warning</code>, <code>error</code>, <code>messages</code> (TRUE) determine whether warnings, errors, and messages will be displayed, respectively.</p>
+<p>Other options: <code>warning</code>, <code>error</code>, <code>messages</code> (<code>TRUE</code>) determine whether warnings, errors, and messages will be displayed, respectively.</p>
 </div>
 <div id="code-styling" class="section level3">
 <h3>Code styling</h3>
 <ul>
-<li><code>highlight</code>: (TRUE) A logical value indicating whether the source code syntax should be highlighted with different colors.</li>
+<li><code>highlight</code>: (<code>TRUE</code>) A logical value indicating whether the source code syntax should be highlighted with different colors.</li>
 <li><code>comment</code>: (<code>##</code>) The text that will be shown prior to evaluated code in the output block.
 <ul>
 <li>Use <code>##</code> or <code>#&gt;</code> to make the code blocks easier to copy and paste into the Console. <code>#&gt;</code> is closer to what the Console output actually looks like.</li>
 </ul></li>
-<li><code>tidy</code>: (FALSE) A logical value indicating whether the source code be automatically reformatted.</li>
-<li><code>tidy.opts</code>: (NULL) A list of options that can be used to customize the <code>tidy</code> option above.
+<li><code>tidy</code>: (<code>FALSE</code>) A logical value indicating whether the source code be automatically reformatted.</li>
+<li><code>tidy.opts</code>: (<code>NULL</code>) A list of options that can be used to customize the <code>tidy</code> option above.
 <ul>
-<li>e.g., <code>tidy.opts = list(width.cutoff = 60)</code> controls the length of the code and trys to cute the code lines at 60 characters.</li>
+<li>e.g., <code>tidy.opts = list(width.cutoff = 60)</code> controls the length of the code and tries to cut the code lines at 60 characters.</li>
 </ul></li>
 </ul>
 </div>
@@ -1923,12 +1938,12 @@ But I guess this will just be an unpleasant footnote^[unpleasand footnote].</cod
 <li>Allowable values are: <code>&#39;default&#39;</code>, <code>&#39;left&#39;</code>, <code>&#39;right&#39;</code>, and <code>&#39;center&#39;</code>.</li>
 </ul></li>
 <li><code>fig.width</code>, <code>fig.height</code>: (7). A numeric value indicating the width and height of the result figures.</li>
-<li><code>fig.cap</code>: (NULL). A caption for the figure.</li>
+<li><code>fig.cap</code>: (<code>NULL</code>). A caption for the figure.</li>
 </ul>
 </div>
-<div id="your-turn-3" class="section level3">
+<div id="your-turn-4" class="section level3">
 <h3>Your turn</h3>
-<p>Copy and paste the code at <a href="https://github.com/jfrench/DataWrangleViz/blob/master/rmd-chunks-viz.Rmd">https://github.com/jfrench/DataWrangleViz/blob/master/rmd-chunks-viz.Rmd</a> into an R Markdown document and then Knit the file to see visual examples of teh options described above.</p>
+<p>Copy and paste the code at <a href="https://github.com/jfrench/DataWrangleViz/blob/master/rmd-chunks-viz.Rmd">https://github.com/jfrench/DataWrangleViz/blob/master/rmd-chunks-viz.Rmd</a> into an R Markdown document and then Knit the file to see visual examples of the options described above.</p>
 </div>
 <div id="some-general-options-not-discussed" class="section level3">
 <h3>Some general options not discussed</h3>
@@ -1955,7 +1970,7 @@ head(cars)
 {"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["speed"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["dist"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"4","2":"2","_rn_":"1"},{"1":"4","2":"10","_rn_":"2"},{"1":"7","2":"4","_rn_":"3"},{"1":"7","2":"22","_rn_":"4"},{"1":"8","2":"16","_rn_":"5"},{"1":"9","2":"10","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p>The formatting can be improved with the <code>kable</code> function in the <code>knitr</code> package.</p>
+<p>The formatting can be improved with the <code>kable</code> function in the <strong>knitr</strong> package.</p>
 <pre><code>```{r}
 knitr::kable(cars[1:6,], caption = &quot;Kable table&quot;)
 ```</code></pre>
@@ -1999,18 +2014,17 @@ knitr::kable(cars[1:6,], caption = &quot;Kable table&quot;)
 </div>
 <div id="yaml-header" class="section level2">
 <h2>YAML header</h2>
-<p>The YAML (Yet Another Markdown Language) header controls many aspects of the document below. Unless you’re using R Markdown for advanced purposes (books, blogs, websites, running the same file with multiple input parameters) then you probably don’t need to know a lot about the YAML header at this stage.</p>
+<p>The YAML (Yet Another Markdown Language) header controls many aspects of the R Markdown document. Unless you’re using R Markdown for advanced purposes (books, blogs, websites, running the same file with multiple input parameters) then you probably don’t need to know a lot about the YAML header at this stage.</p>
 <p>And if you do need to know about the YAML header in detail, then you probably need a more advanced introduction to R Markdown!</p>
 <div id="references" class="section level3">
 <h3>References</h3>
 <p>You can add a bibliography to your document using the YAML header.</p>
-<p>You need to add something like: <code>bibliography: filename.filetype</code> to the header.</p>
-<ul>
-<li>Many biblgiography types are supported. A list of supported file types is currently available at <a href="https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html">https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html</a></li>
-</ul>
+<p>You need to add something like the following to the header:</p>
+<pre class="r"><code>bibliography: filename.filetype</code></pre>
+<p>Many bibliography types are supported. A list of supported file types is currently available at <a href="https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html">https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html</a></p>
 <p>Citations must be placed in square brackets.</p>
 <ul>
-<li>Multiple citation should be separated by semicolons.</li>
+<li>Multiple citations should be separated by semicolons.</li>
 </ul>
 <p>A citation will have a key associated with it in the bibliography file, and you must use <code>@key</code> to cite the relevant reference.</p>
 <p>Here are some examples from the R Studio website:</p>
@@ -2024,7 +2038,13 @@ Blah blah [@smith04; @doe99].</code></pre>
 <div id="producing-different-document-types" class="section level3">
 <h3>Producing different document types</h3>
 <p>One of the incredible features of R Markdown is that you can easily produce multiple file types with a single click of the “Knit” button.</p>
-<p>e.g. adding/updating <code>output:   pdf_document: default   html_notebook: default   html_document:     df_print: paged   word_document: default</code> in the YAML header will produce a a pdf document, and html notebook, and an html document, and a Microsoft Word document, all with one click of the Knit button!</p>
+<p>Adding the following code in the YAML header will produce a pdf document, an html notebook, an html document, and a Microsoft Word document, all with one click of the Knit button!</p>
+<pre class="r"><code>output:
+  pdf_document: default
+  html_notebook: default
+  html_document:
+    df_print: paged
+  word_document: default</code></pre>
 <ul>
 <li><code>pdf_document</code>: Excellent for distributing a static (unchanging) document. Also great for submitting homework solutions to your instructor!</li>
 <li><code>html_document</code>: Excellent for sharing interactive files. Can be viewed in a web browser.</li>
@@ -2032,11 +2052,12 @@ Blah blah [@smith04; @doe99].</code></pre>
 <ul>
 <li>It’s like an <code>html_document</code> but the source code can be downloaded by toggling the “Code” button in the upper right hand corner of the file.</li>
 <li>Great to share with collaborators because they can update the document, add analysis, etc.</li>
+<li>Make sure to “Run All Code” using Ctrl/Cmd + Alt + r prior to “Previewing” the document or the code chunk output will not be included.</li>
 </ul></li>
 <li><code>word_document</code>: If you have to have Microsoft Word editing capabilities, for some reason.</li>
 </ul>
 </div>
-<div id="your-turn-4" class="section level3">
+<div id="your-turn-5" class="section level3">
 <h3>Your turn</h3>
 <ul>
 <li>Execute the command <code>download.file(&quot;https://raw.githubusercontent.com/jfrench/DataWrangleViz/master/02-crash-course-in-rmd.nb.html&quot;, destfile = &quot;02-crash-course-in-rmd.nb.html&quot;)</code> in the Console.</li>
@@ -2048,7 +2069,7 @@ Blah blah [@smith04; @doe99].</code></pre>
 <div id="other-things-you-can-create-in-r-markdown" class="section level3">
 <h3>Other things you can create in R Markdown:</h3>
 <ul>
-<li>Presentation: Use the <code>ioslides_presentation</code> or the <code>slidy_presentation</code> output type (there are others) to create a presentation.
+<li>Presentations: Use the <code>ioslides_presentation</code> or the <code>slidy_presentation</code> output type (there are others) to create a presentation.
 <ul>
 <li>Use <code>#</code> to start a new slide with a title.</li>
 <li>Use <code>***</code> to start a new slide without a title.</li>
