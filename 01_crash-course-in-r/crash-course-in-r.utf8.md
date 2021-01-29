@@ -11,20 +11,9 @@ output:
   html_notebook: default
 ---
 <!-- # add Your turn block -->
-```{css, include=FALSE}
-.action {
-    # margin: 2em;
-    padding: 2em;
-    border: 1px solid grey;
-    border-radius: 5px;
-    background: #eeeeee;
-}
-```
 
-```{r, include=FALSE}
-# change Console output behavior
-knitr::opts_chunk$set(comment = "#>", collapse = TRUE)
-```
+
+
 
 This notebook is intended to help you quickly learn how to productively use R.
 
@@ -107,20 +96,35 @@ The **tidyverse** [https://www.tidyverse.org](https://www.tidyverse.org) is an e
 * **forcats** - A package for working with categorical data.
 
 Install the set of **tidyverse** R packages by executing the following command:
-```{r, eval=FALSE}
+
+```r
 install.packages("tidyverse")
 ```
 
 After you install **tidyverse**, load the package(s) by executing the following command:
 
-```{r, eval=FALSE}
+
+```r
 library(tidyverse)
 ```
 
 You should see something like this.
 
-```{r, echo=FALSE, results='markup'}
-library(tidyverse)
+
+```
+#> -- Attaching packages --------------------------------------- tidyverse 1.3.0 --
+#> v ggplot2 3.3.2     v purrr   0.3.4
+#> v tibble  3.0.4     v dplyr   1.0.2
+#> v tidyr   1.1.2     v stringr 1.4.0
+#> v readr   1.4.0     v forcats 0.5.0
+#> Warning: package 'ggplot2' was built under R version 4.0.3
+#> Warning: package 'tibble' was built under R version 4.0.3
+#> Warning: package 'tidyr' was built under R version 4.0.3
+#> Warning: package 'readr' was built under R version 4.0.3
+#> Warning: package 'dplyr' was built under R version 4.0.3
+#> -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+#> x dplyr::filter() masks stats::filter()
+#> x dplyr::lag()    masks stats::lag()
 ```
 
 ## Comments
@@ -132,8 +136,10 @@ To comment (or uncomment) multiple lines in R, highlight the code you want to co
 
 An examples:
 
-```{r}
+
+```r
 1 + 1 # adding 1 + 1
+#> [1] 2
 # 2 + 2 (not adding 2 + 2 because of the #)
 ```
 
@@ -171,10 +177,14 @@ Both double and integer values are specific types of numeric values.
 
 The `typeof` function returns the R internal type or storage mode of any object.
 
-```{r}
+
+```r
 typeof(1)
+#> [1] "double"
 typeof(1L)
+#> [1] "integer"
 typeof("hello world!")
+#> [1] "character"
 ```
 
 ## Other important object types
@@ -187,12 +197,18 @@ An object is `numeric` if it is of type `integer` or `double`. In that case, it'
 The `is.numeric` function tests whether an object can be interpreted as numbers. We can use it to determine whether an object is `numeric`. Alternatively, we can use the `mode` function to get the type or storage mode of an object.
 
 Some examples:
-```{r}
+
+```r
 mode("hello world!")
+#> [1] "character"
 is.numeric(1)
+#> [1] TRUE
 mode(1)
+#> [1] "numeric"
 is.numeric(1L)
+#> [1] TRUE
 mode(1)
+#> [1] "numeric"
 ```
 
 ### `NULL`
@@ -205,21 +221,30 @@ Technically, an `NA` value is a logical constant of length 1 that contains a mis
 
 If you have a missing value, you should represent that value as `NA`. Note: `"NA"` is not the same thing as `NA`.
 
-```{r}
+
+```r
 typeof(NA)
+#> [1] "logical"
 typeof(NA_character_)
+#> [1] "character"
 typeof(NA_integer_)
+#> [1] "integer"
 typeof(NA_real_)
+#> [1] "double"
 typeof(NA_complex_)
+#> [1] "complex"
 ```
 ### Functions
 A function is an object the performs a certain action or set of actions based on objects it receives from its arguments.
 A function has type `closure` and mode `function`. 
 
 The `mean` function computes the sample mean of a relevant object. Consider the type and mode of the `mean` function.
-```{r}
+
+```r
 typeof(mean)
+#> [1] "closure"
 mode(mean)
+#> [1] "function"
 ```
 
 ## Data structures
@@ -246,11 +271,12 @@ Arrays can be n-dimensional objects.
 
 This is summarized in the table below, which is based on a [table](http://adv-r.had.co.nz/Data-structures.html#data-structure) in the first edition of Hadley Wickham's *Advanced R*. 
 
-```{r, echo=FALSE}
-knitr::kable(data.frame(dimensionality = c("1d", "2d", "nd"),
-                homogeneous = c("vector", "matrix", "array"),
-                heterogeneous = c("list", "data frame", "")))
-```
+
+|dimensionality |homogeneous |heterogeneous |
+|:--------------|:-----------|:-------------|
+|1d             |vector      |list          |
+|2d             |matrix      |data frame    |
+|nd             |array       |              |
 
 ## Vector basics           
 A *vector* is a single-dimensional set of data of the same type.
@@ -313,15 +339,20 @@ You *typically* won't have issues with either assignement operator. But when you
 Here's an example of when you can have issues.
 
 This code works:
-```{r}
+
+```r
 system.time(result <- rnorm(100))
+#>    user  system elapsed 
+#>       0       0       0
 ```
 
 The code above times (using `system.time`) how long it takes to draw 100 values from a standard normal distribution (`rnorm(100)`) and assign it the name `result`.
 
 This code doesn't work:
-```{r, error=TRUE}
+
+```r
 system.time(result = rnorm(100))
+#> Error in system.time(result = rnorm(100)): unused argument (result = rnorm(100))
 ```
 What's the difference? In the second case, R thinks you are setting the `result` argument of the `system.time` function (which doesn't exist) to the value produced by `rnorm(100)`.
 
@@ -329,19 +360,23 @@ A trivial examples of assignment: `v1 <- 1:5` assigns the sequence 1 through 5 t
 
 To access the data assigned a name, we simply type the name into R and hit enter.
 
-```{r}
+
+```r
 v1 <- 1:5
 v1
+#> [1] 1 2 3 4 5
 ```
 
 Vectors can be combined and stored in an object using the `c` function and the assignment operator.
 
 We'll create a new vector, `v2`, combine it with `v1` using the `c` function, then assign it the name `new`.
 
-```{r}
+
+```r
 v2 <- c(1, 10, 11)
 new <- c(v1, v2)
 new
+#> [1]  1  2  3  4  5  1 10 11
 ```
 
 ## Categorical vectors
@@ -355,11 +390,16 @@ For the most part, you don't need to worry about this. But remember that if you 
 The `factor` function takes values that can be coerced to a character and converts them to an object of class `factor`.
 
 Some examples:
-```{r}
+
+```r
 f1 <- factor(rep(1:6, times = 3))
 f1
+#>  [1] 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6
+#> Levels: 1 2 3 4 5 6
 f2 <- factor(c("a", 7, "blue", "blue", FALSE))
 f2
+#> [1] a     7     blue  blue  FALSE
+#> Levels: 7 a blue FALSE
 ```
 
 ## Your turn {.action}
@@ -418,24 +458,31 @@ Some examples:
 A histogram with a custom x-axis label and title can be created using the commands below. The x-axis label is customized using the 
 `xlab` argument and the title is customized using the `main` argument.
 
-```{r}
+
+```r
 x <- rnorm(100, mean = 100, sd = 10) # generate some data
 hist(x, xlab = "x-values",
 	main = "Histogram of 100 observations from N(100, 10^2)")
 ```
 
+![](crash-course-in-r_files/figure-latex/unnamed-chunk-17-1.pdf)<!-- --> 
+
 ## Boxplots
 
 A single boxplot can be created using the following commands:
 
-```{r}
+
+```r
 y <- rnorm(100, mean = 80, sd = 3) # generate some data
 boxplot(y)
 ```
 
+![](crash-course-in-r_files/figure-latex/unnamed-chunk-18-1.pdf)<!-- --> 
+
 A set of parallel boxplots can be created by distinguishing numeric values by a factor variable.
 
-```{r}
+
+```r
  #make groups for x and y
 grp <- factor(rep(c("Grp 1", "Grp 2"), each = 100))
 # combine x and y into a single vector
@@ -443,45 +490,69 @@ dat <- c(x, y)
 boxplot(dat ~ grp, xlab = "Group")
 ```
 
+![](crash-course-in-r_files/figure-latex/unnamed-chunk-19-1.pdf)<!-- --> 
+
 ## Scatterplots
 
 A scatterplot of two numeric vectors `x` and `y` can be created using the notation `plot(x, y)` (with `x` on the x-axis and `y` on the y-axis) or `plot(y ~ x)` (with `x` on the x-axis and `y` on the y-axis).
 
-```{r}
+
+```r
 #generate vectors with a linear relationship
 x <- runif(20)
 y <- 2 + 3 * x + rnorm(20)
 plot(x, y)
+```
+
+![](crash-course-in-r_files/figure-latex/unnamed-chunk-20-1.pdf)<!-- --> 
+
+```r
 plot(y ~ x)
 ```
 
+![](crash-course-in-r_files/figure-latex/unnamed-chunk-20-2.pdf)<!-- --> 
+
 We can customize the x-axis and y-axis labels using `xlab` and `ylab`, respectively. A title can be added after the fact using the `title` function.
-```{r}
+
+```r
 plot(x, y, xlab="1st variable", ylab="2nd variable")
 title("Title of plot")
 ```
 
+![](crash-course-in-r_files/figure-latex/unnamed-chunk-21-1.pdf)<!-- --> 
+
 The points of a scatterplot will be connected with a line (in the order the points are provided) by specifying `type = "l"`. Specifying `type = "b"` will display both the points and the line. 
 
-```{r}
+
+```r
 x <- seq(-4, 4, len = 1000)
 y <- dnorm(x, mean = 0, sd = 1)
 plot(x, y, xlab = "x", ylab = "density", type = "l")
 title("Density of Standard Normal")
+```
+
+![](crash-course-in-r_files/figure-latex/unnamed-chunk-22-1.pdf)<!-- --> 
+
+```r
 x2 <- seq(-4, 4, len = 25)
 y2 <- dnorm(x2, mean = 0, sd = 1)
 plot(y2 ~ x2, xlab = "x", ylab = "density", type = "b")
 title("Density of Standard Normal")
 ```
 
+![](crash-course-in-r_files/figure-latex/unnamed-chunk-22-2.pdf)<!-- --> 
+
 To create histogram-like vertical lines, you can specify `type = "h"`. This is useful for plotting the probability mass function of a random variable. Consider the following example for a Binomial distribution with $n=20$ trials and probability of success $\pi = 0.3$..
 
-```{r}
+
+```r
 x <- 0:20
 y <- dbinom(x, size = 20, prob = .3)
 plot(x, y, xlab = "# successes", ylab = "probability", type = "h")
 title("pmf of Binomial(n = 20, pi = .3)")
 ```
+
+![](crash-course-in-r_files/figure-latex/unnamed-chunk-23-1.pdf)<!-- --> 
 
 ## Your turn {.action}
 
@@ -513,50 +584,76 @@ The names of the columns in the data frame are the names of the vectors you give
 
 Consider the following simple example.
 
-```{r}
+
+```r
 d <- c(1, 2, 3, 4)
 e <- c("red", "white", "blue", NA)
 f <- c(TRUE, TRUE, TRUE, FALSE)
 df <- data.frame(d,e,f)
 df
+#>   d     e     f
+#> 1 1   red  TRUE
+#> 2 2 white  TRUE
+#> 3 3  blue  TRUE
+#> 4 4  <NA> FALSE
 ```
 
 The columns of a data frame can be renamed using the `names` function on the data frame.
 
-```{r}
+
+```r
 names(df) <- c("ID", "Color", "Passed")
 df
+#>   ID Color Passed
+#> 1  1   red   TRUE
+#> 2  2 white   TRUE
+#> 3  3  blue   TRUE
+#> 4  4  <NA>  FALSE
 ```
 
 The columns of a data frame can be named when you are first creating the data frame by using `name =` for each vector of data.
-```{r}
+
+```r
 df2 <- data.frame(ID = d, Color = e, Passed = f)
 df2
+#>   ID Color Passed
+#> 1  1   red   TRUE
+#> 2  2 white   TRUE
+#> 3  3  blue   TRUE
+#> 4  4  <NA>  FALSE
 ```
 
 The vectors of a data frame may be accessed using `$` and specifying the name of the desired vector.
 
 Access the `Color` vector in `df`:
-```{r}
+
+```r
 df$Color
+#> [1] "red"   "white" "blue"  NA
 ```
 
 The vectors of a data frame may be accessed by specifying the desired row(s) or column(s) in square brackets.
 
 Access first row of `df`:
-```{r}
+
+```r
 df[1,]
+#>   ID Color Passed
+#> 1  1   red   TRUE
 ```
 
 Access third column of `df`:
-```{r}
+
+```r
 df[,3]
+#> [1]  TRUE  TRUE  TRUE FALSE
 ```
 
 You can similarly access vectors of a data frame and assign it a new name.
 
 Access the `ID` column of `df2` and assign it the name `newID`:
-```{r}
+
+```r
 newID <- df2$ID
 ```
 
@@ -577,11 +674,20 @@ Usage: `read.table(file, header = TRUE, sep = ",")`
   * If each column of data in the file is separated by a tab, then use `sep = "\t"`.
 
 Here is an example reading a csv (comma separated file) with a header:
-```{r}
+
+```r
 dtf <- read.table(file = "https://raw.githubusercontent.com/jfrench/DataWrangleViz/master/data/covid_dec4.csv",
                   header = TRUE,
                   sep = ",")
 str(dtf)
+#> 'data.frame':	50 obs. of  7 variables:
+#>  $ state_name: chr  "Alabama" "Alaska" "Arizona" "Arkansas" ...
+#>  $ state_abb : chr  "AL" "AK" "AZ" "AR" ...
+#>  $ deaths    : int  3831 142 6885 2586 19582 2724 5146 782 19236 9725 ...
+#>  $ population: num  387000 96500 498000 238000 2815000 ...
+#>  $ income    : int  25734 35455 29348 25359 31086 35053 37299 32928 27107 28838 ...
+#>  $ hs        : num  82.1 91 85.6 82.9 80.7 89.7 88.6 87.7 85.5 84.3 ...
+#>  $ bs        : num  21.9 27.9 25.9 19.5 30.1 36.4 35.5 27.8 25.8 27.3 ...
 ```
 
 
@@ -591,24 +697,32 @@ Subsets of the elements of a vector may be selected by appending to the name of 
 
 Let's create the numeric vector 2, 4, 6, 8, 10, 12, 14, 16.
 
-```{r}
+
+```r
 a <- seq(2, 16, by = 2)
 a
-``` 
+#> [1]  2  4  6  8 10 12 14 16
+```
 
 Let's access the 2nd, 4th, and 6th elements of `a`.
-```{r}
+
+```r
 a[c(2, 4, 6)]
+#> [1]  4  8 12
 ```
 
 Let's access all elements in `a` EXCEPT the 2nd, 4th, and 6th using the minus (`-`) sign in front of the index vector.
-```{r}
+
+```r
 a[-c(2, 4, 6)]
+#> [1]  2  6 10 14 16
 ```
 
 Let's access all elements in `a` except elements 3 through 6.
-```{r}
+
+```r
 a[-(3:6)]
+#> [1]  2  4 14 16
 ```
 
 Sometimes we need to know if the elements of an object satisfy certain conditions.  This can be determined using the logical operators `<`, `<=`, `>`, `>=`, `==`, `!=`.
@@ -653,7 +767,8 @@ A function is essentially a sequence of commands executed based on certain argum
 
 In R, a function is defined using the general format:
 
-```{r, eval = FALSE}
+
+```r
 myfunction <- function(arg1, arg2, arg3) {
 	code to execute
 }
@@ -666,7 +781,8 @@ A function may or may not return something back that you can store for later use
 Let's perform an example of a function that returns the sample  standard deviation of a vector `x`. Recall that $$SD(x) = \sqrt{\frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2}.$$
 The sole argument is will be, `x`, a vector of numeric values.
 
-```{r}
+
+```r
 stdev <- function(x) {
 	s <- sqrt(sum((x - mean(x))^2)/(length(x) - 1))
 	s
@@ -676,15 +792,19 @@ stdev <- function(x) {
 Let's test our function against the `sd` function built into R.
 
 Let's generate some data:
-```{r}
+
+```r
 z <- rnorm(20)
 ```
 
 Let's compute the sample standard deviation of `z` using the `sd` function and
 the `stdev` function.
-```{r}
+
+```r
 sd(z)
+#> [1] 1.141132
 stdev(z)
+#> [1] 1.141132
 ```
 
 ## Your turn {.action}
@@ -706,16 +826,26 @@ Example:  Create a function that returns the mean and standard deviation of a ve
 
 The sole argument will be, `x`, a vector of numeric values.
 
-```{r}
+
+```r
 ms <- function(x) {
 	m <- mean(x)
 	s <- sd(x)
 	return(list(m = m, s = s))
 }
 ms(z)
+#> $m
+#> [1] 0.07524315
+#> 
+#> $s
+#> [1] 1.141132
 ms_z <- ms(z)
 ms_z$m
+#> [1] 0.07524315
 ms_z[[1]]
+#> [1] 0.07524315
 ms_z$s
+#> [1] 1.141132
 ms_z[[2]]
+#> [1] 1.141132
 ```

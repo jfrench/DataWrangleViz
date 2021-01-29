@@ -4,13 +4,7 @@ author: "Joshua French"
 date: '2021-01-19'
 output:
   pdf_document: default
-  md_document:
-    variant: gfm  
-  html_document:
-    df_print: default
-  html_notebook: default
 ---
-<!-- # add Your turn block -->
 ```{css, include=FALSE}
 .action {
     # margin: 2em;
@@ -59,7 +53,7 @@ R Studio has four panes:
 3. Environment/History: the pane where you can see all the objects in your workspace, your command history, and other things in other contexts.
 4. The Files/Plot/Packages/Help: the pane where you navigate between directories, where plots can be viewed, where you can see the packages available to be loaded, and where you can get help.
 
-![RStudio panes](rstudio_panes.png)
+![RStudio panes](./figures/rstudio_panes.png)
 
 ## Running code and scripts
 Code is executed in R by typing it in the Console and hitting enter.
@@ -224,7 +218,7 @@ mode(mean)
 
 ## Data structures
 
-R operates on data structures.  A data structure is simply some sort of “container” that holds certain kinds of information
+R operates on data structures.  A data structure is simply some sort of "container" that holds certain kinds of information
 
 R has 5 basic data structures:
 
@@ -294,7 +288,7 @@ Execute the seven commands above in the R Console to see what you get.
 
 ## Assignment
 
-To store a data structure in the computer’s memory we must assign it a name.
+To store a data structure in the computer's memory we must assign it a name.
 
 Data structures can be stored using the assignment operator `<-` or `=`.
 
@@ -348,7 +342,7 @@ new
 
 Categorical data should be stored as a `factor` in R.
 
-Hadley Wickham [states](https://adv-r.hadley.nz/vectors-chap.html) in *Advanced R*, "A factor is a vector that can contain only predefined values. It is used to store categorical data. Factors are built on top of an integer vector with two attributes: a `class`, “factor”, which makes it behave differently from regular integer vectors, and `levels`, which defines the set of allowed values."
+Hadley Wickham [states](https://adv-r.hadley.nz/vectors-chap.html) in *Advanced R*, "A factor is a vector that can contain only predefined values. It is used to store categorical data. Factors are built on top of an integer vector with two attributes: a `class`, "factor", which makes it behave differently from regular integer vectors, and `levels`, which defines the set of allowed values."
 
 For the most part, you don't need to worry about this. But remember that if you have categorical data, you should represent it using as a `factor`.
 
@@ -386,7 +380,7 @@ Suppose that a random variable $X$ has the `dist` distribution:
 
 *	`p[dist](q, ...)`: returns the cdf of $X$ evaluated at `q`, i.e., $p=P(X\leq q)$.
 *	`q[dist](p, ...)`: returns the inverse cdf (or quantile function) of $X$ evaluated at $p$, i.e., $q = \inf\{x: P(X\leq x) \geq p\}$.
-* `d[dist](x, ...)`: returns the mass or density of $X$  evaluated at $x$ (depending on whether it’s discrete or continuous).
+* `d[dist](x, ...)`: returns the mass or density of $X$  evaluated at $x$ (depending on whether it' discrete or continuous).
 * `r[dist](n, ...)`: returns an i.i.d. random sample of size `n` having the same distribution as $X$.
 * The `...` indicates that additional arguments describing the parameters of the distribution may be required.
 
@@ -396,7 +390,7 @@ Execute the following commands in R to see the output.
 
 *	`pnorm(1.96, mean = 0, sd = 1)` returns the probability that a normal random variable with mean 0 and standard deviation 1 is less than or equal to 1.96.
 * `qunif(0.6, min = 0, max = 1)` returns the value $x$ such that $P(X\leq x) = 0.6$ for a uniform random variable on the interval $[0, 1]$.
-* `dbinom(2, size = 20, prob = .2)` returns the probability that $P(X=2)$) for $X∼\textrm{Binom}(n=20,\pi=0.2)$.
+* `dbinom(2, size = 20, prob = .2)` returns the probability that $P(X=2)$) for $X~\textrm{Binom}(n=20,\pi=0.2)$.
 * `dexp(1, rate = 2)` evaluates the density of an exponential random variable with mean = 1/2 at $x=1$.
 * `rchisq(100, df = 5)` returns a sample of 100 observations from a chi-squared random variable with 5 degrees of freedom.
 * Run the last command and assign it the name `x`. Then apply all of the "General Functions" to `x`.
@@ -567,7 +561,7 @@ The `read.table` function imports data from file into R as a data frame.
 Usage: `read.table(file, header = TRUE, sep = ",")`
 
 * `file` is the file path and name of the file you want to import into R.
-  * If you don’t know the file path, set `file = file.choose()` will bring up a dialog box asking you to locate the file you want to import.
+  * If you don't know the file path, set `file = file.choose()` will bring up a dialog box asking you to locate the file you want to import.
 * `header` specifies whether the data file has a header (variable labels for each column of data in the first row of the data file).
   * If you don't specify this option in R or use `header = FALSE`, then R will assume the file doesn't have any headings.
   * `header = TRUE` tells R to read in the data as a data frame with column names taken from the first row of the data file.
