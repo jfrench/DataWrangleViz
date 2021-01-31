@@ -1,7 +1,7 @@
 ---
 title: "Crash Course in R"
 author: "Joshua French"
-date: '2021-01-19'
+date: "`r format(Sys.time(), '%Y-%m-%d')`"
 output:
   pdf_document: default
 ---

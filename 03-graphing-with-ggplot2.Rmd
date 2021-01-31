@@ -1,0 +1,113 @@
+---
+title: "Joshua French"
+date: "`r format(Sys.time(), '%Y-%m-%d')`"
+output:
+  html_document:
+    df_print: paged
+bibliography: dwv.bib
+---
+
+# Graphing with **ggplot2**
+
+## Graphics ecosystems in R
+
+There are three main graphics ecosystems in R:
+
+1. **base** graphics
+2. **lattice** graphics
+3. **ggplot2**
+
+**base** graphics are traditional S-like graphics.
+
+* Run `?`graphics-package` in the Console for more details.
+* These are the graphics you get by default when you use the `plot` function, the `hist` function, the `boxplot` function, etc.
+
+**lattice** graphics are an implementation of Trellis graphics [@BeckerClevelandShyu1996] for R available through the **lattice** package.
+
+* Run `?lattice` in the Console will provide you with additional about the **lattice** package.
+* The **lattice** package focuses on elegantly plotting multivariate data and makes it easy to distinguish different levels of `factor` data.
+* **lattice** and **base** graphics do not interface with each other (changing aspects of one graphics system has not impact on the other.)
+
+**ggplot2** is a layered graphical system based on implementing the Grammar of Graphics [@Wilkinson2005].
+  * It has gained widespread popularity because of its friendliness for visual exploration of data by data scientists.
+  * It provides a systematic approach for constructing complex plots in a systematic way.
+  * Run `?ggplot2-package` in the Console for more information.
+
+## Basic ingredients
+
+There are 4 main components needed to produce a plot using **ggplot2**.
+
+1. A data frame containing your data.
+    * Each column should be a variable and each row should be an observation of data.
+2. A `ggplot` object.
+    * This is initialized using the `ggplot` function.
+3. A geometric object.
+    * These are called "geoms" for short.
+    * geoms indicate the geometric object the plot should use to visualize the data. E.g., points, lines, polygons etc. More generally, geoms indicate the type of plot that is desired, e.g., histogram, density, or boxplot, which aren't exactly a simple geometric argument.
+4. An aesthetic.
+    * An aesthetic mapping indicates what role a variable plays in the plot.
+    * e.g., which variable will play the "x" variable in the plot, the "y" variable in the plot, control the "color" of the observations, etc.
+  
+@r4ds2017 suggests the following template for create graphics using **ggplot2**:
+```{r, eval=FALSE}
+ggplot(data = <DATA>) + 
+  <GEOM_FUNCTION>(mapping = aes(<MAPPINGS>))
+```
+
+`<DATA>`, `GEOM_FUNCTION`, and `<MAPPINGS>` are placeholders that you replace with the data frame, geometry object, and aesthetic mappings you want to use in your specific plot.
+
+An explanation of the template above:
+
+1. Every `ggplot` starts with a call the to the `ggplot` function. You can actually create a blank plot by running `ggplot()` in the Console.
+2. Generally, you pass your data frame to the `ggplot` through the `data` argument. You can also pass it inside the `<GEOM_FUNCTION>` when you intend to use multiple geometry objects with different 
+3. The `<GEOM_FUNCTION>` indicates the geometry object you want to use in the plot.
+4. The `<MAPPINGS>` describes the aesthetics mappings you want to use for this particular geometry.
+    * One of the reasons **ggplot2** is so powerful is that you can use different mappings for different geometry objects.
+5. The `+` symbol is used to add a layer to your graphic.
+    * If your code spans multiple lines, then you need to make sure all lines but that last end with the `+` operator to stack the layers properly.
+
+### Some geometry objects
+
+There are many geometry objects available in **ggplot2**. A complete list may be (currently) found at [https://ggplot2.tidyverse.org/reference/](https://ggplot2.tidyverse.org/reference/). We provide a partial list of geometry objects that I frequently use. 
+
+data dimensionality | geometry       | purpose
+----------|----------------|-------------------------------
+1d        | `geom_bar`     | Draws a bar chart
+1d        | `geom_density` | Draws a density plot
+1d        | `geom_boxplot` | Draws a boxplot
+1d        | `geom_violin`  | Draws a violin plot
+1d        | `geom_qq`      | Draws a quantile-quantile plot
+2d        | `geom_point`   | Draws points. Used for scatter plots.
+2d        | `geom_path`, `geom_line` | Connects observations. Used for line plots.
+2d | `geom_segment` | Draws straight lines between points
+2d | `geom_curve` | Draws curved lines between points
+2d | `geom_density2d` | Draws 2d contours of density estimate for two variables.
+2d | `geom_density2d_filled` | Draws 2d contours of density estimate for two variables with colors.
+2d | 
+3d | `geom_contour` | Draws 2d contours of 3d data
+3d | `geom_contour_filled` | Draws 2d contours of 3d data (colored)
+NA  | `geom_abline`, `geom_hline`, `geom_vline` | Draws diagonal, horizontal, and vertical lines
+
+### Some aesthetic mappings
+
+Aesthetic mappings are unique to each geometry object. However, here are some of the 
+
+x
+
+y
+
+alpha
+
+colour
+
+fill
+
+group
+
+linetype
+
+size
+## References
+  
+  
+  
