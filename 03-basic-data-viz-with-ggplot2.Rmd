@@ -615,7 +615,7 @@ A coordinate system is used to define the position of coordinates relative to on
 
 Other coordinates systems are commonly used for maps because points are actually on an ellipsoidal object (the earth!), which complicates their relationship.
 
-We do not discuss coordinate systems in detail here. The only coordinate system I want to mentioned is the "flipped" coordinate system (`coord_flip`), which flips the x and y axes. This is useful for rating objects in a plot. Consider the boxplots below.
+We do not discuss coordinate systems in detail here. The only coordinate system I want to mentioned is the "flipped" coordinate system (`coord_flip`), which flips the x and y axes. This is useful for rotating objects in a plot. Consider the boxplots below.
 
 
 ```{r}
