@@ -527,8 +527,12 @@ However, let's suppose our data frame already has counts for the number of value
 penguins_count <- as.data.frame(table(penguins$sex, useNA = "ifany"))
 # rename variales
 names(penguins_count) <- c("sex", "count")
+# print data frame
+penguins_count
+# create plot
 ggplot(penguins_count) + geom_bar(aes(x = sex, y = count), stat = "identity")
 ```
+
 ### Position
 
 The `position` argument of a geom describes the positions of the objects produced. Most of the time this is pretty straightforward, but there can be times when it is helpful (or unhelpful) to customize `position`.
@@ -585,7 +589,7 @@ If you want to compare the number of penguins with each `sex` within each `speci
 
 While the above charts provide a fair amount of information compactly, to facilitate ease of interpretation we should construct our graphics to highlight the characteristic of importance.
 
-e.g., If we want to compare the number of penguins of each sex within species, it would be better to facet the data by `sex` and display the count of each species.
+e.g., If we want to compare the counts of each penguin `species` within each `sex`, it would be better to facet the data by `sex` and display the count of each species.
 
 ```{r}
 ggplot(penguins) +  geom_bar(aes(x = species, fill = species)) + facet_wrap(~ sex)
@@ -615,8 +619,8 @@ We do not discuss coordinate systems in detail here. The only coordinate system 
 
 
 ```{r}
-ggplot(penguins) + geom_boxplot(aes(y = body_mass_g, fill = species))
-ggplot(penguins) + geom_boxplot(aes(y = body_mass_g, fill = species)) + coord_flip()
+ggplot(penguins) + geom_boxplot(aes(x = species, y = body_mass_g, fill = species))
+ggplot(penguins) + geom_boxplot(aes(x = species, y = body_mass_g, fill = species)) + coord_flip()
 ```
 
 
