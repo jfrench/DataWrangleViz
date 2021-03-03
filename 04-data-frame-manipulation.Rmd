@@ -1,0 +1,359 @@
+---
+title: "Joshua French"
+date: "`r format(Sys.time(), '%Y-%m-%d')`"
+output:
+  html_document:
+  df_print: paged
+html_notebook: default
+pdf_document: default
+bibliography:
+  - dwv.bib
+  - packages_manip.bib
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  tidy = TRUE
+)
+knitr::write_bib(c("dplyr", "tibble", "tidyr", "palmerpenguins", "magrittr", "data.table", "reshape", "reshape2", "dbplyr", "dtplyr"), file = "packages_manip.bib")
+
+```
+
+# Data frame manipulation with **dplyr** and **tidyr**
+
+The **dplyr** and **tidyr** packages [@R-dplyr; @R-tidyr] are powerful packages for restructuring, enhancing, and manipulating data frames.
+
+We'll discuss the **dplyr** package first, as its use cases are a bit simpler.
+
+We load the **tibble**, **dplyr**, and **tidyr** packages for the discussion below. We also preemptively load the `penguins` data frame from the **palmerpenguins** package, as we use it heavily in our discussion.
+
+```{r, message = FALSE, warning = FALSE}
+library(tibble)
+library(dplyr)
+library(tidyr)
+data(penguins, package = "palmerpenguins")
+```
+
+We will be looking at straightforward data frame manipulation examples. Depending on what you need to do, you may need to dig deeper into the packages we discuss or consider alternative packages. However, you should have a solid foundation for manipulating data frames.
+
+Alternative data frame manipulation packages:
+
+* **data.table** [@R-data.table]: almost a direct alternative to **dplyr** that manipulates `data.table` objects instead of tibbles (the enhanced **dplyr** data frame).
+  * Faster than **dplyr**.
+  * More memory efficient that **dplyr**.
+  * Less accessible syntax?
+* **dtplyr** [@R-dtplyr]: an implementation of **dplyr** that uses **data.table** internally.
+  * The best of both worlds?
+  * **dplyr** syntax is translated to **data.table** syntax.
+  * Computation must be explicitly requested. 
+* **dbplyr** [@R-dbplyr]: an implementation of **dplyr** that works with databases instead of tibbles.
+
+Web searches about data frame manipulation will likely bring up references to the **reshape** [@R-reshape] and **reshape2** [@R-reshape2] packages.
+
+* These packages are the spiritual predecessors to **tidyr**. 
+* These packages do more than **tidyr**, but the syntax was more difficult.
+* These packages aren't in active development, so it's better to avoid using them for active projects.
+  * You may have a hard time getting help in using the older packages.
+
+## Tibbles
+When the **dplyr** package interacts with a data frame, it usually produces a "tibble" [@R-tibble]. 
+
+* A tibble is supposed to be a "modern re-imagining" of R's standard data frame (referred to as `data.frame` for clarity).
+* A tibble has class `tbl_df`. 
+
+### Differences between a tibble and a `data.frame`
+
+A tibble generally has more restrictive behavior than a `data.frame`.
+
+* Tibbles don't convert input types.
+  * This isn't as big of a deal since the release of R 4.0.0 when the argument `stringsAsFactors` was set to `FALSE` by default.
+* Tibbles don't allow for partial matching of variable names.
+* Tibbles doesn't add row names to the data frame.
+* A subsetting/extracting part of a tibble always produces a tibble.
+  * Subsetting a `data.frame` can return a vector, which can create edge-cases that results in a bug in your code!
+* Tibbles do allow for non-valid R variable names, though I wouldn't do this intentionally.
+  * A non-valid R variable name has to be surrounded by backticks. 
+* A variables used to create a tibble must have the same length.
+  * Unlike a `data.frame`, tibbles don't "recycle" the values of a vector when creating a data frame.
+* The printing capabilities of a tibble are designed to be better than a `data.frame`. 
+  * The user can directly specify the number of rows to print for a tibble.
+  * Tibbles only print the number of columns that can fit horizontally in the Console.
+
+### Example
+
+Let's compare some of behaviors for a `data.frame` and a tibble. The last few lines of the example below requires the **palmerpenguins** [@R-palmerpenguins] to be installed. Run the following commands in the R Console.
+```{r, eval=FALSE}
+# create data.frame
+dtf <- data.frame(numbers = 1:4, letters = letters[1:4], stringsAsFactors = TRUE)
+# observe structure. look at the classes
+str(dtf)
+# partial matching of variable name
+dtf$let
+# subset single column of dtf
+dtf[,c("letters")]
+# subset single column of dtf no longer a data.frame!
+is.data.frame(dtf[,c("letters")])
+# add a new column to dtf
+dtf$newv <- 1:2
+# print dtf
+dtf
+# create tibble
+tbl <- tibble(numbers = 1:4, letters = letters[1:4])
+# observe structure. look at the classes
+str(tbl)
+# partial matching of variable name
+tbl$let
+# partial matching of variable name
+tbl$letters
+# subset single column of tbl
+tbl[,c("letters")]
+# subset single column of tbl still a tibble!
+is_tibble(tbl[,c("letters")])
+# add a new column to tbl
+tbl$newv <- 1:2
+tbl$newv <- rep(1:2, times = 2)
+# print tbl
+tbl
+# print only two rows of tbl
+print(tbl, n = 2)
+# print large, regular data.frame (penguins data)
+as.data.frame(penguins)
+# print large, regular tibble
+penguins
+```
+### Subsetting/extracting parts of a tibble
+
+The syntax used subset or extract elements from a `data.frame` can be used for tibbles.
+
+* As seen above, the result produced by the syntax may differ slightly for a `data.frame` and a tibble.
+
+We will discuss this syntax using the `penguins` data set in the **palmerpenguins** package. The `penguins` data set is a tibble. Execute the following commands in the R Console.
+```{r, eval=FALSE}
+# check whether the object is a tibble
+is_tibble(penguins)
+# extract the species column of penguins
+penguins$species
+# subset the first column of penguins
+penguins[,1]
+# subset the first and third columns of penguin
+penguins[, c(1, 3)]
+# subset the island variable of penguins
+penguins[, c("island")]
+# subset the island and bill_length_mm variables of penguins
+penguins[, c("island", "bill_length_mm")]
+# subset first 3 columns of penguins
+penguins[1:3]
+# subset the first 3 rows and named columns of penguins
+penguins[1:3, c("island", "bill_length_mm")]
+# subset all but the first 3 rows of penguins with the named columns 
+penguins[-(1:3), c("island", "bill_length_mm")]
+```
+
+### Important functions for tibbles
+
+Below are some of the most important functions associated with tibbles:
+
+* `tibble`: create a tibble similarly to how you would create a `data.frame`
+* `as_tibble`: turn a `data.frame` into a tibble
+* `is_tibble`: determine whether an object is a tibble
+* `add_row`: add a row to a tibble
+* `add_column`: add a column to a tibble
+
+There are several other function associated with tibbles from the **tibble** package, but we don't discuss them here.
+
+Run the following code in the R Console to see the functions mentioned above in practice.
+```{r, eval = FALSE}
+tbl1 <- tibble(numbers = 1:3, letters = letters[1:3])
+dtf1 <- data.frame(numbers = 1:3, letters = letters[1:3])
+tbl2 <- as_tibble(dtf1)
+all.equal(tbl1, tbl2)
+is_tibble(tbl2)
+tbl1 <- add_row(tbl1, numbers = 4:5, letters = letters[4:5])
+tbl1
+tbl1 <- add_column(tbl1, cats = factor(rep(c("g1", "g2"), times = c(2, 3))), .after = "numbers")
+tbl1
+```
+## Using **dplyr**
+
+**dplyr** provides functions for the "verbs" (i.e., actions) related to common data manipulation tasks. The table below summarizes some of the most important functions by the aspect of a data frame it manipulates.
+
+aspect | function | purpose
+---|---|---
+row | `filter` | selects rows based on logical statement
+row | `slice` | select rows based on position or other property
+row | `arrange` | reorders the rows based on some property
+row | `group_by` | groups a collection of rows hierarchically based on one or more variables
+group of rows | `summarize` | produces a summarizing value or values for a group of rows
+column | `select` | selects columns based on a logical statement, column names, etc.
+column | `rename` | changes one or more column names
+column | `mutate` | changes an existing column or adds a new column
+column | `relocate` | reorders the columns
+
+### The pipe operator
+
+The pipe operator, `%>%`, is a popular approach for "piping" an object into the first argument (usually) of another function.
+
+* The pipe operator was introduced by the **magrittr** package [@R-magrittr].
+* It is extremely popular in the **tidyverse** for stringing sequences of operations together in a readable way.
+* R version 4.1 will gain a native pipe operator (`|>`) that will be a better choice moving forward.
+
+The pipe operator is best understand through example, as there are special cases that have to be addressed.
+
+### Filtering
+
+The `filter` function filters out the rows of a data frame that don't meet the designated criteria.
+
+Let's `filter` the rows of the `penguins` data frame based on whether the `body_mass_g` variable is more than 6000. In the code below, the logical statement `body_mass_g > 6000` indicates which rows of `penguins` to retain. In the first example, we use the `filter` function to directly filter the `penguins` data frame. In the second example, we pipe the `penguins` data frame into the `filter` function and then use the logical statement to filter the rows.
+```{r}
+filter(penguins, body_mass_g > 6000)
+penguins %>% filter(body_mass_g > 6000)
+```
+
+### Slicing
+
+`slice` extracts rows of a data frame by index or with respect to other properties.
+
+In the example below, we use the `slice` function to extract rows 10-12 of `penguins`, first directly, and then using the pipe operator.
+```{r}
+slice(penguins, 10:12)
+penguins %>% slice(10:12)
+```
+
+`slice_head` extract the first `n` rows of a data frame. Conversely, `slice_tail` extracts the last `n` rows of a data frame.
+
+* This is similar to the `head` and `tail` functions in **base** R.
+
+In the examples below, we extract the first 2 rows, then the last two rows, of the `penguins` data frame.
+
+```{r}
+slice_head(penguins, n = 2)
+penguins %>% slice_head(n = 2)
+slice_tail(penguins, n = 2)
+penguins %>% slice_tail(n = 2)
+```
+
+`slice_max` extracts the `n` rows of a data frame with respect to a specific variable. Conversely, `slice_min` extracts the `n` rows of a data frame with respect to a specific variable.
+
+In the examples below, we extract the rows of the `penguins` data frame with the largest and smallest `bill_lengh_mm` values, respectively. 
+
+```{r}
+slice_max(penguins, bill_length_mm, n = 2)
+penguins %>% slice_max(bill_length_mm, n = 2)
+slice_min(penguins, bill_length_mm, n = 2)
+penguins %>% slice_min(bill_length_mm, n = 2)
+```
+
+`slice_sample` randomly selects `n` rows of a data frame. We randomly select 3 rows of `penguins` below. To make the results reproducible, we would need to set the random number seed using `set.seed` since the rows are randomly selected.
+
+```{r}
+slice_sample(penguins, n = 3)
+penguins %>% slice_sample(n = 3)
+```
+
+### Arranging
+
+The `arrange` function arranges the rows of a data frame with respect to a certain variable.
+
+* By default, the rows are ordered in ascending order.
+* The `desc` function can be used to arrange the rows in descending order.
+* The ordering can be done within groups if specified.
+
+In the code below, we arrange the rows of `penguins` in ascending and then descending order, respectively, with respect to `bill_length_mm`.
+
+```{r}
+arrange(penguins, bill_length_mm)
+arrange(penguins, desc(bill_length_mm))
+```
+We could do the same thing using pipe operators using the code below.
+
+```{r, eval = FALSE}
+penguins %>% arrange(bill_length_mm)
+penguins %>% arrange(desc(bill_length_mm))
+```
+
+The data could also be arranged within groups. In the code below, we select three rows from each `species` of `penguins` and assign it the name `penguins_slice`. We then  order the rows by of `penguins_slice` by `bill_length_mm` in each group by setting `.by_group` to `TRUE`.
+
+```{r}
+penguins_slice <- penguins %>% group_by(species) %>% slice(1:3)
+arrange(penguins_slice, bill_length_mm, .by_group = TRUE)
+```
+
+### Grouping and summarizing
+
+The `group_by` function groups rows of a data frame with respect to one or more variables, which can then be manipulated in various ways. 
+
+`group_by` is often used in close connection to the `summarize` function, which computes (summarizes) the (grouped) rows into a single value.
+
+Since we now want to string several operation in a row, the pipe operator is useful for stringing the commands together.
+
+In the code below, we group the `penguins` data with respect to `species` and `island` and summarize the various aspects of the grouped data (compute the mean, the median, and the number of observations in each group for `bill_length_mm`.)
+
+* We create variables with designated names inside `summarize`.
+* `n()` counts the number of observations in each grouping.
+* `na.rm` is need to compute the statistics without them being poisoned by `NA` values.
+
+```{r}
+penguins %>%
+  group_by(species, island) %>%
+  summarize(mean_bill_length_mm = mean(bill_length_mm, na.rm = TRUE),
+            median_bill_length_mm =  median(bill_length_mm, na.rm = TRUE),
+            count = n())
+```
+### Selecting
+
+The `select` function can be used to select columns of a data frame. You can get pretty creative in how you select the columns (e.g., using string matching), but we only consider some simple examples.
+
+* Run `?dplyr::select` for more complex examples.
+
+We can select specific columns of a data frame by providing the column names. We select the `species` and `island` columns below of `penguins` below.
+
+```{r}
+select(penguins, species, island)
+penguins %>% select(species, island)
+```
+
+Next, we select the columns of `penguins` that end in `mm`.
+
+```{r}
+select(penguins, ends_with("mm"))
+penguins %>% select(ends_with("mm"))
+```
+
+### Column renaming
+
+The `rename` function renames the columns of a data frame.
+
+* The syntax is `new_name = old_name`.
+
+In the example below, we rename the `bill_length_mm` column to `bill`.
+
+```{r}
+rename(penguins, bill = bill_length_mm, flipper = flipper_length_mm)
+penguins %>% rename(bill = bill_length_mm, flipper = flipper_length_mm)
+```
+### Mutating a column
+
+The `mutate` function modifies an existing column or can create a new column from the existing columns.
+
+  * To create a new columns, the syntax is `new_column = function(existing_columns)`
+  * To modify an existing column, the syntax is `existing_column = function(existing_columns)`.
+  
+In the examples below, we create a new column `bill_length_in` that manipulates the `bill_length_mm` to converts the units to inches (and then selects the two bill length columns)
+
+```{r}
+mutate(penguins, bill_length_in = bill_length_mm * 0.0393701) %>% select(bill_length_mm, bill_length_in)
+penguins %>% mutate(bill_length_in = bill_length_mm * 0.0393701) %>% select(bill_length_mm, bill_length_in)
+```
+
+To modify an 
+
+
+
+column | `mutate` | changes an existing column or adds a new column
+column | `relocate` | reorders the columns
+
+
+
+
+
+## References
