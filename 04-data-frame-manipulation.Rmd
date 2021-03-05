@@ -56,20 +56,23 @@ Web searches about data frame manipulation will likely bring up references to th
   * You may have a hard time getting help in using the older packages.
 
 ## Tibbles
-When the **dplyr** package interacts with a data frame, it usually produces a "tibble" [@R-tibble]. 
+When the **dplyr** package interacts with a data frame, it usually produces a "tibble". 
 
 * A tibble is supposed to be a "modern re-imagining" of R's standard data frame (referred to as `data.frame` for clarity).
-* A tibble has class `tbl_df`. 
+* A tibble has class `tbl_df`.
+* A tibble is also a `data.frame`, but has different default behaviors.
+* Functions that take a `data.frame` should also take a tibble.
+* Tibbles comes from the **tibble** package [@R-tibble], which is automatically imported by **dplyr**.
 
 ### Differences between a tibble and a `data.frame`
 
 A tibble generally has more restrictive behavior than a `data.frame`.
 
 * Tibbles don't convert input types.
-  * This isn't as big of a deal since the release of R 4.0.0 when the argument `stringsAsFactors` was set to `FALSE` by default.
+  * This isn't as big of a deal since the release of R 4.0.0 when the argument `stringsAsFactors` of the `data.frame` function was set to `FALSE` by default.
 * Tibbles don't allow for partial matching of variable names.
 * Tibbles doesn't add row names to the data frame.
-* A subsetting/extracting part of a tibble always produces a tibble.
+* Subsetting a tibble always produces a tibble.
   * Subsetting a `data.frame` can return a vector, which can create edge-cases that results in a bug in your code!
 * Tibbles do allow for non-valid R variable names, though I wouldn't do this intentionally.
   * A non-valid R variable name has to be surrounded by backticks. 
@@ -81,7 +84,7 @@ A tibble generally has more restrictive behavior than a `data.frame`.
 
 ### Example
 
-Let's compare some of behaviors for a `data.frame` and a tibble. The last few lines of the example below requires the **palmerpenguins** [@R-palmerpenguins] to be installed. Run the following commands in the R Console.
+Let's compare some of behaviors for a `data.frame` and a tibble. The last few lines use the `penguins` data frame from the **palmerpenguins** package [@R-palmerpenguins]. Run the following commands in the R Console.
 ```{r, eval=FALSE}
 # create data.frame
 dtf <- data.frame(numbers = 1:4, letters = letters[1:4], stringsAsFactors = TRUE)
@@ -123,11 +126,11 @@ penguins
 ```
 ### Subsetting/extracting parts of a tibble
 
-The syntax used subset or extract elements from a `data.frame` can be used for tibbles.
+The syntax used to subset or extract elements from a `data.frame` can be used for tibbles.
 
-* As seen above, the result produced by the syntax may differ slightly for a `data.frame` and a tibble.
+* As seen above, the result produced when using the syntax may differ for a `data.frame` and a tibble.
 
-We will discuss this syntax using the `penguins` data set in the **palmerpenguins** package. The `penguins` data set is a tibble. Execute the following commands in the R Console.
+We will examine the behavior of a tibble when attempting to subset or extract its elements. We will use the `penguins` data set in the **palmerpenguins** package, which is a tibble. Execute the following commands in the R Console.
 ```{r, eval=FALSE}
 # check whether the object is a tibble
 is_tibble(penguins)
@@ -161,7 +164,7 @@ Below are some of the most important functions associated with tibbles:
 
 There are several other function associated with tibbles from the **tibble** package, but we don't discuss them here.
 
-Run the following code in the R Console to see the functions mentioned above in practice.
+Run the following code in the R Console to see the results from applying the functions mentioned above.
 ```{r, eval = FALSE}
 tbl1 <- tibble(numbers = 1:3, letters = letters[1:3])
 dtf1 <- data.frame(numbers = 1:3, letters = letters[1:3])
@@ -175,11 +178,11 @@ tbl1
 ```
 ## Using **dplyr**
 
-**dplyr** provides functions for the "verbs" (i.e., actions) related to common data manipulation tasks. The table below summarizes some of the most important functions by the aspect of a data frame it manipulates.
+**dplyr** provides functions for the "verbs" (i.e., actions) related to common data frame manipulation tasks. The table below summarizes some of the most important functions by the aspect of a data frame it manipulates.
 
 aspect | function | purpose
 ---|---|---
-row | `filter` | selects rows based on logical statement
+row | `filter` | selects rows based on a logical statement
 row | `slice` | select rows based on position or other property
 row | `arrange` | reorders the rows based on some property
 row | `group_by` | groups a collection of rows hierarchically based on one or more variables
@@ -197,13 +200,13 @@ The pipe operator, `%>%`, is a popular approach for "piping" an object into the 
 * It is extremely popular in the **tidyverse** for stringing sequences of operations together in a readable way.
 * R version 4.1 will gain a native pipe operator (`|>`) that will be a better choice moving forward.
 
-The pipe operator is best understand through example, as there are special cases that have to be addressed.
+The pipe operator is best understood through example, as there are special cases that have to be considered.
 
 ### Filtering
 
 The `filter` function filters out the rows of a data frame that don't meet the designated criteria.
 
-Let's `filter` the rows of the `penguins` data frame based on whether the `body_mass_g` variable is more than 6000. In the code below, the logical statement `body_mass_g > 6000` indicates which rows of `penguins` to retain. In the first example, we use the `filter` function to directly filter the `penguins` data frame. In the second example, we pipe the `penguins` data frame into the `filter` function and then use the logical statement to filter the rows.
+Let's `filter` the rows of the `penguins` data frame based on whether the `body_mass_g` variable is more than 6000. In the code below, the logical statement `body_mass_g > 6000` indicates the rows of `penguins` to retain. In the first example, we use the `filter` function to directly filter the `penguins` data frame. In the second example, we pipe the `penguins` data frame into the `filter` function and then use the logical statement to filter the rows.
 ```{r}
 filter(penguins, body_mass_g > 6000)
 penguins %>% filter(body_mass_g > 6000)
@@ -211,19 +214,19 @@ penguins %>% filter(body_mass_g > 6000)
 
 ### Slicing
 
-`slice` extracts rows of a data frame by index or with respect to other properties.
+`slice` subsets rows of a data frame by index or with respect to other properties.
 
-In the example below, we use the `slice` function to extract rows 10-12 of `penguins`, first directly, and then using the pipe operator.
+In the example below, we use the `slice` function to subset rows 10-12 of `penguins`, first directly, and then using the pipe operator.
 ```{r}
 slice(penguins, 10:12)
 penguins %>% slice(10:12)
 ```
 
-`slice_head` extract the first `n` rows of a data frame. Conversely, `slice_tail` extracts the last `n` rows of a data frame.
+`slice_head` subsets the first `n` rows of a data frame. Conversely, `slice_tail` subsets the last `n` rows of a data frame.
 
 * This is similar to the `head` and `tail` functions in **base** R.
 
-In the examples below, we extract the first 2 rows, then the last two rows, of the `penguins` data frame.
+In the examples below, we subset the first 2 rows, then the last two rows, of the `penguins` data frame.
 
 ```{r}
 slice_head(penguins, n = 2)
@@ -232,9 +235,9 @@ slice_tail(penguins, n = 2)
 penguins %>% slice_tail(n = 2)
 ```
 
-`slice_max` extracts the `n` rows of a data frame with respect to a specific variable. Conversely, `slice_min` extracts the `n` rows of a data frame with respect to a specific variable.
+`slice_max` subsets the `n` rows of a data frame with the `n` largest values with respect to a specific variable. Conversely, `slice_min` subsets the `n` rows of a data frame with the `n` smallest values with respect to a specific variable.
 
-In the examples below, we extract the rows of the `penguins` data frame with the largest and smallest `bill_lengh_mm` values, respectively. 
+In the examples below, we subset the rows of the `penguins` data frame with the largest and smallest `bill_lengh_mm` values, respectively. 
 
 ```{r}
 slice_max(penguins, bill_length_mm, n = 2)
@@ -271,7 +274,7 @@ penguins %>% arrange(bill_length_mm)
 penguins %>% arrange(desc(bill_length_mm))
 ```
 
-The data could also be arranged within groups. In the code below, we select three rows from each `species` of `penguins` and assign it the name `penguins_slice`. We then  order the rows by of `penguins_slice` by `bill_length_mm` in each group by setting `.by_group` to `TRUE`.
+The data frame can also be arranged within groups. In the code below, we select three rows from each `species` of `penguins` and assign it the name `penguins_slice`. We then  order the rows of `penguins_slice` by `bill_length_mm` in each group by setting `.by_group` to `TRUE`.
 
 ```{r}
 penguins_slice <- penguins %>% group_by(species) %>% slice(1:3)
@@ -292,7 +295,7 @@ In the code below, we group the `penguins` data with respect to `species` and `i
 * `n()` counts the number of observations in each grouping.
 * `na.rm` is need to compute the statistics without them being poisoned by `NA` values.
 
-```{r}
+```{r, tidy = TRUE}
 penguins %>%
   group_by(species, island) %>%
   summarize(mean_bill_length_mm = mean(bill_length_mm, na.rm = TRUE),
@@ -325,7 +328,7 @@ The `rename` function renames the columns of a data frame.
 
 * The syntax is `new_name = old_name`.
 
-In the example below, we rename the `bill_length_mm` column to `bill`.
+In the example below, we rename the `bill_length_mm` column to `bill` and `flipper_length_mm` to `flipper`.
 
 ```{r}
 rename(penguins, bill = bill_length_mm, flipper = flipper_length_mm)
@@ -335,25 +338,233 @@ penguins %>% rename(bill = bill_length_mm, flipper = flipper_length_mm)
 
 The `mutate` function modifies an existing column or can create a new column from the existing columns.
 
-  * To create a new columns, the syntax is `new_column = function(existing_columns)`
+  * To create a new column, the syntax is `new_column = function(existing_columns)`
   * To modify an existing column, the syntax is `existing_column = function(existing_columns)`.
   
-In the examples below, we create a new column `bill_length_in` that manipulates the `bill_length_mm` to converts the units to inches (and then selects the two bill length columns)
+In the example below, we transform `bill_length_mm` into a new variable `bill_length_in` that describes the bill length in inches instead of millimeters (and then selects the two bill length columns)
 
 ```{r}
-mutate(penguins, bill_length_in = bill_length_mm * 0.0393701) %>% select(bill_length_mm, bill_length_in)
-penguins %>% mutate(bill_length_in = bill_length_mm * 0.0393701) %>% select(bill_length_mm, bill_length_in)
+mutate(penguins, bill_length_in = bill_length_mm * 0.0393701) %>% 
+  select(bill_length_mm, bill_length_in)
+penguins %>% 
+  mutate(bill_length_in = bill_length_mm * 0.0393701) %>%
+  select(bill_length_mm, bill_length_in)
 ```
 
-To modify an 
+### Relocating a column
 
+The `relocate` function moves one or more columns.
 
+* By default the column is moved to the front of the data frame.
+* The `.before` and `.after` arguments can be used to specify where the columns should be placed.
 
-column | `mutate` | changes an existing column or adds a new column
-column | `relocate` | reorders the columns
+In the example below, we move the `sex` variable to the front of the data frame.
 
+```{r}
+relocate(penguins, sex)
+penguins %>% relocate(sex)
+```
 
+In the next example, we relocate the `sex` and `year` columns to after the `species` column.
 
+```{r}
+relocate(penguins, sex, year, .after = species)
+penguins %>% relocate(sex, year, .after = species)
+```
+In this example, we move all columns ending in `mm` to before the `island` column.
 
+```{r}
+relocate(penguins, ends_with("mm"), .before = island)
+penguins %>% relocate(ends_with("mm"), .before = island)
+```
+## Tidy data
 
+@r4ds2017 and many others recommend that data scientists organize data frames so that they are "tidy". Tidy data [@r4ds2017; Chapter 12] is structured so that:
+
+1. Each variable is in a single column and no variables share a column.
+2. Each observation is in a single row.
+3. Each data value has its own cell.
+
+These principles are best explained with data sets that are not tidy. The **tidyr** package provides several illustrative data sets (`table1`, `table2`, `table3`, `table4a`, `table4b`, and `table5`) related to tidy data. These data sets provide data about tuberculosis cases for various countries in different years. The variables provided include:
+
+* `country`: the name of the country
+* `year`: the year an observation was observed
+* `cases`: the number of tuberculosis cases observed in the specified year
+* `population`: the population of the country in the specified year
+* `rate`: the rate of disease observed in a country in a specified year (`cases/population`)
+* `1999`, `2000`: values of a variable observed for a country in that year
+
+### Columns
+
+Each variable in a tidy data set should be in a single column and should not be in the same column as another variable.
+
+`table2` in the **tidyr** package violates this rule. We print `table2` below.
+```{r}
+data(table2, package = "tidyr")
+table2
+```
+
+Notice that the `cases` and `population` values are both in the `count` column. The values for `cases` and `population` should be in separate columns.
+
+### Rows
+
+Each observation in a tidy data set should be in its own row. 
+
+Notice that `table2` also violates this principle. e.g., Rows 1 and 2 of `table2` are values for the same observation, Afghanistan in 1999.
+
+### Values
+
+Each value in a tidy data set should have its own cell. This means that you don't combine information about two variables into a single cell. This likely seem like an artificial use case, but non-data scientists are sometimes quite creative in how they enter their data!
+
+`table3` in the **tidyr** package violates this rule. We print `table3` below.
+```{r}
+data(table3, package = "tidyr")
+table3
+```
+
+Notice that the `rate` column is actually `cases/population`. It would not be a problem if this were a number (e.g., 745/19987071=0.0000372). The issue is that the values for `cases` and `population` are combined into a single column.
+
+### Another non-tidy example
+
+Times series data are often stored in a non-tidy way. In that case, the values of a variable are stored in a time-related column (like day or year). Different variables may then be stored across multiple data frames!
+
+`table4a` and `table4b` in the **tidyr** package exhibit this type of non-tidyness. `table4a` provides the `cases` values for each `country` for each `year`. `table4b` provides the same thing for the `population` values.
+
+```{r}
+data(table4a, package = "tidyr")
+data(table4b, package = "tidyr")
+table4a
+table4b
+```
+
+In these two tables, the values for `cases` and `population` are split across multiple columns. Specifically, the `cases` are split across columns by `year` (and similarly for `population`). Additionally, observations are not in a single row since the values of `cases` and `population` for each `country` for each `year` are not in a single row.
+
+### A tidy example
+
+A tidy version of the tuberculosis data is available in `table1`. This data frame satisfies the three requirements of tidy data.
+
+```{r}
+table1
+```
+
+## Using **tidyr**
+
+The main functions in the **tidyr** package are `pivot_wider` and `pivot_longer`.
+
+* `pivot_wider`: spreads a column into multiple columns. The resulting data frame will have fewer rows and more columns (wider).
+* `pivot_longer`: gathers multiple columns into a single column. The resulting data frame will have more rows (longer) and fewer columns.
+
+Tidying complicated data sets may require you to do seemingly odd steps like making a data frame longer and then widening some of the lengthened columns.
+
+### Widening data frames
+
+The `pivot_wider` function increases the number of columns in a data frame but reduces the number of rows. The main arguments of the `pivot_wider` function are:
+
+* `data`: the data frame to pivot
+* `names_from`: the column from which the names of the new columns will be taken
+* `values_from`: the column from which the values of the new columns will be taken
+
+To tidy `table2`, we must widen it. We need to take the new column names from the `type` column and the values from the `count` column.
+
+```{r}
+pivot_wider(table2, names_from = type, values_from = count)
+table2 %>% pivot_wider(names_from = type, values_from = count)
+```
+### Lengthening data frames
+
+The `pivot_taller` function decreases the number of columns in a data frame but increases the number of rows. The main arguments of the `pivot_wider` function are:
+
+* `data`: the data frame to pivot
+* `cols`: the columns from which to gather values
+* `names_to`: the column name for the column that the names of the gathered columns are placed
+* `values_to`: the name of the column to which the values are gathered
+
+To tidy `table4a` and `table4b`, we must lengthen them. For `table4a` the new column name should be `cases`, while for `table4b` it should be `population`. The values for `cases` and `population` will come from the `1999` and `2000` columns. 
+
+To tidy `table4a` and `table4b`, we need to gather the `1999` and `2000` columns into a single column and give them the appropriate variable name.
+
+```{r}
+tbl4a <- pivot_longer(table4a, c(`1999`, `2000`), names_to = "year", values_to = "cases")
+tbl4a
+tbl4b <- table4b %>% pivot_longer(c(`1999`, `2000`), names_to = "year", values_to = "population")
+tbl4b
+```
+
+### Merging/joining data frames
+
+The remaining issue with our `tbl4a` and `tbl4b` data frames are that the information is spread across two data frames with some redundant information. We need to merge or join the two data frames into a single data frame.
+
+The most streamlined solutions for this are to use the `base::merge` or `dplyr::*_join`functions to join the columns of the two data frames `by` their shared columns. By default, the `merge` function determines the identical columns in both data frames and joins the rows horizontally (removing redundant information). Alternatively, you can specify columns `by` which to join the rows.
+
+We illustrate usage of the `merge` function below.
+
+* The `x` and `y` arguments are the data frames we want to merge.
+* The `by` argument indicates the shared columns we want to match the rows by.
+* There are some other fancy arguments you can use if there are matching columns in the data frames that have different names.
+
+Since `merge` is a **base** R function, the result is a `data.frame`.
+
+```{r}
+merge(x = tbl4a, y = tbl4b)
+merge(x = tbl4a, y = tbl4b, by = c("country", "year"))
+```
+
+If we wish to stay within the **tidyverse** ecosystem, we can use one of the `*_join` functions in **dplyr**. These functions include `x`, `y`, and `by` arguments that work identically to those in the `merge` function.
+
+* `left_join` merges the rows of `y` that match the rows of `x` into `x`.
+* `right_join` merges the rows of `x` that match the rows of `y` into `y`.
+* `inner_join` merges the rows of `x` and `y` that are in both data frames.
+* `full_join` merges the rows of `x` and `y` that are in either data frame.
+* See `?dplyr::inner_join` for examples
+
+In this example, since rows of the two data frames match exactly, then any of the joins produce identical results. We will use `full_join`, since anecdotally, it is the most common type of join used.
+
+```{r}
+full_join(tbl4a, tbl4b)
+```
+## Separating and uniting columns
+
+The `rate` column of `table3` included both `cases` and `population`. We want to separate these values.
+
+A column can be separated into multiple columns while retaining the same number of rows using the `separate` function. Important arguments include:
+
+* `data`: the data frame to manipulate
+* `col` the column to separate
+* `into`: the variables to which the column will be separated
+* `sep`: the character or position by which to separate `col`
+* `remove`: a logical value indicating whether `col` will be removed after separation. The default is `TRUE`.
+
+```{r}
+separate(table3, col = rate, into = c("cases", "population"), sep = "/")
+table3 %>% separate(col = rate, into = c("cases", "population"), sep = "/")
+```
+
+`table5` has the opposite problem of `table3`. It has columns `century` and `year` that shouldn't be split.
+
+```{r}
+table5
+```
+
+The `unite` function unites multiple columns of a data frame while retaining the same number of rows. Important arguments include:
+
+* `data`: the data frame to manipulate
+* `col` the name of the new column for the united values
+* `...`: the columns to unite
+* `sep`: the delimiter to separate the values in the columns
+* `remove`: a logical value indicating whether the columns in `...` will be removed after unification. The default is `TRUE`.
+
+We use the `unite` function to unite the `century` and `year` columns of `table5`.
+
+```{r}
+unite(table5, col = "year", "century", "year", sep = "")
+table5 %>% unite(col = "year", "century", "year", sep = "")
+```
+
+For fun, can string together `unite` and `separate` operations to manipulate `table5` into a fully tidy data frame.
+
+```{r}
+table5 %>%
+  unite(col = "year", "century", "year", sep = "") %>% 
+  separate(col = rate, into = c("cases", "population"), sep = "/")
+```
 ## References
