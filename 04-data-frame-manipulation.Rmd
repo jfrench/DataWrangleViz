@@ -1,11 +1,11 @@
 ---
-title: "Joshua French"
+pdf_document: default
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
 output:
-  html_document:
-  df_print: paged
-html_notebook: default
-pdf_document: default
+  html_document: default
+  pdf_document: default
+  html_notebook: default
+title: "Joshua French"
 bibliography:
   - dwv.bib
   - packages_manip.bib
@@ -166,13 +166,22 @@ There are several other function associated with tibbles from the **tibble** pac
 
 Run the following code in the R Console to see the results from applying the functions mentioned above.
 ```{r, eval = FALSE}
+# create a simple tibble
 tbl1 <- tibble(numbers = 1:3, letters = letters[1:3])
+tbl1
+# create a simple data.frame
 dtf1 <- data.frame(numbers = 1:3, letters = letters[1:3])
+dtf1
+# convert the data.frame to a tibble
 tbl2 <- as_tibble(dtf1)
-all.equal(tbl1, tbl2)
+# check that the objects are 
+identical(tbl1, tbl2)
+# confirm that tbl2 is a tibble
 is_tibble(tbl2)
+# add a row to the tibble
 tbl1 <- add_row(tbl1, numbers = 4:5, letters = letters[4:5])
 tbl1
+# add a column to the tibble
 tbl1 <- add_column(tbl1, cats = factor(rep(c("g1", "g2"), times = c(2, 3))), .after = "numbers")
 tbl1
 ```
@@ -208,6 +217,9 @@ The `filter` function filters out the rows of a data frame that don't meet the d
 
 Let's `filter` the rows of the `penguins` data frame based on whether the `body_mass_g` variable is more than 6000. In the code below, the logical statement `body_mass_g > 6000` indicates the rows of `penguins` to retain. In the first example, we use the `filter` function to directly filter the `penguins` data frame. In the second example, we pipe the `penguins` data frame into the `filter` function and then use the logical statement to filter the rows.
 ```{r}
+penguins[penguins$body_mass_g > 6000,]
+penguins[penguins$body_mass_g > 6000 &
+           !is.na(penguins$body_mass_g),]
 filter(penguins, body_mass_g > 6000)
 penguins %>% filter(body_mass_g > 6000)
 ```
@@ -218,6 +230,7 @@ penguins %>% filter(body_mass_g > 6000)
 
 In the example below, we use the `slice` function to subset rows 10-12 of `penguins`, first directly, and then using the pipe operator.
 ```{r}
+penguins[10:12, ]
 slice(penguins, 10:12)
 penguins %>% slice(10:12)
 ```
@@ -285,7 +298,7 @@ arrange(penguins_slice, bill_length_mm, .by_group = TRUE)
 
 The `group_by` function groups rows of a data frame with respect to one or more variables, which can then be manipulated in various ways. 
 
-`group_by` is often used in close connection to the `summarize` function, which computes (summarizes) the (grouped) rows into a single value.
+`group_by` is often used in close connection to the `summarize` function, which computes statistical summaries for (grouped) rows into a single value.
 
 Since we now want to string several operation in a row, the pipe operator is useful for stringing the commands together.
 
@@ -331,6 +344,10 @@ The `rename` function renames the columns of a data frame.
 In the example below, we rename the `bill_length_mm` column to `bill` and `flipper_length_mm` to `flipper`.
 
 ```{r}
+# renaming columns using base R
+names(penguins)
+# names(penguins)[c(3, 5)] <- c("bill", "flipper")
+# renaming columns using dplyr
 rename(penguins, bill = bill_length_mm, flipper = flipper_length_mm)
 penguins %>% rename(bill = bill_length_mm, flipper = flipper_length_mm)
 ```
