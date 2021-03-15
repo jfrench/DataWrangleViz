@@ -471,7 +471,13 @@ The main functions in the **tidyr** package are `pivot_wider` and `pivot_longer`
 * `pivot_wider`: spreads a column into multiple columns. The resulting data frame will have fewer rows and more columns (wider).
 * `pivot_longer`: gathers multiple columns into a single column. The resulting data frame will have more rows (longer) and fewer columns.
 
-Tidying complicated data sets may require you to do seemingly odd steps like making a data frame longer and then widening some of the lengthened columns.
+Tidying complicated data sets may require you to do seemingly odd steps like making a data frame longer and then widening some of the lengthened columns. Here are some tips for tidying a data frame:
+
+1. Identify the ways in which your data are not tidy.
+2. Identify a single aspect of the data that you want to make tidy (or at least closer to being tidy).
+3. Tidy that single aspect of the data.
+4. Repeat steps 2 and 3 until the data are tidy
+5. If desired, combine the many tidying steps into a single command using the pipe operator.
 
 ### Widening data frames
 
@@ -484,12 +490,13 @@ The `pivot_wider` function increases the number of columns in a data frame but r
 To tidy `table2`, we must widen it. We need to take the new column names from the `type` column and the values from the `count` column.
 
 ```{r}
+table2
 pivot_wider(table2, names_from = type, values_from = count)
 table2 %>% pivot_wider(names_from = type, values_from = count)
 ```
 ### Lengthening data frames
 
-The `pivot_taller` function decreases the number of columns in a data frame but increases the number of rows. The main arguments of the `pivot_wider` function are:
+The `pivot_longer` function decreases the number of columns in a data frame but increases the number of rows. The main arguments of the `pivot_longer` function are:
 
 * `data`: the data frame to pivot
 * `cols`: the columns from which to gather values
@@ -501,8 +508,10 @@ To tidy `table4a` and `table4b`, we must lengthen them. For `table4a` the new co
 To tidy `table4a` and `table4b`, we need to gather the `1999` and `2000` columns into a single column and give them the appropriate variable name.
 
 ```{r}
+table4a
 tbl4a <- pivot_longer(table4a, c(`1999`, `2000`), names_to = "year", values_to = "cases")
 tbl4a
+table4b
 tbl4b <- table4b %>% pivot_longer(c(`1999`, `2000`), names_to = "year", values_to = "population")
 tbl4b
 ```
@@ -547,11 +556,12 @@ A column can be separated into multiple columns while retaining the same number 
 
 * `data`: the data frame to manipulate
 * `col` the column to separate
-* `into`: the variables to which the column will be separated
+* `into`: the names of the variables into which the column will be separated
 * `sep`: the character or position by which to separate `col`
 * `remove`: a logical value indicating whether `col` will be removed after separation. The default is `TRUE`.
 
 ```{r}
+table3
 separate(table3, col = rate, into = c("cases", "population"), sep = "/")
 table3 %>% separate(col = rate, into = c("cases", "population"), sep = "/")
 ```
