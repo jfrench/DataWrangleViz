@@ -76,8 +76,9 @@ A tibble generally has more restrictive behavior than a `data.frame`.
   * Subsetting a `data.frame` can return a vector, which can create edge-cases that results in a bug in your code!
 * Tibbles do allow for non-valid R variable names, though I wouldn't do this intentionally.
   * A non-valid R variable name has to be surrounded by backticks. 
-* A variables used to create a tibble must have the same length.
-  * Unlike a `data.frame`, tibbles don't "recycle" the values of a vector when creating a data frame.
+* Variables used to create a tibble must (generally) have the same length.
+  * Unlike a `data.frame`, tibbles don't generally "recycle" the values of a vector when creating a data frame.
+  * Tibbles only recycle vectors of length 1, i.e., it will recycle a vector of length 1 so that the new variable has length matching the other variables.
 * The printing capabilities of a tibble are designed to be better than a `data.frame`. 
   * The user can directly specify the number of rows to print for a tibble.
   * Tibbles only print the number of columns that can fit horizontally in the Console.
@@ -112,8 +113,11 @@ tbl$letters
 tbl[,c("letters")]
 # subset single column of tbl still a tibble!
 is_tibble(tbl[,c("letters")])
-# add a new column to tbl
+# add a new column to tbl of wrong length (not OK)
 tbl$newv <- 1:2
+# add a new column by recyclying a single value (OK)
+tbl$newv <- 1
+# add a new column with the same length as other columns (OK)
 tbl$newv <- rep(1:2, times = 2)
 # print tbl
 tbl
