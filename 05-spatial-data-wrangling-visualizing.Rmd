@@ -1,0 +1,198 @@
+---
+pdf_document: default
+date: "`r format(Sys.time(), '%Y-%m-%d')`"
+output:
+  html_document: default
+  pdf_document: default
+  html_notebook: default
+title: "Joshua French"
+bibliography:
+  - dwv.bib
+  - packages_manip.bib
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  tidy = TRUE
+)
+knitr::write_bib(c("dplyr", "tibble", "tidyr", "palmerpenguins", "magrittr", "data.table", "reshape", "reshape2", "dbplyr", "dtplyr", "sf", "sp"), file = "packages_manip.bib")
+
+```
+
+# Spatial data wrangling and visualization in R
+
+Spatial data can take many forms. For a data scientist, spatial data often refers
+to data for which each observation is associated with a geographic region or location.
+
+One should distinguish between:
+1. the geographic object (e.g., a point, a polygon, a line) 
+2. the attribute data associated with that feature (e.g., the temperature at a certain time on a certain day, the number of new cases of a disease in a county in the last month).
+
+> *Simple Features* (officially *Simple Feature Access*) is a set of standards that specify a common storage and access model of geographic feature made of mostly two-dimensional geometries (point, line, polygon, multi-point, multi-line, etc.) used by geographic information systems. It is formalized by both the Open Geospatial Consortium (OGC) and the International Organization for Standardization (ISO). [Wikipedia](https://en.wikipedia.org/wiki/Simple_Features)
+
+The **sf** package [@R-sf] is an R package for working with simple features and data associated with the features.
+
+* It is intended to supersede the **sp** package [@R-sp], which is an older R package for working with spatial data.
+* Since the **sp** package is being superseded by the **sf** package, I recommend working with the **sf** package for spatial data analysis moving forward.
+
+## Simple features
+
+As stated in the vignette to the **sf** package:
+
+> Features have a geometry describing where on Earth the feature is located, and they have attributes, which describe other properties. The geometry of a tree can be the delineation of its crown, of its stem, or the point indicating its centre. Other properties may include its height, color, diameter at breast height at a particular date, and so on.
+
+Just to clarify:
+
+* The *geometry* of an observation describes where the object is located.
+  * A geometry can be a point, a polygon (which is really just an ordered collection of points), or something more complicated.
+* The *attributes* of a geometry object are what data scientists would usually consider the "data".
+
+All geometries are made of points, which can be combined to create more and more complex objects.
+
+A point can be 2-, 3-, or 4-dimensional.
+
+The most common kinds of points are two-dimensional and are described using a 2-dimensional set of coordinates (X and Y), e.g., longitude and latitude or easting and northing.
+  
+  * 2-dimensional points are referred to as XY points.
+  
+A 3-dimensional point could include the X and Y coordinates as well as the altitude of the 2-dimensional point in 3-dimensional space.
+  
+  * The Z coordinate is another dimension denoting altitude of the point.
+  * Combining a Z coordinate with an XY coordinate results in a 3-dimensional XYZ point.
+  
+Alternatively, a 3-dimensional point could include some other measure associated with the point.
+  
+  * The M coordinate is another dimension denoting some measure associated with the point.
+  * It's pretty rare, but examples include time or measurement error.
+  * Combining an M coordinate with an XY coordinate results in a 3-dimensional XYM point.
+  
+Combining X, Y, Z, and M coordinates results in a 4-dimensional point.
+
+## Creating geometry objects
+The most common geometry objects used by data scientists are:
+
+geometry | function | description
+--- | --- | ---
+`POINT` |	`sf::st_point` | A geometry containing a single point
+`POLYGON` |	`sf::st_polygon` | A geometry with a sequence of points that form a closed ring that doesn't intersect itself. Multiple rings form outer rings and holes within the polygon.
+
+```{r}
+library(sf)
+# create an XY point
+(p1 = st_point(c(1,2)))
+# create an XYZ point
+(p2 = st_point(c(1,2,3)))
+# the points look the same when plotted in two dimensions
+plot(p1)
+plot(p2)
+# create a ring (connected set of points)
+outer <- matrix(c(0, 0, 10, 0, 10, 10, 0, 10, 0, 0), ncol = 2, byrow = TRUE)
+# create additional rings for holes
+hole1 <- matrix(c(1, 1, 1, 2, 2, 2, 2, 1, 1, 1), ncol = 2, byrow = TRUE)
+hole2 <- matrix(c(5, 5, 5, 6, 6, 6, 6, 5, 5, 5), ncol = 2, byrow = TRUE)
+# combine rings into a list
+pts <- list(outer, hole1, hole2)
+# turn list of rings into a polygon
+(pl1 <- st_polygon(pts))
+# plot polygon
+plot(pl1)
+```
+
+The other common geometry objects are:
+
+geometry | function | description
+--- | --- | ---
+`LINESTRING` |	`sf::st_linestring` | A sequence of points that is connected with straight, non-self intersecting lines
+`MULTIPOINT` |	`sf::st_multipoint` | A set of points
+`MULTIPOLYGON` |	`sf::st_multipolygon` | A set of polygons
+`MULTILINESTRING` |	`sf::st_multipoint` | A set of line strings
+`GEOMETRYCOLLECTION` |	`sf::st_geometrycollection` | A set of the other geometries (except itself)
+
+```{r}
+pts = matrix(rnorm(10), ncol = 2)
+
+(ls1 = st_linestring(pts))
+plot(ls1)
+
+(mp1 = st_multipoint(pts))
+plot(mp1)
+
+
+# create multipolygon
+pol1 = list(outer, hole1, hole2)
+pol2 = list(outer + 24)
+mp = list(pol1, pol2)
+(mpl1 = st_multipolygon(mp))
+plot(mpl1, axes = TRUE)
+
+# create a multilinestring
+pts2 = matrix(rnorm(6), ncol = 2)
+(ml1 = st_multilinestring(list(pts, pts2)))
+plot(ml1)
+
+# create a geometry collection
+(gc = st_geometrycollection(list(p1, pl1, ls1)))
+plot(gc, col = "grey")
+```
+
+## Coordinate reference systems
+
+A coordinate reference system (CRS) must be provided in order to place a point on the earth's surface.
+
+When your read a geometry object from file, the CRS will often be provided.
+
+* The WGS84 CRS is often the default for longitude/latitude coordinates.
+
+Sometimes, in order to combine geometry objects, you must specify the CRS of a geometry object.
+
+There are many CRSs. A CRS is often used because it is known to have a certain desirable property. A discussion of CRSs is beyond the scope of this tutorial. And when you do need to know about CRSs, it will probably be so specific that a general discussion won't help. However, here are a few references related to CRSs that may provide a bit more detail: [QGIS CRSs](https://docs.qgis.org/3.16/en/docs/gentle_gis_introduction/coordinate_reference_systems.html), [Introduction to CRSs](https://bookdown.org/tep/gisbooklet/introduction-to-coordinate-reference-systems.html)
+
+## `sf` objects
+
+An `sf` object is a `data.frame` that has a simple feature list column (i.e., a column of `geometry` objects). So you can work with `sf` objects similar to how you would work with a `data.frame` object, though it will have different behavior because it was been extended to an `sf` object.
+
+## Importing shapefiles
+
+A data scientist is most likely to work with `sf` objects obtained from importing a shapefile into R. 
+
+ArcGIS defines a shapefile as:
+
+> A shapefile is a simple, nontopological format for storing the geometric location and attribute information of geographic features. Geographic features in a shapefile can be represented by points, lines, or polygons (areas). [What is a shapefile?](https://desktop.arcgis.com/en/arcmap/10.3/manage-data/shapefiles/what-is-a-shapefile.htm)
+
+Generally, a shapefile can be imported into R as an `sf` object.
+  
+  * Each row is an observation related to a `geometry` object.
+  * Most of the columns will represent a different attribute of the `geometry` object.
+  * There will be a `geometry` column that contains the `geometry` object for each observation.
+  
+Shapefiles are widely available for describing many different spatial objects like counties, census tracts, zip code tabulation areas (ZCTAs), states, countries, etc. There are even shapefiles that can be used to describe other spatial objects like roads, rivers, lakes, etc.
+
+  * A simple web search with appropriate terms will usually bring up a website with a relevant shapefile for your data.
+  * e.g., search "usa shapefile" brings up a [Census bureau page](https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html) with many different shapefiles for different areas and characteristics of the United States. 
+  * A "shapefile" is often a zipped folder that contains many files inside it.
+  * The `.shp` file is usually the file you want to import.
+  
+We can import that shapefile into R as an `sf` object using the `st_read` function.
+  * Typically, we want to provide the `shp` file to the `dsn` argument (data source name) of `st_read`.
+
+In this case, I have downloaded the `cb_2018_us_state_20m.zip` containing a shapefile of the U.S. states. I have unzipped this file into the `cb_2018_us_state_20m` folder in the `data` folder in current working directory.
+
+  * The current working directory is location to which  R automatically reads or saves files.
+  * The can learn what your current working directory by running `getwd()` in the Console.
+  * You can change your current working directory by running `setwd(path)` in the Console, where `path` is the directory you want to set as your working directory.
+  
+In our case, we want to read the file `cb_2018_us_state_20m.shp` in the `cb_2018_us_state_20m` folder in the `data` folder of our current working directory. We can run the following command to import the desired shapefile.
+  * "`./`" indicates the current directory.
+  * The `file` argument "`./data/cb_2018_us_state_20m/cb_2018_us_state_20m.shp` tells R to look for the `cb_state_20m.shp` file in the file path `./data/cb_state_2018_us_state_20m`.
+
+```{r}
+us_sf <- st_read(dsn = "./data/cb_2018_us_state_20m/cb_2018_us_state_20m.shp")
+```
+
+We use the `class` function
+```{r}
+class(us_sf)
+str(us_sf)
+```
+
+## References
