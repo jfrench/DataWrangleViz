@@ -19,7 +19,7 @@ knitr::write_bib(c("dplyr", "tibble", "tidyr", "palmerpenguins", "magrittr", "da
 
 ```
 
-# Spatial data wrangling and visualization in R
+# Wrangling and visualizing simple features spatial data in R
 
 Spatial data can take many forms.
 
@@ -65,19 +65,31 @@ Alternatively, a 3-dimensional point could include some other measure associated
   
 Combining X, Y, Z, and M coordinates results in a 4-dimensional point.
 
-## Packages for working with simple features
+## Packages and tools for working with simple features
 
-In what follows, we will use many packages.
+In what follows, we will use several packages.
 
-* The **sf** package [@R-sf] is an R package for working with simple features (`sf` objects) (both in terms of the geometry objects and the associated attributes).
-  * The **sf** package will be used to import, manipulate, and plot `sf` objects.
+* The **sf** package [@R-sf] is an R package for working with simple features (`sf` objects) both in terms of the geometry objects and the associated attributes.
+  * The **sf** package can import, manipulate, and plot `sf` objects.
   * The **sf** package is intended to supersede the **sp** package [@R-sp], which is an older R package for working with spatial data.
   * Since the **sp** package is being superseded by the **sf** package, I recommend working with the **sf** package for spatial data analysis moving forward.
-* The **dplyr** [@R-dplyr] package can be used to manipulate `sf` objects, and we will utilize it as certain times.
-* The **ggplot2** [@ggplot22016] package can also be used to plot `sf` objects, which we will demonstrate. 
-* The **colorspace** [@R-colorspace] package is useful for accessing color palettes optimized for display our data.
+  
+Because of how `sf` objects are represented in R, simple features (once constructed or imported) can be manipulated and plotted by many other well-known packages.
 
-We load all of these packages below, with the exception of **colorspace**, as it can has a `coords` function that *masks* (i.e., replaces) a needed function in the **sf** package. So we will access the necessary **colorspace** function using the `::` approach.
+* The **dplyr** package [@R-dplyr] can be used to manipulate `sf` objects, and we will utilize it as certain times.
+* The **ggplot2** package [@ggplot22016] can also be used to plot `sf` objects, which we will demonstrate.
+
+Choosing a color palette to represent the attributes of your simple features is very important.
+
+* The **grDevices** package included with **base** R provides  many color palettes.
+  * The traditional palettes are `rainbow`, `heat.colors`, `terrain.colors`, `topo.colors`, and `cm.colors`.
+  * The `hcl.colors` palette function was added in R 4.0.0 and provides numerous excellent color palettes.
+  * Running the Examples in the documentation found in `?grDevices::hcl.colors` will show you examples of the available palettes through **grDevices**.
+  * We provide color swatches for many palettes at the end of this tutorial (without the code).
+
+* The **colorspace** package [@R-colorspace] provides many of the same HCL palettes available through the `hcl.colors` palette, but it also provides convenient functions for accessing this in **ggplot2**. 
+
+We load all of these packages below, with the exception of **colorspace**, as it has a `coords` function that *masks* (i.e., replaces) a needed function in the **sf** package. So we will access the necessary **colorspace** function using the `::` approach.
 
 ```{r}
 # library(colorspace)
@@ -86,13 +98,15 @@ library(dplyr)
 library(ggplot2)
 ```
 
-## Creating geometry objects
-The most common geometry objects used by data scientists are:
+## Simple feature geometry objects
+The most common simple feature geometry objects used by data scientists are:
 
 geometry | function | description
 --- | --- | ---
 `POINT` |	`sf::st_point` | A geometry containing a single point
 `POLYGON` |	`sf::st_polygon` | A geometry with a sequence of points that form a closed ring that doesn't intersect itself. Multiple rings form outer rings and holes within the polygon.
+
+We go through the process of creating and plotting these geometries below.
 
 ```{r}
 # create an XY point
@@ -125,48 +139,113 @@ geometry | function | description
 `MULTILINESTRING` |	`sf::st_multipoint` | A set of line strings
 `GEOMETRYCOLLECTION` |	`sf::st_geometrycollection` | A set of the other geometries (except itself)
 
+We provide examples of creating and plotting these geometries below.
 ```{r}
-pts = matrix(rnorm(10), ncol = 2)
-
-(ls1 = st_linestring(pts))
+# create a matrix of multiple points
+(pts <- matrix(rnorm(10), ncol = 2))
+# convert matrix of points to linestring
+(ls1 <- st_linestring(pts))
 plot(ls1)
-
-(mp1 = st_multipoint(pts))
+# convert matrix fo points to multipoints
+(mp1 <- st_multipoint(pts))
 plot(mp1)
-
-
-# create multipolygon
-pol1 = list(outer, hole1, hole2)
-pol2 = list(outer + 24)
-mp = list(pol1, pol2)
-(mpl1 = st_multipolygon(mp))
+# create multipolygons
+pol1 <- list(outer, hole1, hole2)
+pol2 <- list(outer + 24)
+mp <- list(pol1, pol2)
+(mpl1 <- st_multipolygon(mp))
 plot(mpl1, axes = TRUE)
-
 # create a multilinestring
-pts2 = matrix(rnorm(6), ncol = 2)
-(ml1 = st_multilinestring(list(pts, pts2)))
+(pts2 <- matrix(rnorm(6), ncol = 2))
+(ml1 <- st_multilinestring(list(pts, pts2)))
 plot(ml1)
-
 # create a geometry collection
-(gc = st_geometrycollection(list(p1, pl1, ls1)))
+(gc <- st_geometrycollection(list(p1, pl1, ls1)))
 plot(gc, col = "grey")
 ```
+
+How do I need what type of geometry I need?
+
+* Often, this is determined automatically when you read in shapefiles (which we'll discuss later).
+* Attributes observed at a single location require a `POINT`.
+* Most regions can be represented by a `POLYGON`.
+* Complicated objects made of regions, e.g., an island chain like Hawaii, require `MULTIPOLYGONS`.
+* The other types are for more complicated objects.
+* There are 10 other rarer geometry types that we do not discuss (`CIRCULARSTRING`, `CURVE`, `SURFACE`, `TRIANGLE`, `COMPOUNDCURVE`, `CURVEPOLYGON`, `MULTICURVE`, `MULTISURFACE`, `POLYHEDRALSURFACE`, `TIN`). You can learn about them through the additional resources provided at the end of this document.
 
 ## Coordinate reference systems
 
 A coordinate reference system (CRS) must be provided in order to place a point on the earth's surface.
 
-When your read a geometry object from file, the CRS will often be provided.
+When your import a geometry object from file, the CRS will often be provided.
 
 * The WGS84 CRS is often the default for longitude/latitude coordinates.
 
 Sometimes, in order to combine geometry objects, you must specify the CRS of a geometry object.
 
-There are many CRSs. A CRS is often used because it is known to have a certain desirable property. A discussion of CRSs is beyond the scope of this tutorial. And when you do need to know about CRSs, it will probably be so specific that a general discussion won't help. However, here are a few references related to CRSs that may provide a bit more detail: [QGIS CRSs](https://docs.qgis.org/3.16/en/docs/gentle_gis_introduction/coordinate_reference_systems.html), [Introduction to CRSs](https://bookdown.org/tep/gisbooklet/introduction-to-coordinate-reference-systems.html)
+There are many CRSs. A CRS is often used because it is known to have a certain desirable property. A discussion of CRSs is beyond the scope of this tutorial. And when you do need to know about CRSs, it will probably be so specific that a general discussion won't help. However, here are a few references related to CRSs that may provide a bit more detail:
+
+* [QGIS CRSs](https://docs.qgis.org/3.16/en/docs/gentle_gis_introduction/coordinate_reference_systems.html)
+* [Introduction to CRSs](https://bookdown.org/tep/gisbooklet/introduction-to-coordinate-reference-systems.html)
 
 ## `sf` objects
 
-An `sf` object is a `data.frame` that has a simple feature list column (i.e., a column of `geometry` objects). So you can work with `sf` objects similar to how you would work with a `data.frame` object, though it will have different behavior because it was been extended to an `sf` object.
+An `sf` object is a `data.frame` that has a simple feature geometry list column (i.e., a column of geometry objects). So you can work with `sf` objects similar to how you would work with a `data.frame` object, though it may have different default behaviors because it has been extended to an `sf` object.
+
+* The geometry-list column contains the geometry object for each observation.
+* The other columns of the `sf` object contain the attributes of the geometry object.
+* Each row of the `sf` object is a simple feature. Alternatively, each observation is a simple feature. 
+
+In practice, `sf` objects are often initially created by reading in a shapefile. However, particularly for `POINT` observations, you may need to create an `sf` object manually.
+
+In what follows, we create `sf` objects for `POINT` geometry objects and `POLYGON` geometry objects.
+
+* We can use the same previously discussed functions (e.g., `sf::st_point`, `sf::st_polygon`, etc.) to create the geometry objects. 
+* The `sf::st_sfc` function is used to create a geometry list column.
+* The `sf::st_sf` function is used to combined a `data.frame` of attributes with the geometry list column.
+
+```{r}
+# create POINT objects
+pt1 <- st_point(c(0, 0))
+pt2 <- st_point(c(0, 1))
+pt3 <- st_point(c(1, 1))
+# create geometry list column
+glc1 <- st_sfc(list(pt1, pt2, pt3))
+# is glc1 a list?
+is.list(glc1)
+# what class is glc1
+class(glc1)
+# create attribute data.frame with temperature and rainfall attributes
+df1 <- data.frame(temperature = c(10, 11, 10.4), rainfall = c(1, 1.3, 0.9))
+# create sf object
+sf1 <- st_sf(df1, geometry = glc1)
+# plot sf1
+plot(sf1["temperature"], pch = 20, axes = TRUE)
+# create polygon objects
+outer1 <- matrix(c(0, 0, 1, 1, 0, 0, 1, 1, 0, 0), ncol = 2)
+pl1 <- st_polygon(list(outer1))
+# outer2 is outer1 shifted 1 unit to the right
+outer2 <- matrix(c(1, 1, 2, 2, 1, 0, 1, 1, 0, 0), ncol = 2)
+pl2 <- st_polygon(list(outer2))
+# create geometry list columns
+glc2 <- st_sfc(list(pl1, pl2))
+# what class is glc2
+class(glc2)
+# create second sf object (only include an attribute column and geometry)
+sf2 <- st_sf(cases = c(10, 12), geometry = glc2)
+# plot sf2
+plot(sf2)
+# what happens if you combine geometry types?
+glc3 <- st_sfc(list(pt1, pt2, pt3, pl1, pl2))
+# what class is glc3
+class(glc3)
+# create sf3
+sf3 <- st_sf(attribute1 = rnorm(5), geometry = glc3)
+# plot sf3
+plot(sf3, pch = 20, pal = topo.colors)
+# plot sf3 with even breaks
+plot(sf3, pch = 20, pal = topo.colors, breaks = seq(min(sf3$attribute1), max(sf3$attribute1), length = 12))
+```
 
 ## Importing shapefiles
 
@@ -467,7 +546,76 @@ ggplot(covid_us) + geom_sf(aes(fill = death_rate_100k))
 ```
 
 ```{r}
-ggplot(covid_us) + geom_sf(aes(fill = death_rate_100k)) + colorspace::scale_fill_continuous_sequential(palette = "viridis")
+ggplot(covid_us) + geom_sf(aes(fill = death_rate_100k)) +
+  colorspace::scale_fill_continuous_sequential(palette = "viridis")
+```
+
+## Additional resources
+
+**sf** help and tutorials from the package authors [https://r-spatial.github.io/sf/]
+
+*Geocomputation with R* by Robin Lovelace [https://bookdown.org/robinlovelace/geocompr/]. This book covers tons of aspect of spatial data (not just from an R perspective, but general theory and concepts). This will help you to learn a lot more about representing and working with spatial data in general, not just working with it in R.
+
+*Spatial Data Science with applications in R* by Edzer Pebesma and Roger Bivand [https://keen-swartz-3146c4.netlify.app/]. Also covers much much about representing spatial data than you probably ever thought possible! The authors are the main creators of the **sf** package.
+
+## Color palettes available with **base R**
+
+```{r, echo = FALSE}
+require("graphics")
+
+par(mfrow = c(1, 1))
+
+## color swatches for RGB/HSV palettes
+demo.pal <-
+  function(n, border = if (n < 32) "light gray" else NA,
+           main = paste("color palettes;  n=", n),
+           ch.col = c("rainbow(n, start=.7, end=.1)", 
+                      "heat.colors(n)",
+                      "terrain.colors(n)", "topo.colors(n)",
+                      "cm.colors(n)")) {
+    nt <- length(ch.col)
+    i <- 1:n; j <- n / nt; d <- j/6; dy <- 2*d
+    plot(i, i+d, type = "n", yaxt = "n", ylab = "", main = main)
+    for (k in 1:nt) {
+        rect(i-.5, (k-1)*j+ dy, i+.4, k*j,
+             col = eval(str2lang(ch.col[k])), border = border)
+        text(2*j,  k * j + dy/4, ch.col[k])
+    }
+}
+demo.pal(16)
+
+## color swatches for HCL palettes
+hcl.swatch <- function(type = NULL, n = 5, nrow = 4,
+  border = if (n < 15) "black" else NA) {
+    palette <- hcl.pals(type)
+    cols <- sapply(palette, hcl.colors, n = n)
+    ncol <- ncol(cols)
+    nswatch <- min(ncol, nrow)
+
+    par(mar = rep(0.1, 4),
+        mfrow = c(1, min(5, ceiling(ncol/nrow))),
+        pin = c(1, 0.5 * nswatch),
+        cex = 0.7)
+
+    while (length(palette)) {
+        subset <- 1:min(nrow, ncol(cols))
+        plot.new()
+        plot.window(c(0, n), c(0, nrow + 1))
+        text(0, rev(subset) + 0.1, palette[subset], adj = c(0, 0))
+        y <- rep(subset, each = n)
+        rect(rep(0:(n-1), n), rev(y), rep(1:n, n), rev(y) - 0.5,
+             col = cols[, subset], border = border)
+        palette <- palette[-subset]
+        cols <- cols[, -subset, drop = FALSE]
+    }
+
+    par(mfrow = c(1, 1), mar = c(5.1, 4.1, 4.1, 2.1), cex = 1)
+}
+
+hcl.swatch("qualitative")
+hcl.swatch("sequential")
+hcl.swatch("diverging")
+hcl.swatch("divergingx")
 ```
 
 ## References
