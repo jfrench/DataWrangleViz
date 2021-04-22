@@ -2,8 +2,8 @@
 pdf_document: default
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
   html_notebook: default
 title: "Joshua French"
 bibliography:
@@ -15,8 +15,8 @@ bibliography:
 knitr::opts_chunk$set(
   tidy = TRUE
 )
-knitr::write_bib(c("dplyr", "tibble", "tidyr", "palmerpenguins", "magrittr", "data.table", "reshape", "reshape2", "dbplyr", "dtplyr", "sf", "sp", "colorspace"), file = "packages_manip.bib")
-
+knitr::write_bib(c("dplyr", "tibble", "tidyr", "palmerpenguins", "magrittr", "data.table", "reshape", "reshape2", "dbplyr", "dtplyr", "sf", "sp", "colorspace", "remote", "viridis"), file = "packages_manip.bib")
+set.seed(10403)
 ```
 
 # Wrangling and visualizing simple features spatial data in R
@@ -188,7 +188,7 @@ There are many CRSs. A CRS is often used because it is known to have a certain d
 * [QGIS CRSs](https://docs.qgis.org/3.16/en/docs/gentle_gis_introduction/coordinate_reference_systems.html)
 * [Introduction to CRSs](https://bookdown.org/tep/gisbooklet/introduction-to-coordinate-reference-systems.html)
 
-## `sf` objects
+## Constructing simple feature (`sf`) objects
 
 An `sf` object is a `data.frame` that has a simple feature geometry list column (i.e., a column of geometry objects). So you can work with `sf` objects similar to how you would work with a `data.frame` object, though it may have different default behaviors because it has been extended to an `sf` object.
 
@@ -219,6 +219,8 @@ class(glc1)
 df1 <- data.frame(temperature = c(10, 11, 10.4), rainfall = c(1, 1.3, 0.9))
 # create sf object
 sf1 <- st_sf(df1, geometry = glc1)
+# class of sf1
+class(sf1)
 # plot sf1
 plot(sf1["temperature"], pch = 20, axes = TRUE)
 # create polygon objects
@@ -233,6 +235,8 @@ glc2 <- st_sfc(list(pl1, pl2))
 class(glc2)
 # create second sf object (only include an attribute column and geometry)
 sf2 <- st_sf(cases = c(10, 12), geometry = glc2)
+# class of sf2
+class(sf2)
 # plot sf2
 plot(sf2)
 # what happens if you combine geometry types?
@@ -241,13 +245,15 @@ glc3 <- st_sfc(list(pt1, pt2, pt3, pl1, pl2))
 class(glc3)
 # create sf3
 sf3 <- st_sf(attribute1 = rnorm(5), geometry = glc3)
+# class of sf3
+class(sf3)
 # plot sf3
 plot(sf3, pch = 20, pal = topo.colors)
 # plot sf3 with even breaks
 plot(sf3, pch = 20, pal = topo.colors, breaks = seq(min(sf3$attribute1), max(sf3$attribute1), length = 12))
 ```
 
-## Importing shapefiles
+## Importing shapefiles as `sf` objects
 
 A data scientist is most likely to work with `sf` objects obtained from importing a shapefile into R. 
 
@@ -257,31 +263,33 @@ ArcGIS defines a shapefile as:
 
 Generally, a shapefile can be imported into R as an `sf` object.
   
-  * Each row is an observation related to a `geometry` object.
-  * Most of the columns will represent a different attribute of the `geometry` object.
-  * There will be a `geometry` column that contains the `geometry` object for each observation.
+* Each row is an observation related to a geometry object.
+* There should be a `geometry` column that contains the geometry object for each observation (this is the geometry list column).
+* The other columns will represent the attributes associated with each geometry object.
   
 Shapefiles are widely available for describing many different spatial objects like counties, census tracts, zip code tabulation areas (ZCTAs), states, countries, etc. There are even shapefiles that can be used to describe other spatial objects like roads, rivers, lakes, etc.
 
-  * A simple web search with appropriate terms will usually bring up a website with a relevant shapefile for your data.
-  * e.g., search "usa shapefile" brings up a [Census bureau page](https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html) with many different shapefiles for different areas and characteristics of the United States. 
-  * A "shapefile" is often a zipped folder that contains many files inside it.
-  * The `.shp` file is usually the file you want to import.
+* A simple web search with appropriate terms will usually bring up a website with a relevant shapefile for your data.
+* e.g., search "usa shapefile" brings up a [Census bureau page](https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html) with many different shapefiles for different areas and characteristics of the United States. 
+* A "shapefile" is often a zipped folder that contains many files inside it.
+* The `.shp` file is usually the file you want to import.
   
 We can import that shapefile into R as an `sf` object using the `st_read` function.
-  * Typically, we want to provide the `shp` file to the `dsn` argument (data source name) of `st_read`.
 
-In this case, I have downloaded the `cb_2018_us_state_20m.zip` containing a shapefile of the U.S. states. I have unzipped this file into the `cb_2018_us_state_20m` folder in the `data` folder in current working directory.
+* Typically, we want to provide the `shp` file to the `dsn` argument (data source name) of `st_read`.
 
-  * The current working directory is location to which  R automatically reads or saves files.
-  * The can learn what your current working directory by running `getwd()` in the Console.
-  * You can change your current working directory by running `setwd(path)` in the Console, where `path` is the directory you want to set as your working directory.
+In this case, I have downloaded the `cb_2018_us_state_20m.zip` containing a shapefile of the U.S. states. I have unzipped this file into the `cb_2018_us_state_20m` folder in the `data` folder in my current working directory.
+
+* The current working directory is the location to which R currently reads or saves files.
+* The can learn what your current working directory is by running `getwd()` in the Console.
+* You can change your current working directory by running `setwd("path")` in the Console, where `path` is the directory path you want to set as your working directory.
   
 In our case, we want to read the file `cb_2018_us_state_20m.shp` in the `cb_2018_us_state_20m` folder in the `data` folder of our current working directory. We can run the following command to import the desired shapefile.
-  * "`./`" indicates the current directory.
-  * The `file` argument "`./data/cb_2018_us_state_20m/cb_2018_us_state_20m.shp` tells R to look for the `cb_state_20m.shp` file in the file path `./data/cb_state_2018_us_state_20m`.
 
-For simplicity, I have uploaded `cb_2018_us_state_20m.zip` to my GitHub repository. Prior to importing the the `.shp` file, running the `download` and `unzip` commands should download and unzip the necessary folder into your working directory so that can run the same code to import the shapefile.
+* "`./`" indicates the current directory.
+* The `dsn` argument "`./data/cb_2018_us_state_20m/cb_2018_us_state_20m.shp` tells R to look for the `cb_state_20m.shp` file in the file path `./data/cb_state_2018_us_state_20m`.
+
+For simplicity, I have uploaded `cb_2018_us_state_20m.zip` to my GitHub repository. Prior to importing the the `.shp` file, running the `download` and `unzip` commands should download and unzip the necessary folder into your working directory so that you can run the same code to import the shapefile.
 
 ```{r}
 # download.file("https://github.com/jfrench/DataWrangleViz/raw/master/data/cb_2018_us_state_20m.zip", destfile = "./data/cb_2018_us_state_20m.zip", method = "auto")
@@ -291,14 +299,14 @@ us_sf <- st_read(dsn = "./data/cb_2018_us_state_20m/cb_2018_us_state_20m.shp")
 
 The `st_read` provides helpful information automatically when run. In this case, we learn:
 
-  * We imported an `sf` object with 52 features (observations).
-  * The imported `sf` object has 9 attributes (columns).
-  * The features appear to be the simple feature geometry `MULTIPOLGYON`.
-  * The dimension is `XY`, so we are working with 2-dimensional data.
-  * The bounding box tells us the largest and smallest y-coordinates.
-  * The CRS is NAD83.
+* We imported an `sf` object with 52 features (observations).
+* The imported `sf` object has 9 attributes (columns).
+* The features appear to be the simple feature geometry `MULTIPOLGYON`.
+* The dimension is `XY`, so we are working with 2-dimensional data.
+* The bounding box tells us the largest and smallest y-coordinates.
+* The CRS is NAD83.
 
-We use the `class` function to see classes of `us_sf`.
+We use the `class` function to see the classes of `us_sf`.
 ```{r}
 class(us_sf)
 ```
@@ -317,16 +325,16 @@ str(us_sf)
   * `ALAND`: the land area of each state
   * `AWATER`: the water area of each state
   
-The `geometry` column is the simple feature geometry list column and contains the  `geometry` object for each observation.
+The `geometry` column is the simple feature geometry list column and contains the geometry object for each observation.
 
 # Wrangling `sf` objects
 
 An `sf` object is a type of data frame, similar to how a tibble is a type of data frame. Both classes extend the `data.frame` class.
 
-  * This means that you can work with these objects similar to how you would work with a `data.frame`, though the default behaviors may be different.
-  * We can use the **dplyr** package or similar to manipulate an `sf` object.
+* This means that you can work with `sf` objects similarly to how you would work with a `data.frame`, though the default behaviors may be different.
+* We can use the **dplyr** package or similar tools to manipulate an `sf` object.
   
-We can select column of `us_sf`
+We can select columns of the `us_sf` `sf` object in the following ways:
 
 ```{r}
 us_sf$STUSPS
@@ -336,17 +344,9 @@ us_sf["STUSPS"]
 ```
 Note that the `$` operator extracts the column from `us_sf` (returning a `character` vector), while the other choices *subset* `us_sf` and remain `sf` objects (i.e., the geometry list column is retained).
 
-```{r}
-us_sf$STUSPS
-us_sf[,5]
-us_sf[,"STUSPS"]
-us_sf["STUSPS"]
-```
-
 We can select rows in a similar fashion.
 
 ```{r}
-library(dplyr)
 us_sf[2:3,]
 us_sf[us_sf$STUSPS == "CO",]
 us_sf[startsWith(us_sf$STUSPS, "C"),]
@@ -355,15 +355,14 @@ us_sf %>% filter(startsWith(us_sf$STUSPS, "C"))
 
 Note that `startsWith` is a **base** R function that finds the elements of a `character` vector that start with a certain set of characters while `start_with` is a **dplyr** function that is used to select columns of a data frame based on a pattern.
 
-us_sf[CO,]
-
-What is really cool is that we can use a spatial object as a row selector. Let's extract the  "Colorado" row from `us_sf`.
+A really neat feature of `sf` objects is that can use a spatial object to select rows. Let's extract the  "Colorado" row from `us_sf`.
 
 ```{r}
 co <- us_sf[us_sf$NAME == "Colorado",]
+class(co)
 ```
 
-If we pass the `co` object as the row argument inside the square brackets, `[]`, then the rows of `us_sf` with `geometry` objects that intersect the `co` `geometry` object will be returned
+If we pass the `co` object as the row argument inside the square brackets, `[]`, then the rows of `us_sf` with geometry objects that intersect the `co` geometry object will be returned
 
 ```{r}
 (co_intersects <- us_sf[co,])
@@ -376,17 +375,20 @@ caco <- us_sf[us_sf$NAME == "Colorado" |
 (caco_intersects <- us_sf[caco,])
 plot(st_geometry(caco_intersects))
 ```
+
 The **base** `merge` and **dplyr** `*_join` functions can be used to merge a data frame with an `sf` object.
 
   * The `sf` object must be the first argument of these functions.
   
 Let's access a COVID-19 related data frame available in the **bayesutils** package, which can be installed from GitHub. 
 
-* We install the package from GitHub.
-* We then load the `covid_20210307` dataset from the **bayesutils** package.
+* We install the package from GitHub using the `remote::install_github` function.
+  * Make sure to install the **remote** package [@R-remote] if you don't have it.
+* We then load the `covid_20210307` data set from the **bayesutils** package.
 
 ```{r}
-# remotes::install_github("jfrench/bayesutils")
+# install.packages("remote")
+# remote::install_github("jfrench/bayesutils")
 data("covid_20210307", package = "bayesutils")
 ```
 
@@ -399,31 +401,32 @@ covid_us <- merge(us_sf, covid_20210307,
                   by.x = "STUSPS", by.y = "state_abb")
 head(covid_us)
 ```
+
 Alternatively, we could have used a **dplyr** `*_join` function. We'll use `full_join`. Note the special syntax in the `by` argument to address the fact that we want to merge the rows based on different columns in the data frames.
+
 ```{r}
-covid_us_tbl <- full_join(us_sf, covid_20210307,
-                          by = c("STUSPS" = "state_abb"))
-print(covid_us_tbl, 5)
+covid_us2 <- full_join(us_sf, covid_20210307, by = c("STUSPS" = "state_abb"))
+head(covid_us2)
 ```
 
-If a new row is added to the `sf` object without a corresponding `geometry`, then an empty `geometry` is added for that row.
+If a new row is added to the `sf` object without a corresponding geometry, then an empty geometry object is added for that row.
 
-## Plotting `sf` objects
+## Plotting simple features
 
 The power of the `sf` package is the ability to easily create plots of spatial data.
 
 ### Plotting `sfc` objects
 
+To simply plot the geometry list column of an `sf` object, you can use:
 
-To simply plot the list-column of `geometry` objects of an `sf` object, you can use:
-
-* `st_geometry` to extract the list-column of simple feature geometries from the `sf` object (this will be an object of class `sfc`).
+* `st_geometry` to extract the list column of simple feature geometries from the `sf` object (this will be an object of class `sfc`).
 * `plot` to plot the `sfc` object.
 
 ```{r}
 plot(st_geometry(us_sf))
 ```
-Alternatively, you can directly extract the `sfc` component of the `sf` object using `$geometry`, then plot the `sfc` object.
+
+Alternatively, you can directly extract the `sfc` component of the `sf` object using `$`, then plot the `sfc` object.
 
 ```{r}
 plot(us_sf$geometry)
@@ -434,10 +437,10 @@ You can easily change aspects of the plotted `sfc` object (or an `sf`) object us
 * `axes` can be set to `TRUE` to show the axes
 * `xlab` and `ylab` will change the axis labels
 * `xlim` and `ylim` can be used to constrain the plotting regions.
-  * Note that "W" longitude are indicated using negative numbers, while "E" longitudes are positive numbers.
-  * Note the latitude values in the northern hemisphere are positive numbers. Latitude values in the southern hemisphere are negative numbers.
+  * Note that "W" longitude values are indicated using negative numbers, while "E" longitude values are positive numbers.
+  * Note that "N" latitude values in the northern hemisphere are positive numbers. "S" latitude values in the southern hemisphere are negative numbers.
 
-Each geometry has specific arguments that the user can change. In this case, we can change the fill color of the `MULTIPOLYGON` objects using the `color` argument and the border using the border argument.
+Each geometry has specific arguments that the user can change (consider looking at the documentation for `?sf::plot.sf` for details). In this case, we can change the fill color of the `MULTIPOLYGON` objects using the `color` argument and the border using the border argument.
 
 ```{r}
 plot(us_sf$geometry, axes = TRUE,
@@ -446,7 +449,8 @@ plot(us_sf$geometry, axes = TRUE,
      xlim = c(-125, -75),
      ylim = c(22, 50))
 ```
-You can change the colors of the individual simple features with a little creativity. Let color all the "C states" (California, Colorado, Connecticut) a little differently.
+
+You can change the colors of the individual geometry objects with a little creativity. Let's color all the "C states" (California, Colorado, Connecticut) a little differently than the other states.
 
 ```{r}
 # determine indices of C states
@@ -466,7 +470,7 @@ plot(st_geometry(us_sf), col = mycol, border = myborder, xlim = c(-125, -75),
      ylim = c(22, 50))
 ```
 
-### Plotting attributes of an `sf` objection
+### Plotting attributes of an `sf` object
 
 By default, use you can use the `plot` function to plot all the attributes of an `sf` object. In general, this isn't very useful.
 
@@ -536,7 +540,13 @@ The **ggplot2** package includes a geometry for `sf` objects, `geom_sf`, the is 
 * The `sf` object is passed as the `data` argument to the `ggplot` function.
 * `geom_sf` is the geometry of the `data`
 * The `XY` coordinates of the `sf` object are automatically mapped to `x` and `y` aesthetics.
-* The `color`, `linetype`, `fill`, etc., of the geometry can be changed by mapping the an attribute of the `sf` object to the appropriate aesthetic.
+* The `color`, `linetype`, `fill`, etc., of the geometry objects can be changed by mapping an attribute of the `sf` object to the appropriate aesthetic.
+
+If we only want to plot the geometry list column (i.e., the geometry objects) of each observation, then we don't have to specify any aesthetics.
+
+```{r}
+ggplot(covid_us) + geom_sf()
+```
 
 We will create a choropleth map of the `covid_us` data.
   * A choropleth map is a map of regions colored to indicate the level of some variable associated with the regions.
@@ -545,9 +555,32 @@ We will create a choropleth map of the `covid_us` data.
 ggplot(covid_us) + geom_sf(aes(fill = death_rate_100k))
 ```
 
+Changing the color palette for our `fill` aesthetic to a viridis palette.
+
 ```{r}
 ggplot(covid_us) + geom_sf(aes(fill = death_rate_100k)) +
   colorspace::scale_fill_continuous_sequential(palette = "viridis")
+```
+
+Change the color palette to viridis using **ggplot2**'s built-in function.
+
+```{r}
+ggplot(covid_us) + geom_sf(aes(fill = death_rate_100k)) +
+  scale_fill_viridis_c(option = "viridis")
+```
+
+Reverse the order of the colors.
+
+```{r}
+ggplot(covid_us) + geom_sf(aes(fill = death_rate_100k)) +
+  scale_fill_viridis_c(option = "viridis", direction = -1)
+```
+
+Use the cividis palette using the `scale_fill_viridis` function from the **viridis** package [@R-viridis].
+
+```{r}
+ggplot(covid_us) + geom_sf(aes(fill = death_rate_100k)) +
+  viridis::scale_fill_viridis(option = "E")
 ```
 
 ## Additional resources
