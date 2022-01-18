@@ -3,27 +3,15 @@ title: "Crash Course in R"
 author: "Joshua French"
 date: '2021-01-19'
 output:
+  html_notebook: default
   pdf_document: default
-  md_document:
-    variant: gfm  
   html_document:
     df_print: default
-  html_notebook: default
----
-<!-- # add Your turn block -->
-```{css, include=FALSE}
-.action {
-    # margin: 2em;
-    padding: 2em;
-    border: 1px solid grey;
-    border-radius: 5px;
-    background: #eeeeee;
-}
-```
 
+---
 ```{r, include=FALSE}
 # change Console output behavior
-knitr::opts_chunk$set(comment = "#>", collapse = TRUE)
+knitr::opts_chunk$set(collapse = TRUE)
 ```
 
 This notebook is intended to help you quickly learn how to productively use R.
@@ -64,13 +52,17 @@ R Studio has four panes:
 ## Running code and scripts
 Code is executed in R by typing it in the Console and hitting enter.
 
-### Your turn {.action}
+### Your turn
 Type `1+1` in the R Console and hit enter.
+
+```{r, eval = FALSE}
+1 + 1
+```
 
 ## Creating a new script
 Instead of typing all of your code in the Console and hitting enter, it's better to write your code in a Script. The Script is just a text file with all the commands you want to execute. A new script can be obtained by executing File -> New File -> R Script or pressing "Ctrl + Shift + n" (on a PC) or "Cmd + Shift + n" on a Mac.
 
-### Your turn {.action}
+### Your turn
 Open a new Script in R Studio.
 
 ## Running code from a Script
@@ -78,7 +70,7 @@ There are various ways to run code from a Script file. The most common ones are:
 1. Highlight the code you want to run and hit the Run botton at the top of the Script pane.
 2. Highlight the code you want to run and press "Ctrl + Enter" on your keyboard. If you don't highlight anything, by default, R Studio runs the command the cursor currently lies on.
 
-### Your turn {.action}
+### Your turn
 Type `mean(c(1:3))` in your Script file.
 
 Run the command using the approaches mentioned above.
@@ -86,7 +78,7 @@ Run the command using the approaches mentioned above.
 ## Saving a Script
 To save a script, click File -> Save or press "Ctrl + s" (on a PC) or "Cmd + s" (on a Mac).
 
-### Your turn {.action}
+### Your turn
 Save your script
 
 ## Packages
@@ -94,7 +86,7 @@ Packages are collections of functions, data, and other objects that extend the f
 
 R packages can be installed using the `install.packages` function and loaded using the `library` function.
 
-## Your turn {.action}
+## Your turn
 The **tidyverse** [https://www.tidyverse.org](https://www.tidyverse.org) is an ecosystem of R packages that we will use extensively in this class. Currently, the **tidyverse** is comprised of the following packages:
 
 * **ggplot2** - A package for plotting based on the "Grammar of Graphics".
@@ -147,7 +139,7 @@ There are a number of helps to get help in R.
 * If you need to find a command to help you with a certain *topic*, then `??topic` will search for the topic through all installed documentation and bring up any vignettes, code demonstrations, or help pages that include the topic for which you searched.
 * If you are trying to figure out why an error is being produced, what packages can be used to perform a certain analysis, how to perform a complex task that you can't seem to figure out, etc., then simply do a web search for what you're trying to figure out! Because R is such a popular language, it is likely you will find a stackoverflow response, a blog, an R users forum response, etc., that at least partially addresses your question.
 
-## Your turn {.action}
+## Your turn
 
 The `lm` command can be used to fit a linear model to a set of data. Use `?lm` to get help about the `lm` function.
 
@@ -265,7 +257,7 @@ e.g., the following commands create vectors of type numeric, character, and logi
 * `c("one", "two", "three")`
 * `c(TRUE, TRUE, FALSE, TRUE)`
 
-## Your turn {.action}
+## Your turn
 Execute the three commands above in the R Console to see what you get.
 
 ## Creating patterned vectors
@@ -289,7 +281,7 @@ Some examples:
 * `rep(c("trt1", "trt2", "trt3"), times = 1:3)`: Repeat "trt1" once, "trt2" twice, and "trt3" three times.
 * `rep(1:3, each = 3)`: Repeat each element of the sequence 1, 2, 3 three times.
 
-## Your turn {.action}
+## Your turn
 Execute the seven commands above in the R Console to see what you get.
 
 ## Assignment
@@ -362,7 +354,7 @@ f2 <- factor(c("a", 7, "blue", "blue", FALSE))
 f2
 ```
 
-## Your turn {.action}
+## Your turn
 
 Create a vector named `grp` that has two levels: `a` and `b`, where the first 7 values are `a` and the second 4 values are `b`.
 
@@ -390,7 +382,7 @@ Suppose that a random variable $X$ has the `dist` distribution:
 * `r[dist](n, ...)`: returns an i.i.d. random sample of size `n` having the same distribution as $X$.
 * The `...` indicates that additional arguments describing the parameters of the distribution may be required.
 
-## Your turn {.action}
+## Your turn
 
 Execute the following commands in R to see the output.
 
@@ -483,7 +475,7 @@ plot(x, y, xlab = "# successes", ylab = "probability", type = "h")
 title("pmf of Binomial(n = 20, pi = .3)")
 ```
 
-## Your turn {.action}
+## Your turn
 
 * Use `?Distributions` to see the standard distributions included in R. 
 * Draw 1000 observations from a Poisson distribution with a mean of 10 and assign it the name `v`.
@@ -615,7 +607,7 @@ Sometimes we need to know if the elements of an object satisfy certain condition
 
 Note that `==` means equal to and `!=` means not equal to.
 
-## Your turn {.action}
+## Your turn
 
 Execute the following commands in R and see what you get. What is each statement performing?
 
@@ -630,7 +622,7 @@ More complicated logical statements can be made using `&` and `|`.
 * `&` means "and"
 * `|` means "or"
 
-## Your turn {.action}
+## Your turn
 
 Execute the following commands in R and see what you get. What is each statement performing?
 
@@ -687,7 +679,7 @@ sd(z)
 stdev(z)
 ```
 
-## Your turn {.action}
+## Your turn
 
 Create a function that returns the density of a normal random variable with mean `mu` and standard deviation `sigma` for a vector `x`. Recall that the density function of 
 a normal random variable is $$f(x) = \frac{1}{\sigma \sqrt{2 \pi}} \exp\left(-\frac{1}{2 \sigma^2} (x - \mu)^2\right).$$

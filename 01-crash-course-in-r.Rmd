@@ -3,6 +3,8 @@ title: "Crash Course in R"
 author: "Joshua French"
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
 output:
+  html_document:
+    df_print: paged
   pdf_document: default
 ---
 ```{css, include=FALSE}
@@ -359,6 +361,35 @@ f2
 ## Your turn {.action}
 
 Create a vector named `grp` that has two levels: `a` and `b`, where the first 7 values are `a` and the second 4 values are `b`.
+
+## Extracting parts of a vector
+Subsets of the elements of a vector can be extracted by appending an index vector in square brackets `[]` to the name of the vector .
+
+Let's create the numeric vector 2, 4, 6, 8, 10, 12, 14, 16.
+
+```{r}
+# define a sequence 2, 4, ..., 16
+a <- seq(2, 16, by = 2)
+a
+``` 
+
+Let's access the 2nd, 4th, and 6th elements of `a`.
+```{r}
+# extract subset of vector
+a[c(2, 4, 6)]
+```
+
+Let's access all elements in `a` EXCEPT the 2nd, 4th, and 6th using the minus (`-`) sign in front of the index vector.
+```{r}
+# extract subset of vector using minus
+a[-c(2, 4, 6)]
+```
+
+Let's access all elements in `a` except elements 3 through 6.
+```{r}
+a[-(3:6)]
+```
+
 
 # Helpful functions
 
