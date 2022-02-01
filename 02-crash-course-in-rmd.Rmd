@@ -2,11 +2,11 @@
 title: "Joshua French"
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
 output:
+  html_document:
+    df_print: paged
   pdf_document: default
   html_notebook: default
   word_document: default
-  html_document:
-    df_print: paged
 ---
 
 ```{css, include=FALSE}
@@ -21,7 +21,14 @@ output:
 
 # Crash Course in R Markdown
 
-## What is R Markdown?
+This document is intended to help you quickly learn how to generate reproducible data analysis and results using R Markdown.
+
+An accompanying YouTube playlist that walks through this document is available
+by following the link [here](https://www.youtube.com/playlist?list=PLkrJrLs7xfbXJ0F9yc-n8PzvoFv4qmM-N). I have also included direct, relevant video links throughout the file (e.g., immediately after the the relevant heading).
+
+Note that there may be small differences between this document (which is easy to update) and the videos (which are not). When there is a discrepancy, trust this document more than the video.
+
+## What is R Markdown? ([Overview video](https://youtu.be/mcTB7h9lpCg))
 
 R Markdown is a tool for dynamic, reproducible creation of data-centric documents that include text, code, the results of executed code.
 
@@ -41,7 +48,7 @@ R Markdown is a very useful tool for the data scientist.
 R Studio provides R Markdown (and other) cheatsheets at [https://rstudio.com/resources/cheatsheets/](https://rstudio.com/resources/cheatsheets/)
 
 ### Your turn
-The easiest way to create a new R Markdown file is File $\to$ New File $\to$ R Markdown. Do this on your computer to see what is produced.
+The easiest way to create a new R Markdown file in R Studio is File &rarr; New File &rarr; R Markdown. Do this on your computer to see what is produced.
 
 ## What's in an R Markdown document?
 An R Markdown document has three components:
@@ -52,19 +59,11 @@ An R Markdown document has three components:
 
 Since the YAML header is optional, we'll talk about it last.
 
-## Formatting text in R Markdown
+## Formatting text in R Markdown 
 
-### Headings and sections
-Headings and sections of different levels are created with `#`.
+### Commenting code ([Comments video](https://youtu.be/K-CCEx2tbHI))
 
-* `#` indicates the first level
-* `##` being the second level
-* etc.
-
-The words after the `#` will be larger than the regular text.
-
-Note: In R Scripts and the R Console, the `#` symbol denotes a comment. In R Markdown files (.Rmd or .rmd),
-a comment is created by placing `<!--` and `-->` to the left and right, respectively, of the text you want to comment.
+Note: In R Scripts and the R Console, the `#` symbol denotes a comment. In R Markdown files (.Rmd or .rmd), a comment is created by placing `<!--` and `-->` to the left and right, respectively, of the text you want to comment.
 
 e.g.,
 ```{r, eval = FALSE}
@@ -72,11 +71,20 @@ e.g.,
 ```
 would comment the text "comment text".
 
-The easiest way to comment text in R Markdown documents is to highlight the text and then press Ctrl/Cmd + Shift + c.
+The easiest way to comment text in R Markdown documents is to highlight the text and then press `Ctrl/Cmd + Shift + c`.
 
 ### Your turn
 
 Practice commenting some text in R Markdown.
+
+### Headings and sections ([Formatting video](https://youtu.be/K-CCEx2tbHI))
+Headings and sections of different levels are created with `#`.
+
+* `#` indicates the first level
+* `##` being the second level
+* etc.
+
+The words after the `#` will be larger than the regular text.
 
 ### Font styles and effects
 
@@ -95,9 +103,9 @@ E.g., Typing "The regression coefficient \$\\beta\$" will produce "The regressio
 
 ### Your turn {.action}
 
-1. Create a new R Script (Ctrl/Cmd + Shift + n).
+1. Create a new R Script (`Ctrl/Cmd + Shift + n`).
 2. Replace the file contents with the code below:
-```{r, eval=FALSE}
+```{eval=FALSE}
 ---
 title: "Bad jokes"
 output: html_notebook
@@ -129,10 +137,10 @@ I wish I could \*escape\* these bad jokes.
 
 But I guess this will just be an unpleasant footnote^[unpleasant footnote].
 ```
-3. Save the file (Ctrl/Cmd + s) with the name "bad_jokes.Rmd".
+3. Save the file (`Ctrl/Cmd + s`) with the name "bad_jokes.Rmd".
 4. Click the Preview button and view the results.
 
-## Numbered/ordered and unordered lists
+## Numbered/ordered and unordered lists ([Lists video](https://youtu.be/ME80PeaMBF4))
 
 ### Numbered/ordered lists
 Numbered lists with sub-bullets:
@@ -194,7 +202,7 @@ Notes:
 
 Create an example of a numbered list with 4 levels and an unordered list with 3 levels.
 
-## Code chunks
+## Code chunks ([Code chunks video](https://youtu.be/_jVqqTGfmB0))
 
 Chunks of code can be added in an R Markdown by placing the relevant code between ```` ```{r} ```` and ```` ``` ````. e.g., 
 
@@ -204,13 +212,13 @@ Chunks of code can be added in an R Markdown by placing the relevant code betwee
 ```
 ````
 
-You can generate a code chunk template using Ctrl/Cmd + Alt + i.
+You can generate a code chunk template using `Ctrl/Cmd + Alt + i`.
 
-The `chunk_name` is optional but allows you give give chunks names labels that you can refer back to. This is useful for complicated documents and reports. (See [Verbatim Code Chunks](https://bookdown.org/yihui/rmarkdown-cookbook/verbatim-code-chunks.html) for how to get the above code to render.)
+The `chunk_name` is optional but allows you give give chunks names labels that you can refer back to. This is useful for complicated documents and reports. (See Verbatim Code Chunks [ https://bookdown.org/yihui/rmarkdown-cookbook/verbatim-code-chunks.html](https://bookdown.org/yihui/rmarkdown-cookbook/verbatim-code-chunks.html) to learn how to render the above code.)
 
 Note: each label should be unique within the document. I don't recommend adding chunk labels unless you actually need them, otherwise you are likely to reuse a chunk label and make a headache for yourself!
 
-### Chunk options
+### Chunk options ([Chunk options video](https://youtu.be/Fq7H_qt2K4g))
 Code chunks have many options that can be used to customize the code. We will cover many important ones below.  I will specify the default option in parentheses, (), after the option. So this is what will be used by default if you don't specify anything.
 
 Yuhui Xie, creator of **knitr**, provides a complete list ([https://yihui.org/knitr/options/](https://yihui.org/knitr/options/)) of chunk options on his website ([https://yihui.org/](https://yihui.org/)).
@@ -253,15 +261,14 @@ Other options: `warning`, `error`, `messages` (`TRUE`) determine whether warning
 * `fig.width`, `fig.height`: (7). A numeric value indicating the width and height of the result figures.
 * `fig.cap`: (`NULL`). A caption for the figure.
 
-### Your turn
+### Your turn ([Chunk option visualization](https://youtu.be/teiwbKIfUnY))
 
-Copy and paste the code at [https://github.com/jfrench/DataWrangleViz/blob/master/rmd-chunks-viz.Rmd](https://github.com/jfrench/DataWrangleViz/blob/master/rmd-chunks-viz.Rmd) into an R Markdown document and then Knit the file to see visual examples of the options described above.
+Copy and paste the code at [https://raw.githubusercontent.com/jfrench/DataWrangleViz/master/rmd-chunks-viz.Rmd](https://raw.githubusercontent.com/jfrench/DataWrangleViz/master/rmd-chunks-viz.Rmd) into an R Markdown document and then Knit the file to see visual examples of the options described above.
 
 ### Some general options not discussed
 
 * Caching: This has to do with saving previous code that has been evaluated. This is important for documents with lots of code that is time consuming to run.
-* Animation: You can add plot animations if you have the FFMpeg program installed [https://ffmpeg.org/](https://ffmpeg.org/).
-
+* Animation: You can add plot animations if you have the FFMpeg program installed ([https://ffmpeg.org/](https://ffmpeg.org/).)
 
 ### Inline code
 
@@ -296,7 +303,50 @@ knitr::kable(cars[1:6,], caption = "Kable table")
 knitr::kable(cars[1:6,], caption = "Kable table")
 ```
 
-## YAML header
+**Markdown tables**
+
+Tables can be directly created in Markdown using extended syntax ([https://www.markdownguide.org/extended-syntax/](https://www.markdownguide.org/extended-syntax/)). These are most useful for small tables that require very specific formatting and don't have many rows or columns.
+
+Basic structure:
+
+- The first two rows of a Markdown table provide the table's header (the column names and alignment.)
+- The remaining rows provide the rest of the table's data.
+
+Additional details: 
+
+- The pipe (`|`) is used to separate the table columns and column names in the first row.
+- The pipe and three (or more) hyphens (`---`) between pipes are used in the second row to create a line between the column names and the values in the table.
+- The colon (`:`) can be used in the second row to align the columns.
+
+    - `:---`  produces a left-aligned column.
+    - `---:` produces a right-aligned column.
+    - `:---:` produces a center-aligned column.
+- You can use more than three hyphens or spaces to align the columns visually.
+- The remaining values in the table are placed between pipes and can be formatted similar to
+other text.
+- Make sure each row begins and ends with a pipe.
+
+A simple example is provided below. If we include the following code in our R Markdown document:
+
+```
+| Coefficient | Estimate | Est. Standard Error |
+| :---------- | -------: | :---:               |
+| (Intercept) | 3.2      | 1.6                 |
+| $\beta_1$   | *1.5*    | **2.7**             | 
+| X2          | 9.4      | ~~0.6~~             |
+```
+
+then the following output will be rendered:
+
+| Coefficient | Estimate | Est. Standard Error |
+| :---------- | -------: | :---:               |
+| (Intercept) | 3.2      | 1.6                 |
+| $\beta_1$   | *1.5*    | **2.7**             | 
+| X2          | 9.4      | ~~0.6~~             |
+
+Notice the alignment and formatting of the text based on the code above.
+
+## YAML header ([YAML header video](https://youtu.be/JgH_rIJUqZ8))
 
 The YAML (Yet Another Markdown Language) header controls many aspects of the R Markdown document. 
 Unless you're using R Markdown for advanced purposes (books, blogs, websites, running the same file with multiple input parameters) then you probably don't need to know a lot about the YAML header at this stage. 
@@ -350,7 +400,7 @@ output:
 * `html_notebook`: The excellent "R notebook".
   * It's like an `html_document` but the source code can be downloaded by toggling the "Code" button in the upper right hand corner of the file.
   * Great to share with collaborators because they can update the document, add analysis, etc.
-  * Make sure to "Run All Code" using Ctrl/Cmd + Alt + r prior to "Previewing" the document or the code chunk output will not be included.
+  * Make sure to "Run All Code" using `Ctrl/Cmd + Alt + r` prior to "Previewing" the document or the code chunk output will not be included.
 * `word_document`: If you have to have Microsoft Word editing capabilities, for some reason.
 
 ### Your turn
