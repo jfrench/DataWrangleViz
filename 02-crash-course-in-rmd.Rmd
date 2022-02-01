@@ -24,7 +24,11 @@ output:
 This document is intended to help you quickly learn how to generate reproducible data analysis and results using R Markdown.
 
 An accompanying YouTube playlist that walks through this document is available
-by following the link [here](https://www.youtube.com/playlist?list=PLkrJrLs7xfbXJ0F9yc-n8PzvoFv4qmM-N). I have also included direct, relevant video links throughout the file (e.g., immediately after the the relevant heading).
+by following the link [here](https://www.youtube.com/playlist?list=PLkrJrLs7xfbXJ0F9yc-n8PzvoFv4qmM-N). I have also included direct, relevant video links throughout the file (e.g., immediately after the the relevant heading). An html version of this document can be downloaded to your current working direction (run `getwd()` in the Console to see where this is) by running the following command:
+```{r, eval=FALSE}
+download.file("https://raw.githubusercontent.com/jfrench/DataWrangleViz/master/02-crash-course-in-rmd.html",
+              "02-crash-course-in-rmd.html")
+```
 
 Note that there may be small differences between this document (which is easy to update) and the videos (which are not). When there is a discrepancy, trust this document more than the video.
 
@@ -303,7 +307,7 @@ knitr::kable(cars[1:6,], caption = "Kable table")
 knitr::kable(cars[1:6,], caption = "Kable table")
 ```
 
-**Markdown tables**
+**Markdown tables** ([Markdown tables video](https://youtu.be/Rp1EGDY3ZkQ))
 
 Tables can be directly created in Markdown using extended syntax ([https://www.markdownguide.org/extended-syntax/](https://www.markdownguide.org/extended-syntax/)). These are most useful for small tables that require very specific formatting and don't have many rows or columns.
 

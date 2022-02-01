@@ -175,7 +175,9 @@ pre code {
 <div id="crash-course-in-r-markdown" class="section level1">
 <h1>Crash Course in R Markdown</h1>
 <p>This document is intended to help you quickly learn how to generate reproducible data analysis and results using R Markdown.</p>
-<p>An accompanying YouTube playlist that walks through this document is available by following the link <a href="https://www.youtube.com/playlist?list=PLkrJrLs7xfbXJ0F9yc-n8PzvoFv4qmM-N">here</a>. I have also included direct, relevant video links throughout the file (e.g., immediately after the the relevant heading).</p>
+<p>An accompanying YouTube playlist that walks through this document is available by following the link <a href="https://www.youtube.com/playlist?list=PLkrJrLs7xfbXJ0F9yc-n8PzvoFv4qmM-N">here</a>. I have also included direct, relevant video links throughout the file (e.g., immediately after the the relevant heading). An html version of this document can be downloaded to your current working direction (run <code>getwd()</code> in the Console to see where this is) by running the following command:</p>
+<pre class="r"><code>download.file(&quot;https://raw.githubusercontent.com/jfrench/DataWrangleViz/master/02-crash-course-in-rmd.html&quot;,
+              &quot;02-crash-course-in-rmd.html&quot;)</code></pre>
 <p>Note that there may be small differences between this document (which is easy to update) and the videos (which are not). When there is a discrepancy, trust this document more than the video.</p>
 <div id="what-is-r-markdown-overview-video" class="section level2">
 <h2>What is R Markdown? (<a href="https://youtu.be/mcTB7h9lpCg">Overview video</a>)</h2>
@@ -501,7 +503,7 @@ knitr::kable(cars[1:6,], caption = &quot;Kable table&quot;)
 </tr>
 </tbody>
 </table>
-<p><strong>Markdown tables</strong></p>
+<p><strong>Markdown tables</strong> (<a href="https://youtu.be/Rp1EGDY3ZkQ">Markdown tables video</a>)</p>
 <p>Tables can be directly created in Markdown using extended syntax (<a href="https://www.markdownguide.org/extended-syntax/">https://www.markdownguide.org/extended-syntax/</a>). These are most useful for small tables that require very specific formatting and don’t have many rows or columns.</p>
 <p>Basic structure:</p>
 <ul>
