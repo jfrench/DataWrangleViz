@@ -3,7 +3,6 @@
 .RData
 .Ruserdata
 *.pdf
-*.html
 *.docx
 *.aux
 *.bak
