@@ -13,6 +13,17 @@ bibliography:
 - packages_basic_data_viz.bib
 ---
 
+This document is intended to help you quickly learn how to perform basic data visualization using **ggplot2**.
+
+An accompanying YouTube playlist that walks through this document is available
+by following the link [here](https://youtube.com/playlist?list=PLkrJrLs7xfbVbI1WHs8FfkOoFvtiI6EXd). I have also included direct, relevant video links throughout the file (e.g., immediately after the the relevant heading). An html version of this document can be downloaded to your current working direction (run `getwd()` in the Console to see where this is) by running the following command:
+```{r, eval=FALSE}
+download.file("https://raw.githubusercontent.com/jfrench/DataWrangleViz/master/03-basic-data-viz-with-ggplot2.nb.html",
+              "03-basic-data-viz-with-ggplot2.nb.html")
+```
+The raw R Markdown code used to generate the html file can be obtained by toggling the "Code" box in the upper-right corner of the html file and selecting "Download Rmd".
+
+
 ```{r, include=FALSE}
 knitr::opts_chunk$set(
   tidy = TRUE
