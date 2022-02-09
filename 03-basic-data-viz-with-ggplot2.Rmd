@@ -2,12 +2,12 @@
 title: "Joshua French"
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
 output:
-  bookdown::html_notebook2:
-    number_sections: FALSE
-  bookdown::html_document2:
-    number_sections: FALSE
   bookdown::pdf_document2:
     number_sections: FALSE  
+  bookdown::html_document2:
+    number_sections: FALSE
+  bookdown::html_notebook2:
+    number_sections: FALSE
 bibliography:
 - dwv.bib
 - packages_basic_data_viz.bib
