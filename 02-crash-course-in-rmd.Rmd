@@ -2,9 +2,9 @@
 title: "Joshua French"
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
 output:
+  pdf_document: default
   html_document:
     df_print: paged
-  pdf_document: default
   html_notebook: default
   word_document: default
 ---

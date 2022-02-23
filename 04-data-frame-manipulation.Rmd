@@ -2,9 +2,8 @@
 pdf_document: default
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
 output:
-  html_document: default
-  pdf_document: default
   html_notebook: default
+  pdf_document: default
 title: "Joshua French"
 bibliography:
   - dwv.bib
@@ -19,7 +18,18 @@ knitr::write_bib(c("dplyr", "tibble", "tidyr", "palmerpenguins", "magrittr", "da
 
 ```
 
-# Data frame manipulation with **dplyr** and **tidyr**
+This document is intended to help you quickly learn how to perform basic data visualization using **dplyr** [@R-dplyr] and **tidyr** [@R-tidyr].
+
+An accompanying YouTube playlist that walks through this document is available
+by following the link [here](https://youtube.com/playlist?list=PLkrJrLs7xfbXaM7ukwxGu6xie3X64XVH3). I have also included direct, relevant video links throughout the file (e.g., immediately after the the relevant heading). An html version of this document can be downloaded to your current working direction (run `getwd()` in the Console to see where this is) by running the following command:
+```{r, eval=FALSE}
+download.file("https://raw.githubusercontent.com/jfrench/DataWrangleViz/master/04-data-frame-manipulation.nb.html",
+              "04-data-frame-manipulation.nb.html")
+```
+The raw R Markdown code used to generate the html file can be obtained by toggling the "Code" box in the upper-right corner of the html file and selecting "Download Rmd".
+
+
+# Data frame manipulation with **dplyr** and **tidyr** ([Manipulation packages video](https://youtu.be/O5_Lj5FSX6E))
 
 The **dplyr** and **tidyr** packages [@R-dplyr; @R-tidyr] are powerful packages for restructuring, enhancing, and manipulating data frames.
 
@@ -55,7 +65,7 @@ Web searches about data frame manipulation will likely bring up references to th
 * These packages aren't in active development, so it's better to avoid using them for active projects.
   * You may have a hard time getting help in using the older packages.
 
-## Tibbles
+## Tibbles ([tibble video](https://youtu.be/BlnebGyuOKM))
 When the **dplyr** package interacts with a data frame, it usually produces a "tibble". 
 
 * A tibble is supposed to be a "modern re-imagining" of R's standard data frame (referred to as `data.frame` for clarity).
@@ -64,7 +74,7 @@ When the **dplyr** package interacts with a data frame, it usually produces a "t
 * Functions that take a `data.frame` should also take a tibble.
 * Tibbles comes from the **tibble** package [@R-tibble], which is automatically imported by **dplyr**.
 
-### Differences between a tibble and a `data.frame`
+### Differences between a tibble and a `data.frame` ([tibble versus `data.frame` video](https://youtu.be/_qHdqWx-vsQ))
 
 A tibble generally has more restrictive behavior than a `data.frame`.
 
@@ -128,7 +138,7 @@ as.data.frame(penguins)
 # print large, regular tibble
 penguins
 ```
-### Subsetting/extracting parts of a tibble
+### Subsetting/extracting parts of a tibble ([subsetting a tibble video](https://youtu.be/xR3x9Mbd_6A))
 
 The syntax used to subset or extract elements from a `data.frame` can be used for tibbles.
 
@@ -156,7 +166,7 @@ penguins[1:3, c("island", "bill_length_mm")]
 penguins[-(1:3), c("island", "bill_length_mm")]
 ```
 
-### Important functions for tibbles
+### Important functions for tibbles ([tibble-related functions video](https://youtu.be/2zddbMKnxrY))
 
 Below are some of the most important functions associated with tibbles:
 
@@ -189,7 +199,7 @@ tbl1
 tbl1 <- add_column(tbl1, cats = factor(rep(c("g1", "g2"), times = c(2, 3))), .after = "numbers")
 tbl1
 ```
-## Using **dplyr**
+## Using **dplyr** ([dplyr overview video](https://youtu.be/kB-YSQ4r2Yc))
 
 **dplyr** provides functions for the "verbs" (i.e., actions) related to common data frame manipulation tasks. The table below summarizes some of the most important functions by the aspect of a data frame it manipulates.
 
@@ -215,7 +225,7 @@ The pipe operator, `%>%`, is a popular approach for "piping" an object into the 
 
 The pipe operator is best understood through example, as there are special cases that have to be considered.
 
-### Filtering
+### Filtering ([dplyr filtering video](https://youtu.be/8tazJbgcDWg))
 
 The `filter` function filters out the rows of a data frame that don't meet the designated criteria.
 
@@ -228,7 +238,7 @@ filter(penguins, body_mass_g > 6000)
 penguins %>% filter(body_mass_g > 6000)
 ```
 
-### Slicing
+### Slicing ([dplry slice video](https://youtu.be/4_YptM2twH0))
 
 `slice` subsets rows of a data frame by index or with respect to other properties.
 
@@ -298,7 +308,7 @@ penguins_slice <- penguins %>% group_by(species) %>% slice(1:3)
 arrange(penguins_slice, bill_length_mm, .by_group = TRUE)
 ```
 
-### Grouping and summarizing
+### Grouping and summarizing ([dplyr grouping and summarizing video](https://youtu.be/LaA7sVe76PA))
 
 The `group_by` function groups rows of a data frame with respect to one or more variables, which can then be manipulated in various ways. 
 
@@ -319,7 +329,7 @@ penguins %>%
             median_bill_length_mm =  median(bill_length_mm, na.rm = TRUE),
             count = n())
 ```
-### Selecting
+### Selecting ([dplyr select video](https://youtu.be/Su1VcLnIBuM))
 
 The `select` function can be used to select columns of a data frame. You can get pretty creative in how you select the columns (e.g., using string matching), but we only consider some simple examples.
 
@@ -339,7 +349,7 @@ select(penguins, ends_with("mm"))
 penguins %>% select(ends_with("mm"))
 ```
 
-### Column renaming
+### Column renaming ([dplyr rename video](https://youtu.be/5xuACH1a5UI))
 
 The `rename` function renames the columns of a data frame.
 
@@ -355,7 +365,7 @@ names(penguins)
 rename(penguins, bill = bill_length_mm, flipper = flipper_length_mm)
 penguins %>% rename(bill = bill_length_mm, flipper = flipper_length_mm)
 ```
-### Mutating a column
+### Mutating a column ([dplyr mutate video](https://youtu.be/uiEzbFf5zJw))
 
 The `mutate` function modifies an existing column or can create a new column from the existing columns.
 
@@ -372,7 +382,7 @@ penguins %>%
   select(bill_length_mm, bill_length_in)
 ```
 
-### Relocating a column
+### Relocating a column ([dplyr relocate video](https://youtu.be/efEvcF3VLMY))
 
 The `relocate` function moves one or more columns.
 
@@ -398,7 +408,7 @@ In this example, we move all columns ending in `mm` to before the `island` colum
 relocate(penguins, ends_with("mm"), .before = island)
 penguins %>% relocate(ends_with("mm"), .before = island)
 ```
-## Tidy data
+## Tidy data ([tidy data overview](https://youtu.be/uvDKLIK8i7E))
 
 @r4ds2017 and many others recommend that data scientists organize data frames so that they are "tidy". Tidy data [@r4ds2017; Chapter 12] is structured so that:
 
@@ -468,7 +478,7 @@ A tidy version of the tuberculosis data is available in `table1`. This data fram
 table1
 ```
 
-## Using **tidyr**
+## Using **tidyr** ([tidy data tips video](https://youtu.be/j5iH9ciMkL8))
 
 The main functions in the **tidyr** package are `pivot_wider` and `pivot_longer`.
 
@@ -483,7 +493,7 @@ Tidying complicated data sets may require you to do seemingly odd steps like mak
 4. Repeat steps 2 and 3 until the data are tidy
 5. If desired, combine the many tidying steps into a single command using the pipe operator.
 
-### Widening data frames
+### Widening data frames ([tidyr pivot_wider video](https://youtu.be/7cNxHl5aj-c))
 
 The `pivot_wider` function increases the number of columns in a data frame but reduces the number of rows. The main arguments of the `pivot_wider` function are:
 
@@ -498,7 +508,7 @@ table2
 pivot_wider(table2, names_from = type, values_from = count)
 table2 %>% pivot_wider(names_from = type, values_from = count)
 ```
-### Lengthening data frames
+### Lengthening data frames ([tidyr pivot_longer video](https://youtu.be/nhwcyk7bpQc))
 
 The `pivot_longer` function decreases the number of columns in a data frame but increases the number of rows. The main arguments of the `pivot_longer` function are:
 
@@ -520,7 +530,7 @@ tbl4b <- table4b %>% pivot_longer(c(`1999`, `2000`), names_to = "year", values_t
 tbl4b
 ```
 
-### Merging/joining data frames
+### Merging/joining data frames ([merging data frames video](https://youtu.be/-M4VIuemN08))
 
 The remaining issue with our `tbl4a` and `tbl4b` data frames are that the information is spread across two data frames with some redundant information. We need to merge or join the two data frames into a single data frame.
 
@@ -552,7 +562,7 @@ In this example, since rows of the two data frames match exactly, then any of th
 ```{r}
 full_join(tbl4a, tbl4b)
 ```
-## Separating and uniting columns
+## Separating and uniting columns ([tidyr separate and unite video](https://youtu.be/GQMF2qNuZHI))
 
 The `rate` column of `table3` included both `cases` and `population`. We want to separate these values.
 

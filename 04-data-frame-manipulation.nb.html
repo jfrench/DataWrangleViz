@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2022-02-15" />
+<meta name="date" content="2022-02-22" />
 
 <title>Joshua French</title>
 
@@ -66,6 +66,28 @@ if (window.hljs) {
 }
 </style>
 
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 
 
@@ -211,7 +233,7 @@ pre code {
 
 
 <h1 class="title toc-ignore">Joshua French</h1>
-<h4 class="date">2022-02-15</h4>
+<h4 class="date">2022-02-22</h4>
 
 </div>
 
@@ -219,497 +241,788 @@ pre code {
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-text-begin -->
-<div id="crash-course-in-r-markdown" class="section level1">
-<h1>Crash Course in R Markdown</h1>
-<p>This document is intended to help you quickly learn how to generate reproducible data analysis and results using R Markdown.</p>
-<p>An accompanying YouTube playlist that walks through this document is available by following the link <a href="https://www.youtube.com/playlist?list=PLkrJrLs7xfbXJ0F9yc-n8PzvoFv4qmM-N">here</a>. I have also included direct, relevant video links throughout the file (e.g., immediately after the the relevant heading). An html version of this document can be downloaded to your current working direction (run <code>getwd()</code> in the Console to see where this is) by running the following command:</p>
+<p>This document is intended to help you quickly learn how to perform basic data visualization using <strong>dplyr</strong> <span class="citation">(Wickham et al. 2021)</span> and <strong>tidyr</strong> <span class="citation">(Wickham 2021b)</span>.</p>
+<p>An accompanying YouTube playlist that walks through this document is available by following the link <a href="https://youtube.com/playlist?list=PLkrJrLs7xfbXaM7ukwxGu6xie3X64XVH3">here</a>. I have also included direct, relevant video links throughout the file (e.g., immediately after the the relevant heading). An html version of this document can be downloaded to your current working direction (run <code>getwd()</code> in the Console to see where this is) by running the following command:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbImRvd25sb2FkLmZpbGUoXCJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vamZyZW5jaC9EYXRhV3JhbmdsZVZpei9tYXN0ZXIvMDItY3Jhc2gtY291cnNlLWluLXJtZC5odG1sXCIsIiwiICAgICAgICAgICAgICBcIjAyLWNyYXNoLWNvdXJzZS1pbi1ybWQuaHRtbFwiKSJdfQ== -->
-<pre class="r"><code>download.file(&quot;https://raw.githubusercontent.com/jfrench/DataWrangleViz/master/02-crash-course-in-rmd.html&quot;,
-              &quot;02-crash-course-in-rmd.html&quot;)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjpbImRvd25sb2FkLmZpbGUoXCJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vamZyZW5jaC9EYXRhV3JhbmdsZVZpei9tYXN0ZXIvMDQtZGF0YS1mcmFtZS1tYW5pcHVsYXRpb24ubmIuaHRtbFwiLCIsIiAgICAgICAgICAgICAgXCIwNC1kYXRhLWZyYW1lLW1hbmlwdWxhdGlvbi5uYi5odG1sXCIpIl19 -->
+<pre class="r"><code>download.file(&quot;https://raw.githubusercontent.com/jfrench/DataWrangleViz/master/04-data-frame-manipulation.nb.html&quot;,
+              &quot;04-data-frame-manipulation.nb.html&quot;)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>Note that there may be small differences between this document (which is easy to update) and the videos (which are not). When there is a discrepancy, trust this document more than the video.</p>
-<div id="what-is-r-markdown-overview-video" class="section level2">
-<h2>What is R Markdown? (<a href="https://youtu.be/mcTB7h9lpCg">Overview video</a>)</h2>
-<p>R Markdown is a tool for dynamic, reproducible creation of data-centric documents that include text, code, the results of executed code.</p>
-<ul>
-<li>R Markdown was created by R Studio (<a href="https://www.rstudio.com">https://www.rstudio.com</a>) in 2014 (or at least that’s the oldest discussion I can find).</li>
-<li>It is a variant of Markdown, which was created by John Gruber (creator of Daring Fireball (<a href="https://daringfireball.net/">https://daringfireball.net/</a>)) and Aaron Swartz (co-creator of Reddit (<a href="https://www.reddit.com">https://www.reddit.com/</a>) as a lightweight markup language for creating formatted text using a plain-text editor.</li>
-<li>In general, a markdown language is a language that is written in plain-text but that is rendered different based on “markups” in the text.</li>
-<li>Has some capabilities similar to Jupyter (<a href="https://jupyter.org/">https://jupyter.org/</a>) notebooks.</li>
-</ul>
-<p>R Markdown is a great way to:</p>
-<ul>
-<li>Create a data analysis notebook that documents how and why you did analysis a certain way.</li>
-<li>Share your work with others in a variety of formats.</li>
-<li>Make your work reproducible.</li>
-</ul>
-<p>R Markdown is a very useful tool for the data scientist.</p>
-<p>R Studio provides R Markdown (and other) cheatsheets at <a href="https://rstudio.com/resources/cheatsheets/">https://rstudio.com/resources/cheatsheets/</a></p>
-<div id="your-turn" class="section level3">
-<h3>Your turn</h3>
-<p>The easiest way to create a new R Markdown file in R Studio is File → New File → R Markdown. Do this on your computer to see what is produced.</p>
-</div>
-</div>
-<div id="whats-in-an-r-markdown-document" class="section level2">
-<h2>What’s in an R Markdown document?</h2>
-<p>An R Markdown document has three components:</p>
-<ol style="list-style-type: decimal">
-<li>An optional YAML header.</li>
-<li>Formatted text.</li>
-<li><strong>Chunks</strong> of computer code.</li>
-</ol>
-<p>Since the YAML header is optional, we’ll talk about it last.</p>
-</div>
-<div id="formatting-text-in-r-markdown" class="section level2">
-<h2>Formatting text in R Markdown</h2>
-<div id="commenting-code-comments-video" class="section level3">
-<h3>Commenting code (<a href="https://youtu.be/K-CCEx2tbHI">Comments video</a>)</h3>
-<p>Note: In R Scripts and the R Console, the <code>#</code> symbol denotes a comment. In R Markdown files (.Rmd or .rmd), a comment is created by placing <code>&lt;!--</code> and <code>--&gt;</code> to the left and right, respectively, of the text you want to comment.</p>
-<p>e.g.,</p>
+<p>The raw R Markdown code used to generate the html file can be obtained by toggling the “Code” box in the upper-right corner of the html file and selecting “Download Rmd.”</p>
+<div id="data-frame-manipulation-with-dplyr-and-tidyr-manipulation-packages-video" class="section level1">
+<h1>Data frame manipulation with <strong>dplyr</strong> and <strong>tidyr</strong> (<a href="https://youtu.be/O5_Lj5FSX6E">Manipulation packages video</a>)</h1>
+<p>The <strong>dplyr</strong> and <strong>tidyr</strong> packages <span class="citation">(Wickham et al. 2021; Wickham 2021b)</span> are powerful packages for restructuring, enhancing, and manipulating data frames.</p>
+<p>We’ll discuss the <strong>dplyr</strong> package first, as its use cases are a bit simpler.</p>
+<p>We load the <strong>tibble</strong>, <strong>dplyr</strong>, and <strong>tidyr</strong> packages for the discussion below. We also preemptively load the <code>penguins</code> data frame from the <strong>palmerpenguins</strong> package, as we use it heavily in our discussion.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiPCEtLSBjb21tZW50IHRleHQgLS0+In0= -->
-<pre class="r"><code>&lt;!-- comment text --&gt;</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWJibGUpXG5saWJyYXJ5KGRwbHlyKVxubGlicmFyeSh0aWR5cilcbmRhdGEocGVuZ3VpbnMsIHBhY2thZ2UgPSBcInBhbG1lcnBlbmd1aW5zXCIpXG5gYGAifQ== -->
+<pre class="r"><code>library(tibble)
+library(dplyr)
+library(tidyr)
+data(penguins, package = &quot;palmerpenguins&quot;)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>would comment the text “comment text”.</p>
-<p>The easiest way to comment text in R Markdown documents is to highlight the text and then press <code>Ctrl/Cmd + Shift + c</code>.</p>
-</div>
-<div id="your-turn-1" class="section level3">
-<h3>Your turn</h3>
-<p>Practice commenting some text in R Markdown.</p>
-</div>
-<div id="headings-and-sections-formatting-video" class="section level3">
-<h3>Headings and sections (<a href="https://youtu.be/K-CCEx2tbHI">Formatting video</a>)</h3>
-<p>Headings and sections of different levels are created with <code>#</code>.</p>
+<p>We will be looking at straightforward data frame manipulation examples. Depending on what you need to do, you may need to dig deeper into the packages we discuss or consider alternative packages. However, you should have a solid foundation for manipulating data frames.</p>
+<p>Alternative data frame manipulation packages:</p>
 <ul>
-<li><code>#</code> indicates the first level</li>
-<li><code>##</code> being the second level</li>
-<li>etc.</li>
-</ul>
-<p>The words after the <code>#</code> will be larger than the regular text.</p>
-</div>
-<div id="font-styles-and-effects" class="section level3">
-<h3>Font styles and effects</h3>
+<li><strong>data.table</strong> <span class="citation">(Dowle and Srinivasan 2021)</span>: almost a direct alternative to <strong>dplyr</strong> that manipulates <code>data.table</code> objects instead of tibbles (the enhanced <strong>dplyr</strong> data frame).
 <ul>
-<li><em>Italic text</em>: <code>*text*</code> or <code>_text_</code>.</li>
-<li><strong>Bold text</strong>: <code>**text**</code> or <code>__text__</code> (two underscores on each side)</li>
-<li><code>Typewriter (code) text</code>: <code>`text`</code></li>
-<li>Endash (–), emdash (—): <code>--</code> and <code>---</code>.</li>
-<li><sup>superscript</sup> and <sub>subscript</sub>: <code>^superscript^</code> and <code>~subscript~</code></li>
-<li><del>strikethrough</del>: <code>~~strikethrough~~</code></li>
-<li>Escaping special characters *, _, $, \, <code>`</code>: <code>\*</code>, <code>\_</code>, <code>\$</code>, <code>\\</code>, <code>`` ` ``</code></li>
-<li>Footnote<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>: <code>Footnote^[This is a footnote]</code></li>
+<li>Faster than <strong>dplyr</strong>.</li>
+<li>More memory efficient that <strong>dplyr</strong>.</li>
+<li>Less accessible syntax?</li>
+</ul></li>
+<li><strong>dtplyr</strong> <span class="citation">(Wickham 2021a)</span>: an implementation of <strong>dplyr</strong> that uses <strong>data.table</strong> internally.
+<ul>
+<li>The best of both worlds?</li>
+<li><strong>dplyr</strong> syntax is translated to <strong>data.table</strong> syntax.</li>
+<li>Computation must be explicitly requested.</li>
+</ul></li>
+<li><strong>dbplyr</strong> <span class="citation">(Wickham, Girlich, and Ruiz 2021)</span>: an implementation of <strong>dplyr</strong> that works with databases instead of tibbles.</li>
 </ul>
-<p>Math is rendered using LaTeX (which is <a href="https://www.latex-project.org/about/">pronounced</a> “Lah-tech” or “Lay-tech”). So you can use $ and $$ to render inline math and display math like you would in LaTeX.</p>
-<p>E.g., Typing “The regression coefficient $\beta$” will produce “The regression coefficient <span class="math inline">\(\beta\)</span>”.</p>
+<p>Web searches about data frame manipulation will likely bring up references to the <strong>reshape</strong> <span class="citation">(Wickham 2018)</span> and <strong>reshape2</strong> <span class="citation">(Wickham 2020)</span> packages.</p>
+<ul>
+<li>These packages are the spiritual predecessors to <strong>tidyr</strong>.</li>
+<li>These packages do more than <strong>tidyr</strong>, but the syntax was more difficult.</li>
+<li>These packages aren’t in active development, so it’s better to avoid using them for active projects.
+<ul>
+<li>You may have a hard time getting help in using the older packages.</li>
+</ul></li>
+</ul>
+<div id="tibbles-tibble-video" class="section level2">
+<h2>Tibbles (<a href="https://youtu.be/BlnebGyuOKM">tibble video</a>)</h2>
+<p>When the <strong>dplyr</strong> package interacts with a data frame, it usually produces a “tibble.”</p>
+<ul>
+<li>A tibble is supposed to be a “modern re-imagining” of R’s standard data frame (referred to as <code>data.frame</code> for clarity).</li>
+<li>A tibble has class <code>tbl_df</code>.</li>
+<li>A tibble is also a <code>data.frame</code>, but has different default behaviors.</li>
+<li>Functions that take a <code>data.frame</code> should also take a tibble.</li>
+<li>Tibbles comes from the <strong>tibble</strong> package <span class="citation">(Müller and Wickham 2021)</span>, which is automatically imported by <strong>dplyr</strong>.</li>
+</ul>
+<div id="differences-between-a-tibble-and-a-data.frame-tibble-versus-data.frame-video" class="section level3">
+<h3>Differences between a tibble and a <code>data.frame</code> (<a href="https://youtu.be/_qHdqWx-vsQ">tibble versus <code>data.frame</code> video</a>)</h3>
+<p>A tibble generally has more restrictive behavior than a <code>data.frame</code>.</p>
+<ul>
+<li>Tibbles don’t convert input types.
+<ul>
+<li>This isn’t as big of a deal since the release of R 4.0.0 when the argument <code>stringsAsFactors</code> of the <code>data.frame</code> function was set to <code>FALSE</code> by default.</li>
+</ul></li>
+<li>Tibbles don’t allow for partial matching of variable names.</li>
+<li>Tibbles doesn’t add row names to the data frame.</li>
+<li>Subsetting a tibble always produces a tibble.
+<ul>
+<li>Subsetting a <code>data.frame</code> can return a vector, which can create edge-cases that results in a bug in your code!</li>
+</ul></li>
+<li>Tibbles do allow for non-valid R variable names, though I wouldn’t do this intentionally.
+<ul>
+<li>A non-valid R variable name has to be surrounded by backticks.</li>
+</ul></li>
+<li>Variables used to create a tibble must (generally) have the same length.
+<ul>
+<li>Unlike a <code>data.frame</code>, tibbles don’t generally “recycle” the values of a vector when creating a data frame.</li>
+<li>Tibbles only recycle vectors of length 1, i.e., it will recycle a vector of length 1 so that the new variable has length matching the other variables.</li>
+</ul></li>
+<li>The printing capabilities of a tibble are designed to be better than a <code>data.frame</code>.
+<ul>
+<li>The user can directly specify the number of rows to print for a tibble.</li>
+<li>Tibbles only print the number of columns that can fit horizontally in the Console.</li>
+</ul></li>
+</ul>
 </div>
-<div id="your-turn-2" class="section level3 action">
-<h3 class="action">Your turn</h3>
-<ol style="list-style-type: decimal">
-<li>Create a new R Script (<code>Ctrl/Cmd + Shift + n</code>).</li>
-<li>Replace the file contents with the code below:</li>
-</ol>
-<pre eval="FALSE"><code>---
-title: &quot;Bad jokes&quot;
-output: html_notebook
----
-
-# First level
-
-## Second level
-
-### Third level
-
-This document is intended to help you see the effect of markup on a rendered document.
-  
-*This is italic text*
-
-**This is bold text**
-
-`This looks like computer code`
-
-What&#39;s the difference between endash--endash and emdash---emdash?
-
-How can I add a superscript to this? Like this: this^superscript^?
-
-That&#39;s a joke if you didn&#39;t get the ~subtext~. 
-
-Wow, two bad jokes in a row. I&#39;d like to strike ~~that~~ from my memory.
-
-I wish I could \*escape\* these bad jokes.
-
-But I guess this will just be an unpleasant footnote^[unpleasant footnote].</code></pre>
-<ol start="3" style="list-style-type: decimal">
-<li>Save the file (<code>Ctrl/Cmd + s</code>) with the name “bad_jokes.Rmd”.</li>
-<li>Click the Preview button and view the results.</li>
-</ol>
-</div>
-</div>
-<div id="numberedordered-and-unordered-lists-lists-video" class="section level2">
-<h2>Numbered/ordered and unordered lists (<a href="https://youtu.be/ME80PeaMBF4">Lists video</a>)</h2>
-<div id="numberedordered-lists" class="section level3">
-<h3>Numbered/ordered lists</h3>
-<p>Numbered lists with sub-bullets:</p>
+<div id="example" class="section level3">
+<h3>Example</h3>
+<p>Let’s compare some of behaviors for a <code>data.frame</code> and a tibble. The last few lines use the <code>penguins</code> data frame from the <strong>palmerpenguins</strong> package <span class="citation">(Horst, Hill, and Gorman 2020)</span>. Run the following commands in the R Console.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbIkEgbnVtYmVyZWQgbGlzdCB3aXRoIHN1Ym51bWJlcmluZy4iLCIiLCIxLiBJdGVtIDEiLCIgICAgYS4gU3ViLWl0ZW0gMSAjIHR3byB0YWJzLCBub3Qgb25lIiwiICAgIGIuIFN1Yi1pdGVtIDIiLCIgICAgICAgIGkuIFN1Yi1zdWItaXRlbSAxICMgZm91ciB0YWJzLCBub3QgdHdvIiwiMi4gSXRlbSAyIiwiICAgIGEuIFN1Yi1pdGVtIDEiXX0= -->
-<pre class="r"><code>A numbered list with subnumbering.
-
-1. Item 1
-    a. Sub-item 1 # two tabs, not one
-    b. Sub-item 2
-        i. Sub-sub-item 1 # four tabs, not two
-2. Item 2
-    a. Sub-item 1</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjpbIiMgY3JlYXRlIGRhdGEuZnJhbWUiLCJkdGYgPC0gZGF0YS5mcmFtZShudW1iZXJzID0gMTo0LCBsZXR0ZXJzID0gbGV0dGVyc1sxOjRdLCBzdHJpbmdzQXNGYWN0b3JzID0gVFJVRSkiLCIjIG9ic2VydmUgc3RydWN0dXJlLiBsb29rIGF0IHRoZSBjbGFzc2VzIiwic3RyKGR0ZikiLCIjIHBhcnRpYWwgbWF0Y2hpbmcgb2YgdmFyaWFibGUgbmFtZSIsImR0ZiRsZXQiLCIjIHN1YnNldCBzaW5nbGUgY29sdW1uIG9mIGR0ZiIsImR0ZlssYyhcImxldHRlcnNcIildIiwiIyBzdWJzZXQgc2luZ2xlIGNvbHVtbiBvZiBkdGYgbm8gbG9uZ2VyIGEgZGF0YS5mcmFtZSEiLCJpcy5kYXRhLmZyYW1lKGR0ZlssYyhcImxldHRlcnNcIildKSIsIiMgYWRkIGEgbmV3IGNvbHVtbiB0byBkdGYiLCJkdGYkbmV3diA8LSAxOjIiLCIjIHByaW50IGR0ZiIsImR0ZiIsIiMgY3JlYXRlIHRpYmJsZSIsInRibCA8LSB0aWJibGUobnVtYmVycyA9IDE6NCwgbGV0dGVycyA9IGxldHRlcnNbMTo0XSkiLCIjIG9ic2VydmUgc3RydWN0dXJlLiBsb29rIGF0IHRoZSBjbGFzc2VzIiwic3RyKHRibCkiLCIjIHBhcnRpYWwgbWF0Y2hpbmcgb2YgdmFyaWFibGUgbmFtZSIsInRibCRsZXQiLCIjIHBhcnRpYWwgbWF0Y2hpbmcgb2YgdmFyaWFibGUgbmFtZSIsInRibCRsZXR0ZXJzIiwiIyBzdWJzZXQgc2luZ2xlIGNvbHVtbiBvZiB0YmwiLCJ0YmxbLGMoXCJsZXR0ZXJzXCIpXSIsIiMgc3Vic2V0IHNpbmdsZSBjb2x1bW4gb2YgdGJsIHN0aWxsIGEgdGliYmxlISIsImlzX3RpYmJsZSh0YmxbLGMoXCJsZXR0ZXJzXCIpXSkiLCIjIGFkZCBhIG5ldyBjb2x1bW4gdG8gdGJsIG9mIHdyb25nIGxlbmd0aCAobm90IE9LKSIsInRibCRuZXd2IDwtIDE6MiIsIiMgYWRkIGEgbmV3IGNvbHVtbiBieSByZWN5Y2x5aW5nIGEgc2luZ2xlIHZhbHVlIChPSykiLCJ0YmwkbmV3diA8LSAxIiwiIyBhZGQgYSBuZXcgY29sdW1uIHdpdGggdGhlIHNhbWUgbGVuZ3RoIGFzIG90aGVyIGNvbHVtbnMgKE9LKSIsInRibCRuZXd2IDwtIHJlcCgxOjIsIHRpbWVzID0gMikiLCIjIHByaW50IHRibCIsInRibCIsIiMgcHJpbnQgb25seSB0d28gcm93cyBvZiB0YmwiLCJwcmludCh0YmwsIG4gPSAyKSIsIiMgcHJpbnQgbGFyZ2UsIHJlZ3VsYXIgZGF0YS5mcmFtZSAocGVuZ3VpbnMgZGF0YSkiLCJhcy5kYXRhLmZyYW1lKHBlbmd1aW5zKSIsIiMgcHJpbnQgbGFyZ2UsIHJlZ3VsYXIgdGliYmxlIiwicGVuZ3VpbnMiXX0= -->
+<pre class="r"><code># create data.frame
+dtf &lt;- data.frame(numbers = 1:4, letters = letters[1:4], stringsAsFactors = TRUE)
+# observe structure. look at the classes
+str(dtf)
+# partial matching of variable name
+dtf$let
+# subset single column of dtf
+dtf[,c(&quot;letters&quot;)]
+# subset single column of dtf no longer a data.frame!
+is.data.frame(dtf[,c(&quot;letters&quot;)])
+# add a new column to dtf
+dtf$newv &lt;- 1:2
+# print dtf
+dtf
+# create tibble
+tbl &lt;- tibble(numbers = 1:4, letters = letters[1:4])
+# observe structure. look at the classes
+str(tbl)
+# partial matching of variable name
+tbl$let
+# partial matching of variable name
+tbl$letters
+# subset single column of tbl
+tbl[,c(&quot;letters&quot;)]
+# subset single column of tbl still a tibble!
+is_tibble(tbl[,c(&quot;letters&quot;)])
+# add a new column to tbl of wrong length (not OK)
+tbl$newv &lt;- 1:2
+# add a new column by recyclying a single value (OK)
+tbl$newv &lt;- 1
+# add a new column with the same length as other columns (OK)
+tbl$newv &lt;- rep(1:2, times = 2)
+# print tbl
+tbl
+# print only two rows of tbl
+print(tbl, n = 2)
+# print large, regular data.frame (penguins data)
+as.data.frame(penguins)
+# print large, regular tibble
+penguins</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>Result: A numbered list with subnumbering.</p>
-<ol style="list-style-type: decimal">
-<li>Item 1
-<ol style="list-style-type: lower-alpha">
-<li>Sub-item 1</li>
-<li>Sub-item 2
-<ol style="list-style-type: lower-roman">
-<li>Sub-sub-item 1</li>
-</ol></li>
-</ol></li>
-<li>Item 2
-<ol style="list-style-type: lower-alpha">
-<li>Sub-item 1</li>
-</ol></li>
-</ol>
-<p>Note: There must be a line between any text and the number <code>1</code>.</p>
 </div>
-<div id="unordered-lists" class="section level3">
-<h3>Unordered lists</h3>
-<p>Unordered lists with sub-bullets:</p>
+<div id="subsettingextracting-parts-of-a-tibble-subsetting-a-tibble-video" class="section level3">
+<h3>Subsetting/extracting parts of a tibble (<a href="https://youtu.be/xR3x9Mbd_6A">subsetting a tibble video</a>)</h3>
+<p>The syntax used to subset or extract elements from a <code>data.frame</code> can be used for tibbles.</p>
+<ul>
+<li>As seen above, the result produced when using the syntax may differ for a <code>data.frame</code> and a tibble.</li>
+</ul>
+<p>We will examine the behavior of a tibble when attempting to subset or extract its elements. We will use the <code>penguins</code> data set in the <strong>palmerpenguins</strong> package, which is a tibble. Execute the following commands in the R Console.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbIlNvbWUgdGV4dCB3aXRoIGJ1bGxldHMuIiwiIiwiKiBJdGVtIDEiLCIgICogU3ViLWl0ZW0gMSIsIiAgKiBTdWItaXRlbSAyIiwiICAgICogU3ViLXN1Yi1pdGVtIDEiLCIqIEl0ZW0gMiIsIiAgKiBTdWItaXRlbSAxIl19 -->
-<pre class="r"><code>Some text with bullets.
-
-* Item 1
-  * Sub-item 1
-  * Sub-item 2
-    * Sub-sub-item 1
-* Item 2
-  * Sub-item 1</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjpbIiMgY2hlY2sgd2hldGhlciB0aGUgb2JqZWN0IGlzIGEgdGliYmxlIiwiaXNfdGliYmxlKHBlbmd1aW5zKSIsIiMgZXh0cmFjdCB0aGUgc3BlY2llcyBjb2x1bW4gb2YgcGVuZ3VpbnMiLCJwZW5ndWlucyRzcGVjaWVzIiwiIyBzdWJzZXQgdGhlIGZpcnN0IGNvbHVtbiBvZiBwZW5ndWlucyIsInBlbmd1aW5zWywxXSIsIiMgc3Vic2V0IHRoZSBmaXJzdCBhbmQgdGhpcmQgY29sdW1ucyBvZiBwZW5ndWluIiwicGVuZ3VpbnNbLCBjKDEsIDMpXSIsIiMgc3Vic2V0IHRoZSBpc2xhbmQgdmFyaWFibGUgb2YgcGVuZ3VpbnMiLCJwZW5ndWluc1ssIGMoXCJpc2xhbmRcIildIiwiIyBzdWJzZXQgdGhlIGlzbGFuZCBhbmQgYmlsbF9sZW5ndGhfbW0gdmFyaWFibGVzIG9mIHBlbmd1aW5zIiwicGVuZ3VpbnNbLCBjKFwiaXNsYW5kXCIsIFwiYmlsbF9sZW5ndGhfbW1cIildIiwiIyBzdWJzZXQgZmlyc3QgMyBjb2x1bW5zIG9mIHBlbmd1aW5zIiwicGVuZ3VpbnNbMTozXSIsIiMgc3Vic2V0IHRoZSBmaXJzdCAzIHJvd3MgYW5kIG5hbWVkIGNvbHVtbnMgb2YgcGVuZ3VpbnMiLCJwZW5ndWluc1sxOjMsIGMoXCJpc2xhbmRcIiwgXCJiaWxsX2xlbmd0aF9tbVwiKV0iLCIjIHN1YnNldCBhbGwgYnV0IHRoZSBmaXJzdCAzIHJvd3Mgb2YgcGVuZ3VpbnMgd2l0aCB0aGUgbmFtZWQgY29sdW1ucyAiLCJwZW5ndWluc1stKDE6MyksIGMoXCJpc2xhbmRcIiwgXCJiaWxsX2xlbmd0aF9tbVwiKV0iXX0= -->
+<pre class="r"><code># check whether the object is a tibble
+is_tibble(penguins)
+# extract the species column of penguins
+penguins$species
+# subset the first column of penguins
+penguins[,1]
+# subset the first and third columns of penguin
+penguins[, c(1, 3)]
+# subset the island variable of penguins
+penguins[, c(&quot;island&quot;)]
+# subset the island and bill_length_mm variables of penguins
+penguins[, c(&quot;island&quot;, &quot;bill_length_mm&quot;)]
+# subset first 3 columns of penguins
+penguins[1:3]
+# subset the first 3 rows and named columns of penguins
+penguins[1:3, c(&quot;island&quot;, &quot;bill_length_mm&quot;)]
+# subset all but the first 3 rows of penguins with the named columns 
+penguins[-(1:3), c(&quot;island&quot;, &quot;bill_length_mm&quot;)]</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>Result: Some text with bullets.</p>
+</div>
+<div id="important-functions-for-tibbles-tibble-related-functions-video" class="section level3">
+<h3>Important functions for tibbles (<a href="https://youtu.be/2zddbMKnxrY">tibble-related functions video</a>)</h3>
+<p>Below are some of the most important functions associated with tibbles:</p>
 <ul>
-<li>Item 1
-<ul>
-<li>Sub-item 1</li>
-<li>Sub-item 2
-<ul>
-<li>Sub-sub-item 1</li>
-</ul></li>
-</ul></li>
-<li>Item 2
-<ul>
-<li>Sub-item 1</li>
-</ul></li>
+<li><code>tibble</code>: create a tibble similarly to how you would create a <code>data.frame</code></li>
+<li><code>as_tibble</code>: turn a <code>data.frame</code> into a tibble</li>
+<li><code>is_tibble</code>: determine whether an object is a tibble</li>
+<li><code>add_row</code>: add a row to a tibble</li>
+<li><code>add_column</code>: add a column to a tibble</li>
 </ul>
-<p>Notes:</p>
-<ul>
-<li>There must be a line between any text and the *.</li>
-<li>You can use <code>+</code> or <code>-</code> instead of <code>*</code> when creating unordered lists with the same result.</li>
-</ul>
-</div>
-<div id="your-turn-3" class="section level3">
-<h3>Your turn</h3>
-<p>Create an example of a numbered list with 4 levels and an unordered list with 3 levels.</p>
-</div>
-</div>
-<div id="code-chunks-code-chunks-video" class="section level2">
-<h2>Code chunks (<a href="https://youtu.be/_jVqqTGfmB0">Code chunks video</a>)</h2>
-<p>Chunks of code can be added in an R Markdown by placing the relevant code between <code>```{r}</code> and <code>```</code>. e.g.,</p>
-<pre><code>```{r, label = chunk_name}
-1 + 1
-```</code></pre>
-<p>You can generate a code chunk template using <code>Ctrl/Cmd + Alt + i</code>.</p>
-<p>The <code>chunk_name</code> is optional but allows you give give chunks names labels that you can refer back to. This is useful for complicated documents and reports. (See Verbatim Code Chunks <a href="https://bookdown.org/yihui/rmarkdown-cookbook/verbatim-code-chunks.html">https://bookdown.org/yihui/rmarkdown-cookbook/verbatim-code-chunks.html</a> to learn how to render the above code.)</p>
-<p>Note: each label should be unique within the document. I don’t recommend adding chunk labels unless you actually need them, otherwise you are likely to reuse a chunk label and make a headache for yourself!</p>
-<div id="chunk-options-chunk-options-video" class="section level3">
-<h3>Chunk options (<a href="https://youtu.be/Fq7H_qt2K4g">Chunk options video</a>)</h3>
-<p>Code chunks have many options that can be used to customize the code. We will cover many important ones below. I will specify the default option in parentheses, (), after the option. So this is what will be used by default if you don’t specify anything.</p>
-<p>Yuhui Xie, creator of <strong>knitr</strong>, provides a complete list (<a href="https://yihui.org/knitr/options/">https://yihui.org/knitr/options/</a>) of chunk options on his website (<a href="https://yihui.org/">https://yihui.org/</a>).</p>
-</div>
-<div id="code-evaluation" class="section level3">
-<h3>Code evaluation</h3>
-<ul>
-<li><code>eval</code>: (<code>TRUE</code>) A logical value indicating whether the chunk should be evaluated in the Console.
-<ul>
-<li>You can also evaluate <strong>selected lines</strong> if you provide a numeric vector. e.g., <code>eval = 1:3</code> would evaluate lines 1 through 3.</li>
-</ul></li>
-</ul>
-</div>
-<div id="text-output" class="section level3">
-<h3>Text output</h3>
-<ul>
-<li><code>echo</code>: (<code>TRUE</code>). A logical value indicating whether the source code should be displayed.
-<ul>
-<li>You can also echo <strong>selected lines</strong> if you provide a numeric vector. e.g., <code>echo = 1:3</code> would echolines 1 through 3</li>
-</ul></li>
-<li><code>results</code>: (<code>&#39;markup&#39;</code>). Determines hwo the results are displayed.
-<ul>
-<li>Other options are <code>&#39;asis&#39;</code>, <code>&#39;hold&#39;</code>, <code>&#39;hide&#39;</code>.</li>
-</ul></li>
-<li><code>collapse</code>: (<code>FALSE</code>). A logical value indicating whether the source and output should be collapsed into a single block.</li>
-<li><code>include</code>: (<code>TRUE</code>) A logical value indicating whether to include the chunk output.
-<ul>
-<li>Set to <code>FALSE</code> when you want something to run but not be shown.</li>
-</ul></li>
-</ul>
-<p>Other options: <code>warning</code>, <code>error</code>, <code>messages</code> (<code>TRUE</code>) determine whether warnings, errors, and messages will be displayed, respectively.</p>
-</div>
-<div id="code-styling" class="section level3">
-<h3>Code styling</h3>
-<ul>
-<li><code>highlight</code>: (<code>TRUE</code>) A logical value indicating whether the source code syntax should be highlighted with different colors.</li>
-<li><code>comment</code>: (<code>##</code>) The text that will be shown prior to evaluated code in the output block.
-<ul>
-<li>Use <code>##</code> or <code>#&gt;</code> to make the code blocks easier to copy and paste into the Console. <code>#&gt;</code> is closer to what the Console output actually looks like.</li>
-</ul></li>
-<li><code>tidy</code>: (<code>FALSE</code>) A logical value indicating whether the source code be automatically reformatted.</li>
-<li><code>tidy.opts</code>: (<code>NULL</code>) A list of options that can be used to customize the <code>tidy</code> option above.
-<ul>
-<li>e.g., <code>tidy.opts = list(width.cutoff = 60)</code> controls the length of the code and tries to cut the code lines at 60 characters.</li>
-</ul></li>
-</ul>
-</div>
-<div id="plots" class="section level3">
-<h3>Plots</h3>
-<ul>
-<li><code>fig.show</code>: (<code>&#39;asis&#39;</code>). Instructions for displaying plots.
-<ul>
-<li><code>&#39;asis&#39;</code>: Show plots in the order and places they would be if executed in the Console.</li>
-<li><code>&#39;hold&#39;</code>: Output all plots at the end of the chunk.</li>
-<li><code>&#39;hide&#39;</code>: Hide all plots.</li>
-<li><code>&#39;animate&#39;</code>: Combine and animate the plots</li>
-</ul></li>
-<li><code>fig.align</code>: (<code>&#39;default&#39;</code>). A character vector specifying how to align the figures.
-<ul>
-<li>Allowable values are: <code>&#39;default&#39;</code>, <code>&#39;left&#39;</code>, <code>&#39;right&#39;</code>, and <code>&#39;center&#39;</code>.</li>
-</ul></li>
-<li><code>fig.width</code>, <code>fig.height</code>: (7). A numeric value indicating the width and height of the result figures.</li>
-<li><code>fig.cap</code>: (<code>NULL</code>). A caption for the figure.</li>
-</ul>
-</div>
-<div id="your-turn-chunk-option-visualization" class="section level3">
-<h3>Your turn (<a href="https://youtu.be/teiwbKIfUnY">Chunk option visualization</a>)</h3>
-<p>Copy and paste the code at <a href="https://raw.githubusercontent.com/jfrench/DataWrangleViz/master/rmd-chunks-viz.Rmd">https://raw.githubusercontent.com/jfrench/DataWrangleViz/master/rmd-chunks-viz.Rmd</a> into an R Markdown document and then Knit the file to see visual examples of the options described above.</p>
-</div>
-<div id="some-general-options-not-discussed" class="section level3">
-<h3>Some general options not discussed</h3>
-<ul>
-<li>Caching: This has to do with saving previous code that has been evaluated. This is important for documents with lots of code that is time consuming to run.</li>
-<li>Animation: You can add plot animations if you have the FFMpeg program installed (<a href="https://ffmpeg.org/">https://ffmpeg.org/</a>.)</li>
-</ul>
-</div>
-<div id="inline-code" class="section level3">
-<h3>Inline code</h3>
-<p>You can run code in the middle of text using something like <code>`r mean(1:3)`</code>.</p>
-<p>For example, <code>`r 1 + 1`</code> will produce 2.</p>
-</div>
-<div id="tables" class="section level3">
-<h3>Tables</h3>
-<p>By default, R will print tables (like data frames) exactly like you would see them in the Console output.</p>
-<p>For example:</p>
-<pre><code>```{r}
-head(cars)
-```</code></pre>
+<p>There are several other function associated with tibbles from the <strong>tibble</strong> package, but we don’t discuss them here.</p>
+<p>Run the following code in the R Console to see the results from applying the functions mentioned above.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuaGVhZChjYXJzKVxuYGBgXG5gYGAifQ== -->
-<pre class="r"><code>```r
-head(cars)</code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
-
-&lt;!-- rnb-chunk-end --&gt;
-
-
-&lt;!-- rnb-text-begin --&gt;
-
-
-The formatting can be improved with the `kable` function in the **knitr** package.
-</code></pre>
-<pre class="{r}"><code>knitr::kable(cars[1:6,], caption = &quot;Kable table&quot;)</code></pre>
-<p>````</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxua25pdHI6OmthYmxlKGNhcnNbMTo2LF0sIGNhcHRpb24gPSBcIkthYmxlIHRhYmxlXCIpXG5gYGAifQ== -->
-<pre class="r"><code>knitr::kable(cars[1:6,], caption = &quot;Kable table&quot;)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjpbIiMgY3JlYXRlIGEgc2ltcGxlIHRpYmJsZSIsInRibDEgPC0gdGliYmxlKG51bWJlcnMgPSAxOjMsIGxldHRlcnMgPSBsZXR0ZXJzWzE6M10pIiwidGJsMSIsIiMgY3JlYXRlIGEgc2ltcGxlIGRhdGEuZnJhbWUiLCJkdGYxIDwtIGRhdGEuZnJhbWUobnVtYmVycyA9IDE6MywgbGV0dGVycyA9IGxldHRlcnNbMTozXSkiLCJkdGYxIiwiIyBjb252ZXJ0IHRoZSBkYXRhLmZyYW1lIHRvIGEgdGliYmxlIiwidGJsMiA8LSBhc190aWJibGUoZHRmMSkiLCIjIGNoZWNrIHRoYXQgdGhlIG9iamVjdHMgYXJlICIsImlkZW50aWNhbCh0YmwxLCB0YmwyKSIsIiMgY29uZmlybSB0aGF0IHRibDIgaXMgYSB0aWJibGUiLCJpc190aWJibGUodGJsMikiLCIjIGFkZCBhIHJvdyB0byB0aGUgdGliYmxlIiwidGJsMSA8LSBhZGRfcm93KHRibDEsIG51bWJlcnMgPSA0OjUsIGxldHRlcnMgPSBsZXR0ZXJzWzQ6NV0pIiwidGJsMSIsIiMgYWRkIGEgY29sdW1uIHRvIHRoZSB0aWJibGUiLCJ0YmwxIDwtIGFkZF9jb2x1bW4odGJsMSwgY2F0cyA9IGZhY3RvcihyZXAoYyhcImcxXCIsIFwiZzJcIiksIHRpbWVzID0gYygyLCAzKSkpLCAuYWZ0ZXIgPSBcIm51bWJlcnNcIikiLCJ0YmwxIl19 -->
+<pre class="r"><code># create a simple tibble
+tbl1 &lt;- tibble(numbers = 1:3, letters = letters[1:3])
+tbl1
+# create a simple data.frame
+dtf1 &lt;- data.frame(numbers = 1:3, letters = letters[1:3])
+dtf1
+# convert the data.frame to a tibble
+tbl2 &lt;- as_tibble(dtf1)
+# check that the objects are 
+identical(tbl1, tbl2)
+# confirm that tbl2 is a tibble
+is_tibble(tbl2)
+# add a row to the tibble
+tbl1 &lt;- add_row(tbl1, numbers = 4:5, letters = letters[4:5])
+tbl1
+# add a column to the tibble
+tbl1 &lt;- add_column(tbl1, cats = factor(rep(c(&quot;g1&quot;, &quot;g2&quot;), times = c(2, 3))), .after = &quot;numbers&quot;)
+tbl1</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p><strong>Markdown tables</strong> (<a href="https://youtu.be/Rp1EGDY3ZkQ">Markdown tables video</a>)</p>
-<p>Tables can be directly created in Markdown using extended syntax (<a href="https://www.markdownguide.org/extended-syntax/">https://www.markdownguide.org/extended-syntax/</a>). These are most useful for small tables that require very specific formatting and don’t have many rows or columns.</p>
-<p>Basic structure:</p>
-<ul>
-<li>The first two rows of a Markdown table provide the table’s header (the column names and alignment.)</li>
-<li>The remaining rows provide the rest of the table’s data.</li>
-</ul>
-<p>Additional details:</p>
-<ul>
-<li><p>The pipe (<code>|</code>) is used to separate the table columns and column names in the first row.</p></li>
-<li><p>The pipe and three (or more) hyphens (<code>---</code>) between pipes are used in the second row to create a line between the column names and the values in the table.</p></li>
-<li><p>The colon (<code>:</code>) can be used in the second row to align the columns.</p>
-<ul>
-<li><code>:---</code> produces a left-aligned column.</li>
-<li><code>---:</code> produces a right-aligned column.</li>
-<li><code>:---:</code> produces a center-aligned column.</li>
-</ul></li>
-<li><p>You can use more than three hyphens or spaces to align the columns visually.</p></li>
-<li><p>The remaining values in the table are placed between pipes and can be formatted similar to other text.</p></li>
-<li><p>Make sure each row begins and ends with a pipe.</p></li>
-</ul>
-<p>A simple example is provided below. If we include the following code in our R Markdown document:</p>
-<pre><code>| Coefficient | Estimate | Est. Standard Error |
-| :---------- | -------: | :---:               |
-| (Intercept) | 3.2      | 1.6                 |
-| $\beta_1$   | *1.5*    | **2.7**             | 
-| X2          | 9.4      | ~~0.6~~             |</code></pre>
-<p>then the following output will be rendered:</p>
+</div>
+</div>
+<div id="using-dplyr-dplyr-overview-video" class="section level2">
+<h2>Using <strong>dplyr</strong> (<a href="https://youtu.be/kB-YSQ4r2Yc">dplyr overview video</a>)</h2>
+<p><strong>dplyr</strong> provides functions for the “verbs” (i.e., actions) related to common data frame manipulation tasks. The table below summarizes some of the most important functions by the aspect of a data frame it manipulates.</p>
 <table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
 <thead>
 <tr class="header">
-<th align="left">Coefficient</th>
-<th align="right">Estimate</th>
-<th align="center">Est. Standard Error</th>
+<th>aspect</th>
+<th>function</th>
+<th>purpose</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">(Intercept)</td>
-<td align="right">3.2</td>
-<td align="center">1.6</td>
+<td>row</td>
+<td><code>filter</code></td>
+<td>selects rows based on a logical statement</td>
 </tr>
 <tr class="even">
-<td align="left"><span class="math inline">\(\beta_1\)</span></td>
-<td align="right"><em>1.5</em></td>
-<td align="center"><strong>2.7</strong></td>
+<td>row</td>
+<td><code>slice</code></td>
+<td>select rows based on position or other property</td>
 </tr>
 <tr class="odd">
-<td align="left">X2</td>
-<td align="right">9.4</td>
-<td align="center"><del>0.6</del></td>
+<td>row</td>
+<td><code>arrange</code></td>
+<td>reorders the rows based on some property</td>
+</tr>
+<tr class="even">
+<td>row</td>
+<td><code>group_by</code></td>
+<td>groups a collection of rows hierarchically based on one or more variables</td>
+</tr>
+<tr class="odd">
+<td>group of rows</td>
+<td><code>summarize</code></td>
+<td>produces a summarizing value or values for a group of rows</td>
+</tr>
+<tr class="even">
+<td>column</td>
+<td><code>select</code></td>
+<td>selects columns based on a logical statement, column names, etc.</td>
+</tr>
+<tr class="odd">
+<td>column</td>
+<td><code>rename</code></td>
+<td>changes one or more column names</td>
+</tr>
+<tr class="even">
+<td>column</td>
+<td><code>mutate</code></td>
+<td>changes an existing column or adds a new column</td>
+</tr>
+<tr class="odd">
+<td>column</td>
+<td><code>relocate</code></td>
+<td>reorders the columns</td>
 </tr>
 </tbody>
 </table>
-<p>Notice the alignment and formatting of the text based on the code above.</p>
+<div id="the-pipe-operator" class="section level3">
+<h3>The pipe operator</h3>
+<p>The pipe operator, <code>%&gt;%</code>, is a popular approach for “piping” an object into the first argument (usually) of another function.</p>
+<ul>
+<li>The pipe operator was introduced by the <strong>magrittr</strong> package <span class="citation">(Bache and Wickham 2020)</span>.</li>
+<li>It is extremely popular in the <strong>tidyverse</strong> for stringing sequences of operations together in a readable way.</li>
+<li>R version 4.1 will gain a native pipe operator (<code>|&gt;</code>) that will be a better choice moving forward.</li>
+</ul>
+<p>The pipe operator is best understood through example, as there are special cases that have to be considered.</p>
 </div>
-</div>
-<div id="yaml-header-yaml-header-video" class="section level2">
-<h2>YAML header (<a href="https://youtu.be/JgH_rIJUqZ8">YAML header video</a>)</h2>
-<p>The YAML (Yet Another Markdown Language) header controls many aspects of the R Markdown document. Unless you’re using R Markdown for advanced purposes (books, blogs, websites, running the same file with multiple input parameters) then you probably don’t need to know a lot about the YAML header at this stage.</p>
-<p>And if you do need to know about the YAML header in detail, then you probably need a more advanced introduction to R Markdown!</p>
-<div id="references" class="section level3">
-<h3>References</h3>
-<p>You can add a bibliography to your document using the YAML header.</p>
-<p>You need to add something like the following to the header:</p>
+<div id="filtering-dplyr-filtering-video" class="section level3">
+<h3>Filtering (<a href="https://youtu.be/8tazJbgcDWg">dplyr filtering video</a>)</h3>
+<p>The <code>filter</code> function filters out the rows of a data frame that don’t meet the designated criteria.</p>
+<p>Let’s <code>filter</code> the rows of the <code>penguins</code> data frame based on whether the <code>body_mass_g</code> variable is more than 6000. In the code below, the logical statement <code>body_mass_g &gt; 6000</code> indicates the rows of <code>penguins</code> to retain. In the first example, we use the <code>filter</code> function to directly filter the <code>penguins</code> data frame. In the second example, we pipe the <code>penguins</code> data frame into the <code>filter</code> function and then use the logical statement to filter the rows.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYmlibGlvZ3JhcGh5OiBmaWxlbmFtZS5maWxldHlwZSJ9 -->
-<pre class="r"><code>bibliography: filename.filetype</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGVuZ3VpbnNbcGVuZ3VpbnMkYm9keV9tYXNzX2cgPiA2MDAwLF1cbnBlbmd1aW5zW3Blbmd1aW5zJGJvZHlfbWFzc19nID4gNjAwMCAmXG4gICAgICAgICAgICFpcy5uYShwZW5ndWlucyRib2R5X21hc3NfZyksXVxuZmlsdGVyKHBlbmd1aW5zLCBib2R5X21hc3NfZyA+IDYwMDApXG5wZW5ndWlucyAlPiUgZmlsdGVyKGJvZHlfbWFzc19nID4gNjAwMClcbmBgYCJ9 -->
+<pre class="r"><code>penguins[penguins$body_mass_g &gt; 6000,]
+penguins[penguins$body_mass_g &gt; 6000 &amp;
+           !is.na(penguins$body_mass_g),]
+filter(penguins, body_mass_g &gt; 6000)
+penguins %&gt;% filter(body_mass_g &gt; 6000)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>Many bibliography types are supported. A list of supported file types is currently available at <a href="https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html">https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html</a></p>
-<p>Citations must be placed in square brackets.</p>
-<ul>
-<li>Multiple citations should be separated by semicolons.</li>
-</ul>
-<p>A citation will have a key associated with it in the bibliography file, and you must use <code>@key</code> to cite the relevant reference.</p>
-<p>Here are some examples from the R Studio website:</p>
+</div>
+<div id="slicing-dplry-slice-video" class="section level3">
+<h3>Slicing (<a href="https://youtu.be/4_YptM2twH0">dplry slice video</a>)</h3>
+<p><code>slice</code> subsets rows of a data frame by index or with respect to other properties.</p>
+<p>In the example below, we use the <code>slice</code> function to subset rows 10-12 of <code>penguins</code>, first directly, and then using the pipe operator.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbIkJsYWggYmxhaCBbc2VlIEBkb2U5OSwgcHAuIDMzLTM1OyBhbHNvIEBzbWl0aDA0LCBjaC4gMV0uIiwiIiwiQmxhaCBibGFoIFtAZG9lOTksIHBwLiAzMy0zNSwgMzgtMzkgYW5kICpwYXNzaW0qXS4iLCIiLCJCbGFoIGJsYWggW0BzbWl0aDA0OyBAZG9lOTldLiJdfQ== -->
-<pre class="r"><code>Blah blah [see @doe99, pp. 33-35; also @smith04, ch. 1].
-
-Blah blah [@doe99, pp. 33-35, 38-39 and *passim*].
-
-Blah blah [@smith04; @doe99].</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGVuZ3VpbnNbMTA6MTIsIF1cbnNsaWNlKHBlbmd1aW5zLCAxMDoxMilcbnBlbmd1aW5zICU+JSBzbGljZSgxMDoxMilcbmBgYCJ9 -->
+<pre class="r"><code>penguins[10:12, ]
+slice(penguins, 10:12)
+penguins %&gt;% slice(10:12)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>Many for details about bibliographies with R Markdown are available on the R Studio website, and are currently found at <a href="https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html">https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html</a></p>
-</div>
-<div id="producing-different-document-types" class="section level3">
-<h3>Producing different document types</h3>
-<p>One of the incredible features of R Markdown is that you can easily produce multiple file types with a single click of the “Knit” button.</p>
-<p>Adding the following code in the YAML header will produce a pdf document, an html notebook, an html document, and a Microsoft Word document, all with one click of the Knit button!</p>
+<p><code>slice_head</code> subsets the first <code>n</code> rows of a data frame. Conversely, <code>slice_tail</code> subsets the last <code>n</code> rows of a data frame.</p>
+<ul>
+<li>This is similar to the <code>head</code> and <code>tail</code> functions in <strong>base</strong> R.</li>
+</ul>
+<p>In the examples below, we subset the first 2 rows, then the last two rows, of the <code>penguins</code> data frame.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbIm91dHB1dDoiLCIgIHBkZl9kb2N1bWVudDogZGVmYXVsdCIsIiAgaHRtbF9ub3RlYm9vazogZGVmYXVsdCIsIiAgaHRtbF9kb2N1bWVudDoiLCIgICAgZGZfcHJpbnQ6IHBhZ2VkIiwiICB3b3JkX2RvY3VtZW50OiBkZWZhdWx0Il19 -->
-<pre class="r"><code>output:
-  pdf_document: default
-  html_notebook: default
-  html_document:
-    df_print: paged
-  word_document: default</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2xpY2VfaGVhZChwZW5ndWlucywgbiA9IDIpXG5wZW5ndWlucyAlPiUgc2xpY2VfaGVhZChuID0gMilcbnNsaWNlX3RhaWwocGVuZ3VpbnMsIG4gPSAyKVxucGVuZ3VpbnMgJT4lIHNsaWNlX3RhaWwobiA9IDIpXG5gYGAifQ== -->
+<pre class="r"><code>slice_head(penguins, n = 2)
+penguins %&gt;% slice_head(n = 2)
+slice_tail(penguins, n = 2)
+penguins %&gt;% slice_tail(n = 2)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<ul>
-<li><code>pdf_document</code>: Excellent for distributing a static (unchanging) document. Also great for submitting homework solutions to your instructor!</li>
-<li><code>html_document</code>: Excellent for sharing interactive files. Can be viewed in a web browser.</li>
-<li><code>html_notebook</code>: The excellent “R notebook”.
-<ul>
-<li>It’s like an <code>html_document</code> but the source code can be downloaded by toggling the “Code” button in the upper right hand corner of the file.</li>
-<li>Great to share with collaborators because they can update the document, add analysis, etc.</li>
-<li>Make sure to “Run All Code” using <code>Ctrl/Cmd + Alt + r</code> prior to “Previewing” the document or the code chunk output will not be included.</li>
-</ul></li>
-<li><code>word_document</code>: If you have to have Microsoft Word editing capabilities, for some reason.</li>
-</ul>
+<p><code>slice_max</code> subsets the <code>n</code> rows of a data frame with the <code>n</code> largest values with respect to a specific variable. Conversely, <code>slice_min</code> subsets the <code>n</code> rows of a data frame with the <code>n</code> smallest values with respect to a specific variable.</p>
+<p>In the examples below, we subset the rows of the <code>penguins</code> data frame with the largest and smallest <code>bill_lengh_mm</code> values, respectively.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2xpY2VfbWF4KHBlbmd1aW5zLCBiaWxsX2xlbmd0aF9tbSwgbiA9IDIpXG5wZW5ndWlucyAlPiUgc2xpY2VfbWF4KGJpbGxfbGVuZ3RoX21tLCBuID0gMilcbnNsaWNlX21pbihwZW5ndWlucywgYmlsbF9sZW5ndGhfbW0sIG4gPSAyKVxucGVuZ3VpbnMgJT4lIHNsaWNlX21pbihiaWxsX2xlbmd0aF9tbSwgbiA9IDIpXG5gYGAifQ== -->
+<pre class="r"><code>slice_max(penguins, bill_length_mm, n = 2)
+penguins %&gt;% slice_max(bill_length_mm, n = 2)
+slice_min(penguins, bill_length_mm, n = 2)
+penguins %&gt;% slice_min(bill_length_mm, n = 2)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p><code>slice_sample</code> randomly selects <code>n</code> rows of a data frame. We randomly select 3 rows of <code>penguins</code> below. To make the results reproducible, we would need to set the random number seed using <code>set.seed</code> since the rows are randomly selected.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2xpY2Vfc2FtcGxlKHBlbmd1aW5zLCBuID0gMylcbnBlbmd1aW5zICU+JSBzbGljZV9zYW1wbGUobiA9IDMpXG5gYGAifQ== -->
+<pre class="r"><code>slice_sample(penguins, n = 3)
+penguins %&gt;% slice_sample(n = 3)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 </div>
-<div id="your-turn-4" class="section level3">
-<h3>Your turn</h3>
+<div id="arranging" class="section level3">
+<h3>Arranging</h3>
+<p>The <code>arrange</code> function arranges the rows of a data frame with respect to a certain variable.</p>
 <ul>
-<li>Execute the command <code>download.file(&quot;https://raw.githubusercontent.com/jfrench/DataWrangleViz/master/02-crash-course-in-rmd.nb.html&quot;, destfile = &quot;02-crash-course-in-rmd.nb.html&quot;)</code> in the Console.</li>
-<li>Close R Studio.</li>
-<li>Find the downloaded file.</li>
-<li>Toggle the “Code” button in the right hand corner of the file to download the original source code.</li>
+<li>By default, the rows are ordered in ascending order.</li>
+<li>The <code>desc</code> function can be used to arrange the rows in descending order.</li>
+<li>The ordering can be done within groups if specified.</li>
 </ul>
+<p>In the code below, we arrange the rows of <code>penguins</code> in ascending and then descending order, respectively, with respect to <code>bill_length_mm</code>.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYXJyYW5nZShwZW5ndWlucywgYmlsbF9sZW5ndGhfbW0pXG5hcnJhbmdlKHBlbmd1aW5zLCBkZXNjKGJpbGxfbGVuZ3RoX21tKSlcbmBgYCJ9 -->
+<pre class="r"><code>arrange(penguins, bill_length_mm)
+arrange(penguins, desc(bill_length_mm))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>We could do the same thing using pipe operators using the code below.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjpbInBlbmd1aW5zICU+JSBhcnJhbmdlKGJpbGxfbGVuZ3RoX21tKSIsInBlbmd1aW5zICU+JSBhcnJhbmdlKGRlc2MoYmlsbF9sZW5ndGhfbW0pKSJdfQ== -->
+<pre class="r"><code>penguins %&gt;% arrange(bill_length_mm)
+penguins %&gt;% arrange(desc(bill_length_mm))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>The data frame can also be arranged within groups. In the code below, we select three rows from each <code>species</code> of <code>penguins</code> and assign it the name <code>penguins_slice</code>. We then order the rows of <code>penguins_slice</code> by <code>bill_length_mm</code> in each group by setting <code>.by_group</code> to <code>TRUE</code>.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGVuZ3VpbnNfc2xpY2UgPC0gcGVuZ3VpbnMgJT4lIGdyb3VwX2J5KHNwZWNpZXMpICU+JSBzbGljZSgxOjMpXG5hcnJhbmdlKHBlbmd1aW5zX3NsaWNlLCBiaWxsX2xlbmd0aF9tbSwgLmJ5X2dyb3VwID0gVFJVRSlcbmBgYCJ9 -->
+<pre class="r"><code>penguins_slice &lt;- penguins %&gt;% group_by(species) %&gt;% slice(1:3)
+arrange(penguins_slice, bill_length_mm, .by_group = TRUE)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 </div>
-<div id="other-things-you-can-create-in-r-markdown" class="section level3">
-<h3>Other things you can create in R Markdown:</h3>
+<div id="grouping-and-summarizing-dplyr-grouping-and-summarizing-video" class="section level3">
+<h3>Grouping and summarizing (<a href="https://youtu.be/LaA7sVe76PA">dplyr grouping and summarizing video</a>)</h3>
+<p>The <code>group_by</code> function groups rows of a data frame with respect to one or more variables, which can then be manipulated in various ways.</p>
+<p><code>group_by</code> is often used in close connection to the <code>summarize</code> function, which computes statistical summaries for (grouped) rows into a single value.</p>
+<p>Since we now want to string several operation in a row, the pipe operator is useful for stringing the commands together.</p>
+<p>In the code below, we group the <code>penguins</code> data with respect to <code>species</code> and <code>island</code> and summarize the various aspects of the grouped data (compute the mean, the median, and the number of observations in each group for <code>bill_length_mm</code>.)</p>
 <ul>
-<li>Presentations: Use the <code>ioslides_presentation</code> or the <code>slidy_presentation</code> output type (there are others) to create a presentation.
-<ul>
-<li>Use <code>#</code> to start a new slide with a title.</li>
-<li>Use <code>***</code> to start a new slide without a title.</li>
-<li>Use <code>##</code> for a second level header.</li>
-</ul></li>
-<li>Shiny apps: This is essentially an interactive web app created using R Markdown.</li>
-<li>Websites</li>
-<li>Books (<strong>bookdown</strong>)</li>
-<li>Blogs (<strong>blogdown</strong>)</li>
-<li>Dashboards (<strong>flexdashboard</strong>)</li>
-<li>html_widgets (various packages)</li>
+<li>We create variables with designated names inside <code>summarize</code>.</li>
+<li><code>n()</code> counts the number of observations in each grouping.</li>
+<li><code>na.rm</code> is need to compute the statistics without them being poisoned by <code>NA</code> values.</li>
 </ul>
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGVuZ3VpbnMgJT4lXG4gICAgZ3JvdXBfYnkoc3BlY2llcywgaXNsYW5kKSAlPiVcbiAgICBzdW1tYXJpemUobWVhbl9iaWxsX2xlbmd0aF9tbSA9IG1lYW4oYmlsbF9sZW5ndGhfbW0sIG5hLnJtID0gVFJVRSksXG4gICAgICAgIG1lZGlhbl9iaWxsX2xlbmd0aF9tbSA9IG1lZGlhbihiaWxsX2xlbmd0aF9tbSwgbmEucm0gPSBUUlVFKSwgY291bnQgPSBuKCkpXG5gYGAifQ== -->
+<pre class="r"><code>penguins %&gt;%
+    group_by(species, island) %&gt;%
+    summarize(mean_bill_length_mm = mean(bill_length_mm, na.rm = TRUE),
+        median_bill_length_mm = median(bill_length_mm, na.rm = TRUE), count = n())</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="selecting-dplyr-select-video" class="section level3">
+<h3>Selecting (<a href="https://youtu.be/Su1VcLnIBuM">dplyr select video</a>)</h3>
+<p>The <code>select</code> function can be used to select columns of a data frame. You can get pretty creative in how you select the columns (e.g., using string matching), but we only consider some simple examples.</p>
+<ul>
+<li>Run <code>?dplyr::select</code> for more complex examples.</li>
+</ul>
+<p>We can select specific columns of a data frame by providing the column names. We select the <code>species</code> and <code>island</code> columns below of <code>penguins</code> below.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2VsZWN0KHBlbmd1aW5zLCBzcGVjaWVzLCBpc2xhbmQpXG5wZW5ndWlucyAlPiUgc2VsZWN0KHNwZWNpZXMsIGlzbGFuZClcbmBgYCJ9 -->
+<pre class="r"><code>select(penguins, species, island)
+penguins %&gt;% select(species, island)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Next, we select the columns of <code>penguins</code> that end in <code>mm</code>.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2VsZWN0KHBlbmd1aW5zLCBlbmRzX3dpdGgoXCJtbVwiKSlcbnBlbmd1aW5zICU+JSBzZWxlY3QoZW5kc193aXRoKFwibW1cIikpXG5gYGAifQ== -->
+<pre class="r"><code>select(penguins, ends_with(&quot;mm&quot;))
+penguins %&gt;% select(ends_with(&quot;mm&quot;))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="column-renaming-dplyr-rename-video" class="section level3">
+<h3>Column renaming (<a href="https://youtu.be/5xuACH1a5UI">dplyr rename video</a>)</h3>
+<p>The <code>rename</code> function renames the columns of a data frame.</p>
+<ul>
+<li>The syntax is <code>new_name = old_name</code>.</li>
+</ul>
+<p>In the example below, we rename the <code>bill_length_mm</code> column to <code>bill</code> and <code>flipper_length_mm</code> to <code>flipper</code>.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyByZW5hbWluZyBjb2x1bW5zIHVzaW5nIGJhc2UgUlxubmFtZXMocGVuZ3VpbnMpXG4jIG5hbWVzKHBlbmd1aW5zKVtjKDMsIDUpXSA8LSBjKFwiYmlsbFwiLCBcImZsaXBwZXJcIilcbiMgcmVuYW1pbmcgY29sdW1ucyB1c2luZyBkcGx5clxucmVuYW1lKHBlbmd1aW5zLCBiaWxsID0gYmlsbF9sZW5ndGhfbW0sIGZsaXBwZXIgPSBmbGlwcGVyX2xlbmd0aF9tbSlcbnBlbmd1aW5zICU+JSByZW5hbWUoYmlsbCA9IGJpbGxfbGVuZ3RoX21tLCBmbGlwcGVyID0gZmxpcHBlcl9sZW5ndGhfbW0pXG5gYGAifQ== -->
+<pre class="r"><code># renaming columns using base R
+names(penguins)
+# names(penguins)[c(3, 5)] &lt;- c(&quot;bill&quot;, &quot;flipper&quot;)
+# renaming columns using dplyr
+rename(penguins, bill = bill_length_mm, flipper = flipper_length_mm)
+penguins %&gt;% rename(bill = bill_length_mm, flipper = flipper_length_mm)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="mutating-a-column-dplyr-mutate-video" class="section level3">
+<h3>Mutating a column (<a href="https://youtu.be/uiEzbFf5zJw">dplyr mutate video</a>)</h3>
+<p>The <code>mutate</code> function modifies an existing column or can create a new column from the existing columns.</p>
+<ul>
+<li>To create a new column, the syntax is <code>new_column = function(existing_columns)</code></li>
+<li>To modify an existing column, the syntax is <code>existing_column = function(existing_columns)</code>.</li>
+</ul>
+<p>In the example below, we transform <code>bill_length_mm</code> into a new variable <code>bill_length_in</code> that describes the bill length in inches instead of millimeters (and then selects the two bill length columns)</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubXV0YXRlKHBlbmd1aW5zLCBiaWxsX2xlbmd0aF9pbiA9IGJpbGxfbGVuZ3RoX21tICogMC4wMzkzNzAxKSAlPiUgXG4gIHNlbGVjdChiaWxsX2xlbmd0aF9tbSwgYmlsbF9sZW5ndGhfaW4pXG5wZW5ndWlucyAlPiUgXG4gIG11dGF0ZShiaWxsX2xlbmd0aF9pbiA9IGJpbGxfbGVuZ3RoX21tICogMC4wMzkzNzAxKSAlPiVcbiAgc2VsZWN0KGJpbGxfbGVuZ3RoX21tLCBiaWxsX2xlbmd0aF9pbilcbmBgYCJ9 -->
+<pre class="r"><code>mutate(penguins, bill_length_in = bill_length_mm * 0.0393701) %&gt;% 
+  select(bill_length_mm, bill_length_in)
+penguins %&gt;% 
+  mutate(bill_length_in = bill_length_mm * 0.0393701) %&gt;%
+  select(bill_length_mm, bill_length_in)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="relocating-a-column-dplyr-relocate-video" class="section level3">
+<h3>Relocating a column (<a href="https://youtu.be/efEvcF3VLMY">dplyr relocate video</a>)</h3>
+<p>The <code>relocate</code> function moves one or more columns.</p>
+<ul>
+<li>By default the column is moved to the front of the data frame.</li>
+<li>The <code>.before</code> and <code>.after</code> arguments can be used to specify where the columns should be placed.</li>
+</ul>
+<p>In the example below, we move the <code>sex</code> variable to the front of the data frame.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmVsb2NhdGUocGVuZ3VpbnMsIHNleClcbnBlbmd1aW5zICU+JSByZWxvY2F0ZShzZXgpXG5gYGAifQ== -->
+<pre class="r"><code>relocate(penguins, sex)
+penguins %&gt;% relocate(sex)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>In the next example, we relocate the <code>sex</code> and <code>year</code> columns to after the <code>species</code> column.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmVsb2NhdGUocGVuZ3VpbnMsIHNleCwgeWVhciwgLmFmdGVyID0gc3BlY2llcylcbnBlbmd1aW5zICU+JSByZWxvY2F0ZShzZXgsIHllYXIsIC5hZnRlciA9IHNwZWNpZXMpXG5gYGAifQ== -->
+<pre class="r"><code>relocate(penguins, sex, year, .after = species)
+penguins %&gt;% relocate(sex, year, .after = species)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>In this example, we move all columns ending in <code>mm</code> to before the <code>island</code> column.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmVsb2NhdGUocGVuZ3VpbnMsIGVuZHNfd2l0aChcIm1tXCIpLCAuYmVmb3JlID0gaXNsYW5kKVxucGVuZ3VpbnMgJT4lIHJlbG9jYXRlKGVuZHNfd2l0aChcIm1tXCIpLCAuYmVmb3JlID0gaXNsYW5kKVxuYGBgIn0= -->
+<pre class="r"><code>relocate(penguins, ends_with(&quot;mm&quot;), .before = island)
+penguins %&gt;% relocate(ends_with(&quot;mm&quot;), .before = island)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 </div>
 </div>
-</div>
-<div class="footnotes">
-<hr />
-<ol>
-<li id="fn1"><p>This is a footnote<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<div id="tidy-data-tidy-data-overview" class="section level2">
+<h2>Tidy data (<a href="https://youtu.be/uvDKLIK8i7E">tidy data overview</a>)</h2>
+<p><span class="citation">Wickham and Grolemund (2017)</span> and many others recommend that data scientists organize data frames so that they are “tidy.” Tidy data [<span class="citation">Wickham and Grolemund (2017)</span>; Chapter 12] is structured so that:</p>
+<ol style="list-style-type: decimal">
+<li>Each variable is in a single column and no variables share a column.</li>
+<li>Each observation is in a single row.</li>
+<li>Each data value has its own cell.</li>
 </ol>
+<p>These principles are best explained with data sets that are not tidy. The <strong>tidyr</strong> package provides several illustrative data sets (<code>table1</code>, <code>table2</code>, <code>table3</code>, <code>table4a</code>, <code>table4b</code>, and <code>table5</code>) related to tidy data. These data sets provide data about tuberculosis cases for various countries in different years. The variables provided include:</p>
+<ul>
+<li><code>country</code>: the name of the country</li>
+<li><code>year</code>: the year an observation was observed</li>
+<li><code>cases</code>: the number of tuberculosis cases observed in the specified year</li>
+<li><code>population</code>: the population of the country in the specified year</li>
+<li><code>rate</code>: the rate of disease observed in a country in a specified year (<code>cases/population</code>)</li>
+<li><code>1999</code>, <code>2000</code>: values of a variable observed for a country in that year</li>
+</ul>
+<div id="columns" class="section level3">
+<h3>Columns</h3>
+<p>Each variable in a tidy data set should be in a single column and should not be in the same column as another variable.</p>
+<p><code>table2</code> in the <strong>tidyr</strong> package violates this rule. We print <code>table2</code> below.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGF0YSh0YWJsZTIsIHBhY2thZ2UgPSBcInRpZHlyXCIpXG50YWJsZTJcbmBgYCJ9 -->
+<pre class="r"><code>data(table2, package = &quot;tidyr&quot;)
+table2</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Notice that the <code>cases</code> and <code>population</code> values are both in the <code>count</code> column. The values for <code>cases</code> and <code>population</code> should be in separate columns.</p>
+</div>
+<div id="rows" class="section level3">
+<h3>Rows</h3>
+<p>Each observation in a tidy data set should be in its own row.</p>
+<p>Notice that <code>table2</code> also violates this principle. e.g., Rows 1 and 2 of <code>table2</code> are values for the same observation, Afghanistan in 1999.</p>
+</div>
+<div id="values" class="section level3">
+<h3>Values</h3>
+<p>Each value in a tidy data set should have its own cell. This means that you don’t combine information about two variables into a single cell. This likely seem like an artificial use case, but non-data scientists are sometimes quite creative in how they enter their data!</p>
+<p><code>table3</code> in the <strong>tidyr</strong> package violates this rule. We print <code>table3</code> below.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGF0YSh0YWJsZTMsIHBhY2thZ2UgPSBcInRpZHlyXCIpXG50YWJsZTNcbmBgYCJ9 -->
+<pre class="r"><code>data(table3, package = &quot;tidyr&quot;)
+table3</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Notice that the <code>rate</code> column is actually <code>cases/population</code>. It would not be a problem if this were a number (e.g., 745/19987071=0.0000372). The issue is that the values for <code>cases</code> and <code>population</code> are combined into a single column.</p>
+</div>
+<div id="another-non-tidy-example" class="section level3">
+<h3>Another non-tidy example</h3>
+<p>Times series data are often stored in a non-tidy way. In that case, the values of a variable are stored in a time-related column (like day or year). Different variables may then be stored across multiple data frames!</p>
+<p><code>table4a</code> and <code>table4b</code> in the <strong>tidyr</strong> package exhibit this type of non-tidyness. <code>table4a</code> provides the <code>cases</code> values for each <code>country</code> for each <code>year</code>. <code>table4b</code> provides the same thing for the <code>population</code> values.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGF0YSh0YWJsZTRhLCBwYWNrYWdlID0gXCJ0aWR5clwiKVxuZGF0YSh0YWJsZTRiLCBwYWNrYWdlID0gXCJ0aWR5clwiKVxudGFibGU0YVxudGFibGU0YlxuYGBgIn0= -->
+<pre class="r"><code>data(table4a, package = &quot;tidyr&quot;)
+data(table4b, package = &quot;tidyr&quot;)
+table4a
+table4b</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>In these two tables, the values for <code>cases</code> and <code>population</code> are split across multiple columns. Specifically, the <code>cases</code> are split across columns by <code>year</code> (and similarly for <code>population</code>). Additionally, observations are not in a single row since the values of <code>cases</code> and <code>population</code> for each <code>country</code> for each <code>year</code> are not in a single row.</p>
+</div>
+<div id="a-tidy-example" class="section level3">
+<h3>A tidy example</h3>
+<p>A tidy version of the tuberculosis data is available in <code>table1</code>. This data frame satisfies the three requirements of tidy data.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGFibGUxXG5gYGAifQ== -->
+<pre class="r"><code>table1</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+</div>
+<div id="using-tidyr-tidy-data-tips-video" class="section level2">
+<h2>Using <strong>tidyr</strong> (<a href="https://youtu.be/j5iH9ciMkL8">tidy data tips video</a>)</h2>
+<p>The main functions in the <strong>tidyr</strong> package are <code>pivot_wider</code> and <code>pivot_longer</code>.</p>
+<ul>
+<li><code>pivot_wider</code>: spreads a column into multiple columns. The resulting data frame will have fewer rows and more columns (wider).</li>
+<li><code>pivot_longer</code>: gathers multiple columns into a single column. The resulting data frame will have more rows (longer) and fewer columns.</li>
+</ul>
+<p>Tidying complicated data sets may require you to do seemingly odd steps like making a data frame longer and then widening some of the lengthened columns. Here are some tips for tidying a data frame:</p>
+<ol style="list-style-type: decimal">
+<li>Identify the ways in which your data are not tidy.</li>
+<li>Identify a single aspect of the data that you want to make tidy (or at least closer to being tidy).</li>
+<li>Tidy that single aspect of the data.</li>
+<li>Repeat steps 2 and 3 until the data are tidy</li>
+<li>If desired, combine the many tidying steps into a single command using the pipe operator.</li>
+</ol>
+<div id="widening-data-frames-tidyr-pivot_wider-video" class="section level3">
+<h3>Widening data frames (<a href="https://youtu.be/7cNxHl5aj-c">tidyr pivot_wider video</a>)</h3>
+<p>The <code>pivot_wider</code> function increases the number of columns in a data frame but reduces the number of rows. The main arguments of the <code>pivot_wider</code> function are:</p>
+<ul>
+<li><code>data</code>: the data frame to pivot</li>
+<li><code>names_from</code>: the column from which the names of the new columns will be taken</li>
+<li><code>values_from</code>: the column from which the values of the new columns will be taken</li>
+</ul>
+<p>To tidy <code>table2</code>, we must widen it. We need to take the new column names from the <code>type</code> column and the values from the <code>count</code> column.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGFibGUyXG5waXZvdF93aWRlcih0YWJsZTIsIG5hbWVzX2Zyb20gPSB0eXBlLCB2YWx1ZXNfZnJvbSA9IGNvdW50KVxudGFibGUyICU+JSBwaXZvdF93aWRlcihuYW1lc19mcm9tID0gdHlwZSwgdmFsdWVzX2Zyb20gPSBjb3VudClcbmBgYCJ9 -->
+<pre class="r"><code>table2
+pivot_wider(table2, names_from = type, values_from = count)
+table2 %&gt;% pivot_wider(names_from = type, values_from = count)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="lengthening-data-frames-tidyr-pivot_longer-video" class="section level3">
+<h3>Lengthening data frames (<a href="https://youtu.be/nhwcyk7bpQc">tidyr pivot_longer video</a>)</h3>
+<p>The <code>pivot_longer</code> function decreases the number of columns in a data frame but increases the number of rows. The main arguments of the <code>pivot_longer</code> function are:</p>
+<ul>
+<li><code>data</code>: the data frame to pivot</li>
+<li><code>cols</code>: the columns from which to gather values</li>
+<li><code>names_to</code>: the column name for the column that the names of the gathered columns are placed</li>
+<li><code>values_to</code>: the name of the column to which the values are gathered</li>
+</ul>
+<p>To tidy <code>table4a</code> and <code>table4b</code>, we must lengthen them. For <code>table4a</code> the new column name should be <code>cases</code>, while for <code>table4b</code> it should be <code>population</code>. The values for <code>cases</code> and <code>population</code> will come from the <code>1999</code> and <code>2000</code> columns.</p>
+<p>To tidy <code>table4a</code> and <code>table4b</code>, we need to gather the <code>1999</code> and <code>2000</code> columns into a single column and give them the appropriate variable name.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGFibGU0YVxudGJsNGEgPC0gcGl2b3RfbG9uZ2VyKHRhYmxlNGEsIGMoYDE5OTlgLCBgMjAwMGApLCBuYW1lc190byA9IFwieWVhclwiLCB2YWx1ZXNfdG8gPSBcImNhc2VzXCIpXG50Ymw0YVxudGFibGU0YlxudGJsNGIgPC0gdGFibGU0YiAlPiUgcGl2b3RfbG9uZ2VyKGMoYDE5OTlgLCBgMjAwMGApLCBuYW1lc190byA9IFwieWVhclwiLCB2YWx1ZXNfdG8gPSBcInBvcHVsYXRpb25cIilcbnRibDRiXG5gYGAifQ== -->
+<pre class="r"><code>table4a
+tbl4a &lt;- pivot_longer(table4a, c(`1999`, `2000`), names_to = &quot;year&quot;, values_to = &quot;cases&quot;)
+tbl4a
+table4b
+tbl4b &lt;- table4b %&gt;% pivot_longer(c(`1999`, `2000`), names_to = &quot;year&quot;, values_to = &quot;population&quot;)
+tbl4b</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="mergingjoining-data-frames-merging-data-frames-video" class="section level3">
+<h3>Merging/joining data frames (<a href="https://youtu.be/-M4VIuemN08">merging data frames video</a>)</h3>
+<p>The remaining issue with our <code>tbl4a</code> and <code>tbl4b</code> data frames are that the information is spread across two data frames with some redundant information. We need to merge or join the two data frames into a single data frame.</p>
+<p>The most streamlined solutions for this are to use the <code>base::merge</code> or <code>dplyr::*_join</code>functions to join the columns of the two data frames <code>by</code> their shared columns. By default, the <code>merge</code> function determines the identical columns in both data frames and joins the rows horizontally (removing redundant information). Alternatively, you can specify columns <code>by</code> which to join the rows.</p>
+<p>We illustrate usage of the <code>merge</code> function below.</p>
+<ul>
+<li>The <code>x</code> and <code>y</code> arguments are the data frames we want to merge.</li>
+<li>The <code>by</code> argument indicates the shared columns we want to match the rows by.</li>
+<li>There are some other fancy arguments you can use if there are matching columns in the data frames that have different names.</li>
+</ul>
+<p>Since <code>merge</code> is a <strong>base</strong> R function, the result is a <code>data.frame</code>.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubWVyZ2UoeCA9IHRibDRhLCB5ID0gdGJsNGIpXG5tZXJnZSh4ID0gdGJsNGEsIHkgPSB0Ymw0YiwgYnkgPSBjKFwiY291bnRyeVwiLCBcInllYXJcIikpXG5gYGAifQ== -->
+<pre class="r"><code>merge(x = tbl4a, y = tbl4b)
+merge(x = tbl4a, y = tbl4b, by = c(&quot;country&quot;, &quot;year&quot;))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>If we wish to stay within the <strong>tidyverse</strong> ecosystem, we can use one of the <code>*_join</code> functions in <strong>dplyr</strong>. These functions include <code>x</code>, <code>y</code>, and <code>by</code> arguments that work identically to those in the <code>merge</code> function.</p>
+<ul>
+<li><code>left_join</code> merges the rows of <code>y</code> that match the rows of <code>x</code> into <code>x</code>.</li>
+<li><code>right_join</code> merges the rows of <code>x</code> that match the rows of <code>y</code> into <code>y</code>.</li>
+<li><code>inner_join</code> merges the rows of <code>x</code> and <code>y</code> that are in both data frames.</li>
+<li><code>full_join</code> merges the rows of <code>x</code> and <code>y</code> that are in either data frame.</li>
+<li>See <code>?dplyr::inner_join</code> for examples</li>
+</ul>
+<p>In this example, since rows of the two data frames match exactly, then any of the joins produce identical results. We will use <code>full_join</code>, since anecdotally, it is the most common type of join used.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZnVsbF9qb2luKHRibDRhLCB0Ymw0YilcbmBgYCJ9 -->
+<pre class="r"><code>full_join(tbl4a, tbl4b)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+</div>
+<div id="separating-and-uniting-columns-tidyr-separate-and-unite-video" class="section level2">
+<h2>Separating and uniting columns (<a href="https://youtu.be/GQMF2qNuZHI">tidyr separate and unite video</a>)</h2>
+<p>The <code>rate</code> column of <code>table3</code> included both <code>cases</code> and <code>population</code>. We want to separate these values.</p>
+<p>A column can be separated into multiple columns while retaining the same number of rows using the <code>separate</code> function. Important arguments include:</p>
+<ul>
+<li><code>data</code>: the data frame to manipulate</li>
+<li><code>col</code> the column to separate</li>
+<li><code>into</code>: the names of the variables into which the column will be separated</li>
+<li><code>sep</code>: the character or position by which to separate <code>col</code></li>
+<li><code>remove</code>: a logical value indicating whether <code>col</code> will be removed after separation. The default is <code>TRUE</code>.</li>
+</ul>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGFibGUzXG5zZXBhcmF0ZSh0YWJsZTMsIGNvbCA9IHJhdGUsIGludG8gPSBjKFwiY2FzZXNcIiwgXCJwb3B1bGF0aW9uXCIpLCBzZXAgPSBcIi9cIilcbnRhYmxlMyAlPiUgc2VwYXJhdGUoY29sID0gcmF0ZSwgaW50byA9IGMoXCJjYXNlc1wiLCBcInBvcHVsYXRpb25cIiksIHNlcCA9IFwiL1wiKVxuYGBgIn0= -->
+<pre class="r"><code>table3
+separate(table3, col = rate, into = c(&quot;cases&quot;, &quot;population&quot;), sep = &quot;/&quot;)
+table3 %&gt;% separate(col = rate, into = c(&quot;cases&quot;, &quot;population&quot;), sep = &quot;/&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p><code>table5</code> has the opposite problem of <code>table3</code>. It has columns <code>century</code> and <code>year</code> that shouldn’t be split.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGFibGU1XG5gYGAifQ== -->
+<pre class="r"><code>table5</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>The <code>unite</code> function unites multiple columns of a data frame while retaining the same number of rows. Important arguments include:</p>
+<ul>
+<li><code>data</code>: the data frame to manipulate</li>
+<li><code>col</code> the name of the new column for the united values</li>
+<li><code>...</code>: the columns to unite</li>
+<li><code>sep</code>: the delimiter to separate the values in the columns</li>
+<li><code>remove</code>: a logical value indicating whether the columns in <code>...</code> will be removed after unification. The default is <code>TRUE</code>.</li>
+</ul>
+<p>We use the <code>unite</code> function to unite the <code>century</code> and <code>year</code> columns of <code>table5</code>.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudW5pdGUodGFibGU1LCBjb2wgPSBcInllYXJcIiwgXCJjZW50dXJ5XCIsIFwieWVhclwiLCBzZXAgPSBcIlwiKVxudGFibGU1ICU+JSB1bml0ZShjb2wgPSBcInllYXJcIiwgXCJjZW50dXJ5XCIsIFwieWVhclwiLCBzZXAgPSBcIlwiKVxuYGBgIn0= -->
+<pre class="r"><code>unite(table5, col = &quot;year&quot;, &quot;century&quot;, &quot;year&quot;, sep = &quot;&quot;)
+table5 %&gt;% unite(col = &quot;year&quot;, &quot;century&quot;, &quot;year&quot;, sep = &quot;&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>For fun, can string together <code>unite</code> and <code>separate</code> operations to manipulate <code>table5</code> into a fully tidy data frame.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGFibGU1ICU+JVxuICB1bml0ZShjb2wgPSBcInllYXJcIiwgXCJjZW50dXJ5XCIsIFwieWVhclwiLCBzZXAgPSBcIlwiKSAlPiUgXG4gIHNlcGFyYXRlKGNvbCA9IHJhdGUsIGludG8gPSBjKFwiY2FzZXNcIiwgXCJwb3B1bGF0aW9uXCIpLCBzZXAgPSBcIi9cIilcbmBgYCJ9 -->
+<pre class="r"><code>table5 %&gt;%
+  unite(col = &quot;year&quot;, &quot;century&quot;, &quot;year&quot;, sep = &quot;&quot;) %&gt;% 
+  separate(col = rate, into = c(&quot;cases&quot;, &quot;population&quot;), sep = &quot;/&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<!-- rnb-text-end -->
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-R-magrittr" class="csl-entry">
+Bache, Stefan Milton, and Hadley Wickham. 2020. <em>Magrittr: A Forward-Pipe Operator for r</em>. <a href="https://CRAN.R-project.org/package=magrittr">https://CRAN.R-project.org/package=magrittr</a>.
+</div>
+<div id="ref-R-data.table" class="csl-entry">
+Dowle, Matt, and Arun Srinivasan. 2021. <em>Data.table: Extension of ‘Data.frame‘</em>. <a href="https://CRAN.R-project.org/package=data.table">https://CRAN.R-project.org/package=data.table</a>.
+</div>
+<div id="ref-R-palmerpenguins" class="csl-entry">
+Horst, Allison, Alison Hill, and Kristen Gorman. 2020. <em>Palmerpenguins: Palmer Archipelago (Antarctica) Penguin Data</em>. <a href="https://CRAN.R-project.org/package=palmerpenguins">https://CRAN.R-project.org/package=palmerpenguins</a>.
+</div>
+<div id="ref-R-tibble" class="csl-entry">
+Müller, Kirill, and Hadley Wickham. 2021. <em>Tibble: Simple Data Frames</em>. <a href="https://CRAN.R-project.org/package=tibble">https://CRAN.R-project.org/package=tibble</a>.
+</div>
+<div id="ref-R-reshape" class="csl-entry">
+Wickham, Hadley. 2018. <em>Reshape: Flexibly Reshape Data</em>. <a href="http://had.co.nz/reshape">http://had.co.nz/reshape</a>.
+</div>
+<div id="ref-R-reshape2" class="csl-entry">
+———. 2020. <em>Reshape2: Flexibly Reshape Data: A Reboot of the Reshape Package</em>. <a href="https://github.com/hadley/reshape">https://github.com/hadley/reshape</a>.
+</div>
+<div id="ref-R-dtplyr" class="csl-entry">
+———. 2021a. <em>Dtplyr: Data Table Back-End for Dplyr</em>. <a href="https://github.com/tidyverse/dtplyr">https://github.com/tidyverse/dtplyr</a>.
+</div>
+<div id="ref-R-tidyr" class="csl-entry">
+———. 2021b. <em>Tidyr: Tidy Messy Data</em>. <a href="https://CRAN.R-project.org/package=tidyr">https://CRAN.R-project.org/package=tidyr</a>.
+</div>
+<div id="ref-R-dplyr" class="csl-entry">
+Wickham, Hadley, Romain François, Lionel Henry, and Kirill Müller. 2021. <em>Dplyr: A Grammar of Data Manipulation</em>. <a href="https://CRAN.R-project.org/package=dplyr">https://CRAN.R-project.org/package=dplyr</a>.
+</div>
+<div id="ref-R-dbplyr" class="csl-entry">
+Wickham, Hadley, Maximilian Girlich, and Edgar Ruiz. 2021. <em>Dbplyr: A Dplyr Back End for Databases</em>. <a href="https://CRAN.R-project.org/package=dbplyr">https://CRAN.R-project.org/package=dbplyr</a>.
+</div>
+<div id="ref-r4ds2017" class="csl-entry">
+Wickham, Hadley, and Garrett Grolemund. 2017. <em><span>R</span> for <span>D</span>ata <span>S</span>cience</em>. O’Reilly Media, Inc.
+</div>
+</div>
+</div>
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkpvc2h1YSBGcmVuY2giDQpkYXRlOiAiYHIgZm9ybWF0KFN5cy50aW1lKCksICclWS0lbS0lZCcpYCINCm91dHB1dDoNCiAgcGRmX2RvY3VtZW50OiBkZWZhdWx0DQogIGh0bWxfZG9jdW1lbnQ6DQogICAgZGZfcHJpbnQ6IHBhZ2VkDQogIGh0bWxfbm90ZWJvb2s6IGRlZmF1bHQNCiAgd29yZF9kb2N1bWVudDogZGVmYXVsdA0KLS0tDQoNCmBgYHtjc3MsIGluY2x1ZGU9RkFMU0V9DQouYWN0aW9uIHsNCiAgIyBtYXJnaW46IDJlbTsNCiAgcGFkZGluZzogMmVtOw0KICBib3JkZXI6IDFweCBzb2xpZCBncmV5Ow0KICBib3JkZXItcmFkaXVzOiA1cHg7DQogIGJhY2tncm91bmQ6ICNlZWVlZWU7DQp9DQpgYGANCg0KIyBDcmFzaCBDb3Vyc2UgaW4gUiBNYXJrZG93bg0KDQpUaGlzIGRvY3VtZW50IGlzIGludGVuZGVkIHRvIGhlbHAgeW91IHF1aWNrbHkgbGVhcm4gaG93IHRvIGdlbmVyYXRlIHJlcHJvZHVjaWJsZSBkYXRhIGFuYWx5c2lzIGFuZCByZXN1bHRzIHVzaW5nIFIgTWFya2Rvd24uDQoNCkFuIGFjY29tcGFueWluZyBZb3VUdWJlIHBsYXlsaXN0IHRoYXQgd2Fsa3MgdGhyb3VnaCB0aGlzIGRvY3VtZW50IGlzIGF2YWlsYWJsZQ0KYnkgZm9sbG93aW5nIHRoZSBsaW5rIFtoZXJlXShodHRwczovL3d3dy55b3V0dWJlLmNvbS9wbGF5bGlzdD9saXN0PVBMa3JKckxzN3hmYlhKMEY5eWMtbjhQenZvRnY0cW1NLU4pLiBJIGhhdmUgYWxzbyBpbmNsdWRlZCBkaXJlY3QsIHJlbGV2YW50IHZpZGVvIGxpbmtzIHRocm91Z2hvdXQgdGhlIGZpbGUgKGUuZy4sIGltbWVkaWF0ZWx5IGFmdGVyIHRoZSB0aGUgcmVsZXZhbnQgaGVhZGluZykuIEFuIGh0bWwgdmVyc2lvbiBvZiB0aGlzIGRvY3VtZW50IGNhbiBiZSBkb3dubG9hZGVkIHRvIHlvdXIgY3VycmVudCB3b3JraW5nIGRpcmVjdGlvbiAocnVuIGBnZXR3ZCgpYCBpbiB0aGUgQ29uc29sZSB0byBzZWUgd2hlcmUgdGhpcyBpcykgYnkgcnVubmluZyB0aGUgZm9sbG93aW5nIGNvbW1hbmQ6DQpgYGB7ciwgZXZhbD1GQUxTRX0NCmRvd25sb2FkLmZpbGUoImh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9qZnJlbmNoL0RhdGFXcmFuZ2xlVml6L21hc3Rlci8wMi1jcmFzaC1jb3Vyc2UtaW4tcm1kLmh0bWwiLA0KICAgICAgICAgICAgICAiMDItY3Jhc2gtY291cnNlLWluLXJtZC5odG1sIikNCmBgYA0KDQpOb3RlIHRoYXQgdGhlcmUgbWF5IGJlIHNtYWxsIGRpZmZlcmVuY2VzIGJldHdlZW4gdGhpcyBkb2N1bWVudCAod2hpY2ggaXMgZWFzeSB0byB1cGRhdGUpIGFuZCB0aGUgdmlkZW9zICh3aGljaCBhcmUgbm90KS4gV2hlbiB0aGVyZSBpcyBhIGRpc2NyZXBhbmN5LCB0cnVzdCB0aGlzIGRvY3VtZW50IG1vcmUgdGhhbiB0aGUgdmlkZW8uDQoNCiMjIFdoYXQgaXMgUiBNYXJrZG93bj8gKFtPdmVydmlldyB2aWRlb10oaHR0cHM6Ly95b3V0dS5iZS9tY1RCN2g5bHBDZykpDQoNClIgTWFya2Rvd24gaXMgYSB0b29sIGZvciBkeW5hbWljLCByZXByb2R1Y2libGUgY3JlYXRpb24gb2YgZGF0YS1jZW50cmljIGRvY3VtZW50cyB0aGF0IGluY2x1ZGUgdGV4dCwgY29kZSwgdGhlIHJlc3VsdHMgb2YgZXhlY3V0ZWQgY29kZS4NCg0KKiBSIE1hcmtkb3duIHdhcyBjcmVhdGVkIGJ5IFIgU3R1ZGlvIChbaHR0cHM6Ly93d3cucnN0dWRpby5jb21dKGh0dHBzOi8vd3d3LnJzdHVkaW8uY29tKSkgaW4gMjAxNCAob3IgYXQgbGVhc3QgdGhhdCdzIHRoZSBvbGRlc3QgZGlzY3Vzc2lvbiBJIGNhbiBmaW5kKS4NCiogSXQgaXMgYSB2YXJpYW50IG9mIE1hcmtkb3duLCB3aGljaCB3YXMgY3JlYXRlZCBieSBKb2huIEdydWJlciAoY3JlYXRvciBvZiBEYXJpbmcgRmlyZWJhbGwgKFtodHRwczovL2RhcmluZ2ZpcmViYWxsLm5ldC9dKGh0dHBzOi8vZGFyaW5nZmlyZWJhbGwubmV0LykpKSBhbmQgQWFyb24gU3dhcnR6IChjby1jcmVhdG9yIG9mIFJlZGRpdCAoW2h0dHBzOi8vd3d3LnJlZGRpdC5jb20vXShodHRwczovL3d3dy5yZWRkaXQuY29tKSkgYXMgYSBsaWdodHdlaWdodCBtYXJrdXAgbGFuZ3VhZ2UgZm9yIGNyZWF0aW5nIGZvcm1hdHRlZCB0ZXh0IHVzaW5nIGEgcGxhaW4tdGV4dCBlZGl0b3IuDQoqIEluIGdlbmVyYWwsIGEgbWFya2Rvd24gbGFuZ3VhZ2UgaXMgYSBsYW5ndWFnZSB0aGF0IGlzIHdyaXR0ZW4gaW4gcGxhaW4tdGV4dCBidXQgdGhhdCBpcyByZW5kZXJlZCBkaWZmZXJlbnQgYmFzZWQgb24gIm1hcmt1cHMiIGluIHRoZSB0ZXh0Lg0KKiBIYXMgc29tZSBjYXBhYmlsaXRpZXMgc2ltaWxhciB0byBKdXB5dGVyIChbaHR0cHM6Ly9qdXB5dGVyLm9yZy9dKGh0dHBzOi8vanVweXRlci5vcmcvKSkgbm90ZWJvb2tzLg0KDQpSIE1hcmtkb3duIGlzIGEgZ3JlYXQgd2F5IHRvOg0KDQoqIENyZWF0ZSBhIGRhdGEgYW5hbHlzaXMgbm90ZWJvb2sgdGhhdCBkb2N1bWVudHMgaG93IGFuZCB3aHkgeW91IGRpZCBhbmFseXNpcyBhIGNlcnRhaW4gd2F5Lg0KKiBTaGFyZSB5b3VyIHdvcmsgd2l0aCBvdGhlcnMgaW4gYSB2YXJpZXR5IG9mIGZvcm1hdHMuDQoqIE1ha2UgeW91ciB3b3JrIHJlcHJvZHVjaWJsZS4NCg0KUiBNYXJrZG93biBpcyBhIHZlcnkgdXNlZnVsIHRvb2wgZm9yIHRoZSBkYXRhIHNjaWVudGlzdC4NCg0KUiBTdHVkaW8gcHJvdmlkZXMgUiBNYXJrZG93biAoYW5kIG90aGVyKSBjaGVhdHNoZWV0cyBhdCBbaHR0cHM6Ly9yc3R1ZGlvLmNvbS9yZXNvdXJjZXMvY2hlYXRzaGVldHMvXShodHRwczovL3JzdHVkaW8uY29tL3Jlc291cmNlcy9jaGVhdHNoZWV0cy8pDQoNCiMjIyBZb3VyIHR1cm4NClRoZSBlYXNpZXN0IHdheSB0byBjcmVhdGUgYSBuZXcgUiBNYXJrZG93biBmaWxlIGluIFIgU3R1ZGlvIGlzIEZpbGUgJnJhcnI7IE5ldyBGaWxlICZyYXJyOyBSIE1hcmtkb3duLiBEbyB0aGlzIG9uIHlvdXIgY29tcHV0ZXIgdG8gc2VlIHdoYXQgaXMgcHJvZHVjZWQuDQoNCiMjIFdoYXQncyBpbiBhbiBSIE1hcmtkb3duIGRvY3VtZW50Pw0KQW4gUiBNYXJrZG93biBkb2N1bWVudCBoYXMgdGhyZWUgY29tcG9uZW50czoNCg0KMS4gQW4gb3B0aW9uYWwgWUFNTCBoZWFkZXIuDQoyLiBGb3JtYXR0ZWQgdGV4dC4NCjMuICoqQ2h1bmtzKiogb2YgY29tcHV0ZXIgY29kZS4NCg0KU2luY2UgdGhlIFlBTUwgaGVhZGVyIGlzIG9wdGlvbmFsLCB3ZSdsbCB0YWxrIGFib3V0IGl0IGxhc3QuDQoNCiMjIEZvcm1hdHRpbmcgdGV4dCBpbiBSIE1hcmtkb3duIA0KDQojIyMgQ29tbWVudGluZyBjb2RlIChbQ29tbWVudHMgdmlkZW9dKGh0dHBzOi8veW91dHUuYmUvSy1DQ0V4MnRiSEkpKQ0KDQpOb3RlOiBJbiBSIFNjcmlwdHMgYW5kIHRoZSBSIENvbnNvbGUsIHRoZSBgI2Agc3ltYm9sIGRlbm90ZXMgYSBjb21tZW50LiBJbiBSIE1hcmtkb3duIGZpbGVzICguUm1kIG9yIC5ybWQpLCBhIGNvbW1lbnQgaXMgY3JlYXRlZCBieSBwbGFjaW5nIGA8IS0tYCBhbmQgYC0tPmAgdG8gdGhlIGxlZnQgYW5kIHJpZ2h0LCByZXNwZWN0aXZlbHksIG9mIHRoZSB0ZXh0IHlvdSB3YW50IHRvIGNvbW1lbnQuDQoNCmUuZy4sDQpgYGB7ciwgZXZhbCA9IEZBTFNFfQ0KPCEtLSBjb21tZW50IHRleHQgLS0+DQpgYGANCndvdWxkIGNvbW1lbnQgdGhlIHRleHQgImNvbW1lbnQgdGV4dCIuDQoNClRoZSBlYXNpZXN0IHdheSB0byBjb21tZW50IHRleHQgaW4gUiBNYXJrZG93biBkb2N1bWVudHMgaXMgdG8gaGlnaGxpZ2h0IHRoZSB0ZXh0IGFuZCB0aGVuIHByZXNzIGBDdHJsL0NtZCArIFNoaWZ0ICsgY2AuDQoNCiMjIyBZb3VyIHR1cm4NCg0KUHJhY3RpY2UgY29tbWVudGluZyBzb21lIHRleHQgaW4gUiBNYXJrZG93bi4NCg0KIyMjIEhlYWRpbmdzIGFuZCBzZWN0aW9ucyAoW0Zvcm1hdHRpbmcgdmlkZW9dKGh0dHBzOi8veW91dHUuYmUvSy1DQ0V4MnRiSEkpKQ0KSGVhZGluZ3MgYW5kIHNlY3Rpb25zIG9mIGRpZmZlcmVudCBsZXZlbHMgYXJlIGNyZWF0ZWQgd2l0aCBgI2AuDQoNCiogYCNgIGluZGljYXRlcyB0aGUgZmlyc3QgbGV2ZWwNCiogYCMjYCBiZWluZyB0aGUgc2Vjb25kIGxldmVsDQoqIGV0Yy4NCg0KVGhlIHdvcmRzIGFmdGVyIHRoZSBgI2Agd2lsbCBiZSBsYXJnZXIgdGhhbiB0aGUgcmVndWxhciB0ZXh0Lg0KDQojIyMgRm9udCBzdHlsZXMgYW5kIGVmZmVjdHMNCg0KKiAqSXRhbGljIHRleHQqOiBgKnRleHQqYCBvciBgX3RleHRfYC4NCiogKipCb2xkIHRleHQqKjogYCoqdGV4dCoqYCBvciBgX190ZXh0X19gICh0d28gdW5kZXJzY29yZXMgb24gZWFjaCBzaWRlKQ0KKiBgVHlwZXdyaXRlciAoY29kZSkgdGV4dGA6IGBgIGB0ZXh0YCBgYA0KKiBFbmRhc2ggKC0tKSwgZW1kYXNoICgtLS0pOiBgLS1gIGFuZCBgLS0tYC4NCiogXnN1cGVyc2NyaXB0XiBhbmQgfnN1YnNjcmlwdH46IGBec3VwZXJzY3JpcHReYCBhbmQgYH5zdWJzY3JpcHR+YA0KKiB+fnN0cmlrZXRocm91Z2h+fjogYH5+c3RyaWtldGhyb3VnaH5+YA0KKiBFc2NhcGluZyBzcGVjaWFsIGNoYXJhY3RlcnMgXCosIFxfLCBcJCwgXFwsIGBgIGAgYGA6IGBcKmAsIGBcX2AsIGBcJGAsICBgXFxgLCBgYGAgYGAgYCBgYCBgYGANCiogRm9vdG5vdGVeW1RoaXMgaXMgYSBmb290bm90ZV06IGBGb290bm90ZV5bVGhpcyBpcyBhIGZvb3Rub3RlXWANCg0KTWF0aCBpcyByZW5kZXJlZCB1c2luZyBMYVRlWCAod2hpY2ggaXMgW3Byb25vdW5jZWRdKGh0dHBzOi8vd3d3LmxhdGV4LXByb2plY3Qub3JnL2Fib3V0LykgIkxhaC10ZWNoIiBvciAiTGF5LXRlY2giKS4gU28geW91IGNhbiB1c2UgXCQgYW5kIFwkXCQgdG8gcmVuZGVyIGlubGluZSBtYXRoIGFuZCBkaXNwbGF5IG1hdGggbGlrZSB5b3Ugd291bGQgaW4gTGFUZVguDQoNCkUuZy4sIFR5cGluZyAiVGhlIHJlZ3Jlc3Npb24gY29lZmZpY2llbnQgXCRcXGJldGFcJCIgd2lsbCBwcm9kdWNlICJUaGUgcmVncmVzc2lvbiBjb2VmZmljaWVudCAkXGJldGEkIi4NCg0KIyMjIFlvdXIgdHVybiB7LmFjdGlvbn0NCg0KMS4gQ3JlYXRlIGEgbmV3IFIgU2NyaXB0IChgQ3RybC9DbWQgKyBTaGlmdCArIG5gKS4NCjIuIFJlcGxhY2UgdGhlIGZpbGUgY29udGVudHMgd2l0aCB0aGUgY29kZSBiZWxvdzoNCmBgYHtldmFsPUZBTFNFfQ0KLS0tDQp0aXRsZTogIkJhZCBqb2tlcyINCm91dHB1dDogaHRtbF9ub3RlYm9vaw0KLS0tDQoNCiMgRmlyc3QgbGV2ZWwNCg0KIyMgU2Vjb25kIGxldmVsDQoNCiMjIyBUaGlyZCBsZXZlbA0KDQpUaGlzIGRvY3VtZW50IGlzIGludGVuZGVkIHRvIGhlbHAgeW91IHNlZSB0aGUgZWZmZWN0IG9mIG1hcmt1cCBvbiBhIHJlbmRlcmVkIGRvY3VtZW50Lg0KICANCipUaGlzIGlzIGl0YWxpYyB0ZXh0Kg0KDQoqKlRoaXMgaXMgYm9sZCB0ZXh0KioNCg0KYFRoaXMgbG9va3MgbGlrZSBjb21wdXRlciBjb2RlYA0KDQpXaGF0J3MgdGhlIGRpZmZlcmVuY2UgYmV0d2VlbiBlbmRhc2gtLWVuZGFzaCBhbmQgZW1kYXNoLS0tZW1kYXNoPw0KDQpIb3cgY2FuIEkgYWRkIGEgc3VwZXJzY3JpcHQgdG8gdGhpcz8gTGlrZSB0aGlzOiB0aGlzXnN1cGVyc2NyaXB0Xj8NCg0KVGhhdCdzIGEgam9rZSBpZiB5b3UgZGlkbid0IGdldCB0aGUgfnN1YnRleHR+LiANCg0KV293LCB0d28gYmFkIGpva2VzIGluIGEgcm93LiBJJ2QgbGlrZSB0byBzdHJpa2Ugfn50aGF0fn4gZnJvbSBteSBtZW1vcnkuDQoNCkkgd2lzaCBJIGNvdWxkIFwqZXNjYXBlXCogdGhlc2UgYmFkIGpva2VzLg0KDQpCdXQgSSBndWVzcyB0aGlzIHdpbGwganVzdCBiZSBhbiB1bnBsZWFzYW50IGZvb3Rub3RlXlt1bnBsZWFzYW50IGZvb3Rub3RlXS4NCmBgYA0KMy4gU2F2ZSB0aGUgZmlsZSAoYEN0cmwvQ21kICsgc2ApIHdpdGggdGhlIG5hbWUgImJhZF9qb2tlcy5SbWQiLg0KNC4gQ2xpY2sgdGhlIFByZXZpZXcgYnV0dG9uIGFuZCB2aWV3IHRoZSByZXN1bHRzLg0KDQojIyBOdW1iZXJlZC9vcmRlcmVkIGFuZCB1bm9yZGVyZWQgbGlzdHMgKFtMaXN0cyB2aWRlb10oaHR0cHM6Ly95b3V0dS5iZS9NRTgwUGVhTUJGNCkpDQoNCiMjIyBOdW1iZXJlZC9vcmRlcmVkIGxpc3RzDQpOdW1iZXJlZCBsaXN0cyB3aXRoIHN1Yi1idWxsZXRzOg0KDQpgYGB7ciwgZXZhbD1GQUxTRX0NCkEgbnVtYmVyZWQgbGlzdCB3aXRoIHN1Ym51bWJlcmluZy4NCg0KMS4gSXRlbSAxDQogICAgYS4gU3ViLWl0ZW0gMSAjIHR3byB0YWJzLCBub3Qgb25lDQogICAgYi4gU3ViLWl0ZW0gMg0KICAgICAgICBpLiBTdWItc3ViLWl0ZW0gMSAjIGZvdXIgdGFicywgbm90IHR3bw0KMi4gSXRlbSAyDQogICAgYS4gU3ViLWl0ZW0gMQ0KYGBgDQoNClJlc3VsdDoNCkEgbnVtYmVyZWQgbGlzdCB3aXRoIHN1Ym51bWJlcmluZy4NCg0KMS4gSXRlbSAxDQogICAgYS4gU3ViLWl0ZW0gMQ0KICAgIGIuIFN1Yi1pdGVtIDINCiAgICAgICAgaS4gU3ViLXN1Yi1pdGVtIDENCjIuIEl0ZW0gMg0KICAgIGEuIFN1Yi1pdGVtIDENCg0KTm90ZTogVGhlcmUgbXVzdCBiZSBhIGxpbmUgYmV0d2VlbiBhbnkgdGV4dCBhbmQgdGhlIG51bWJlciBgMWAuDQoNCiMjIyBVbm9yZGVyZWQgbGlzdHMNCg0KVW5vcmRlcmVkIGxpc3RzIHdpdGggc3ViLWJ1bGxldHM6DQoNCmBgYHtyLCBldmFsPUZBTFNFfQ0KU29tZSB0ZXh0IHdpdGggYnVsbGV0cy4NCg0KKiBJdGVtIDENCiAgKiBTdWItaXRlbSAxDQogICogU3ViLWl0ZW0gMg0KICAgICogU3ViLXN1Yi1pdGVtIDENCiogSXRlbSAyDQogICogU3ViLWl0ZW0gMQ0KYGBgDQoNClJlc3VsdDoNClNvbWUgdGV4dCB3aXRoIGJ1bGxldHMuDQoNCiogSXRlbSAxDQogICogU3ViLWl0ZW0gMQ0KICAqIFN1Yi1pdGVtIDINCiAgICAqIFN1Yi1zdWItaXRlbSAxDQoqIEl0ZW0gMg0KICAqIFN1Yi1pdGVtIDENCiAgDQpOb3RlczoNCg0KKiBUaGVyZSBtdXN0IGJlIGEgbGluZSBiZXR3ZWVuIGFueSB0ZXh0IGFuZCB0aGUgXCouDQoqIFlvdSBjYW4gdXNlIGArYCBvciBgLWAgaW5zdGVhZCBvZiBgKmAgd2hlbiBjcmVhdGluZyB1bm9yZGVyZWQgbGlzdHMgd2l0aCB0aGUgc2FtZSByZXN1bHQuDQoNCiMjIyBZb3VyIHR1cm4NCg0KQ3JlYXRlIGFuIGV4YW1wbGUgb2YgYSBudW1iZXJlZCBsaXN0IHdpdGggNCBsZXZlbHMgYW5kIGFuIHVub3JkZXJlZCBsaXN0IHdpdGggMyBsZXZlbHMuDQoNCiMjIENvZGUgY2h1bmtzIChbQ29kZSBjaHVua3MgdmlkZW9dKGh0dHBzOi8veW91dHUuYmUvX2pWcXFUR2ZtQjApKQ0KDQpDaHVua3Mgb2YgY29kZSBjYW4gYmUgYWRkZWQgaW4gYW4gUiBNYXJrZG93biBieSBwbGFjaW5nIHRoZSByZWxldmFudCBjb2RlIGJldHdlZW4gYGBgYCBgYGB7cn0gYGBgYCBhbmQgYGBgYCBgYGAgYGBgYC4gZS5nLiwgDQoNCmBgYGANCmBgYHtyLCBsYWJlbCA9IGNodW5rX25hbWV9YHIgJydgDQoxICsgMQ0KYGBgDQpgYGBgDQoNCllvdSBjYW4gZ2VuZXJhdGUgYSBjb2RlIGNodW5rIHRlbXBsYXRlIHVzaW5nIGBDdHJsL0NtZCArIEFsdCArIGlgLg0KDQpUaGUgYGNodW5rX25hbWVgIGlzIG9wdGlvbmFsIGJ1dCBhbGxvd3MgeW91IGdpdmUgZ2l2ZSBjaHVua3MgbmFtZXMgbGFiZWxzIHRoYXQgeW91IGNhbiByZWZlciBiYWNrIHRvLiBUaGlzIGlzIHVzZWZ1bCBmb3IgY29tcGxpY2F0ZWQgZG9jdW1lbnRzIGFuZCByZXBvcnRzLiAoU2VlIFZlcmJhdGltIENvZGUgQ2h1bmtzIFsgaHR0cHM6Ly9ib29rZG93bi5vcmcveWlodWkvcm1hcmtkb3duLWNvb2tib29rL3ZlcmJhdGltLWNvZGUtY2h1bmtzLmh0bWxdKGh0dHBzOi8vYm9va2Rvd24ub3JnL3lpaHVpL3JtYXJrZG93bi1jb29rYm9vay92ZXJiYXRpbS1jb2RlLWNodW5rcy5odG1sKSB0byBsZWFybiBob3cgdG8gcmVuZGVyIHRoZSBhYm92ZSBjb2RlLikNCg0KTm90ZTogZWFjaCBsYWJlbCBzaG91bGQgYmUgdW5pcXVlIHdpdGhpbiB0aGUgZG9jdW1lbnQuIEkgZG9uJ3QgcmVjb21tZW5kIGFkZGluZyBjaHVuayBsYWJlbHMgdW5sZXNzIHlvdSBhY3R1YWxseSBuZWVkIHRoZW0sIG90aGVyd2lzZSB5b3UgYXJlIGxpa2VseSB0byByZXVzZSBhIGNodW5rIGxhYmVsIGFuZCBtYWtlIGEgaGVhZGFjaGUgZm9yIHlvdXJzZWxmIQ0KDQojIyMgQ2h1bmsgb3B0aW9ucyAoW0NodW5rIG9wdGlvbnMgdmlkZW9dKGh0dHBzOi8veW91dHUuYmUvRnE3SF9xdDJLNGcpKQ0KQ29kZSBjaHVua3MgaGF2ZSBtYW55IG9wdGlvbnMgdGhhdCBjYW4gYmUgdXNlZCB0byBjdXN0b21pemUgdGhlIGNvZGUuIFdlIHdpbGwgY292ZXIgbWFueSBpbXBvcnRhbnQgb25lcyBiZWxvdy4gIEkgd2lsbCBzcGVjaWZ5IHRoZSBkZWZhdWx0IG9wdGlvbiBpbiBwYXJlbnRoZXNlcywgKCksIGFmdGVyIHRoZSBvcHRpb24uIFNvIHRoaXMgaXMgd2hhdCB3aWxsIGJlIHVzZWQgYnkgZGVmYXVsdCBpZiB5b3UgZG9uJ3Qgc3BlY2lmeSBhbnl0aGluZy4NCg0KWXVodWkgWGllLCBjcmVhdG9yIG9mICoqa25pdHIqKiwgcHJvdmlkZXMgYSBjb21wbGV0ZSBsaXN0IChbaHR0cHM6Ly95aWh1aS5vcmcva25pdHIvb3B0aW9ucy9dKGh0dHBzOi8veWlodWkub3JnL2tuaXRyL29wdGlvbnMvKSkgb2YgY2h1bmsgb3B0aW9ucyBvbiBoaXMgd2Vic2l0ZSAoW2h0dHBzOi8veWlodWkub3JnL10oaHR0cHM6Ly95aWh1aS5vcmcvKSkuDQoNCiMjIyBDb2RlIGV2YWx1YXRpb24NCg0KKiBgZXZhbGA6IChgVFJVRWApIEEgbG9naWNhbCB2YWx1ZSBpbmRpY2F0aW5nIHdoZXRoZXIgdGhlIGNodW5rIHNob3VsZCBiZSBldmFsdWF0ZWQgaW4gdGhlIENvbnNvbGUuDQogICogWW91IGNhbiBhbHNvIGV2YWx1YXRlICoqc2VsZWN0ZWQgbGluZXMqKiBpZiB5b3UgcHJvdmlkZSBhIG51bWVyaWMgdmVjdG9yLiBlLmcuLCBgZXZhbCA9IDE6M2Agd291bGQgZXZhbHVhdGUgbGluZXMgMSB0aHJvdWdoIDMuIA0KDQojIyMgVGV4dCBvdXRwdXQNCg0KKiBgZWNob2A6IChgVFJVRWApLiBBIGxvZ2ljYWwgdmFsdWUgaW5kaWNhdGluZyB3aGV0aGVyIHRoZSBzb3VyY2UgY29kZSBzaG91bGQgYmUgZGlzcGxheWVkLg0KICAqIFlvdSBjYW4gYWxzbyBlY2hvICoqc2VsZWN0ZWQgbGluZXMqKiBpZiB5b3UgcHJvdmlkZSBhIG51bWVyaWMgdmVjdG9yLiBlLmcuLCBgZWNobyA9IDE6M2Agd291bGQgZWNob2xpbmVzIDEgdGhyb3VnaCAzDQoqIGByZXN1bHRzYDogKGAnbWFya3VwJ2ApLiBEZXRlcm1pbmVzIGh3byB0aGUgcmVzdWx0cyBhcmUgZGlzcGxheWVkLg0KICAqIE90aGVyIG9wdGlvbnMgYXJlIGAnYXNpcydgLCBgJ2hvbGQnYCwgYCdoaWRlJ2AuDQoqIGBjb2xsYXBzZWA6IChgRkFMU0VgKS4gQSBsb2dpY2FsIHZhbHVlIGluZGljYXRpbmcgd2hldGhlciB0aGUgc291cmNlIGFuZCBvdXRwdXQgc2hvdWxkIGJlIGNvbGxhcHNlZCBpbnRvIGEgc2luZ2xlIGJsb2NrLg0KKiBgaW5jbHVkZWA6IChgVFJVRWApIEEgbG9naWNhbCB2YWx1ZSBpbmRpY2F0aW5nIHdoZXRoZXIgdG8gaW5jbHVkZSB0aGUgY2h1bmsgb3V0cHV0Lg0KICAqIFNldCB0byBgRkFMU0VgIHdoZW4geW91IHdhbnQgc29tZXRoaW5nIHRvIHJ1biBidXQgbm90IGJlIHNob3duLg0KDQpPdGhlciBvcHRpb25zOiBgd2FybmluZ2AsIGBlcnJvcmAsIGBtZXNzYWdlc2AgKGBUUlVFYCkgZGV0ZXJtaW5lIHdoZXRoZXIgd2FybmluZ3MsIGVycm9ycywgYW5kIG1lc3NhZ2VzIHdpbGwgYmUgZGlzcGxheWVkLCByZXNwZWN0aXZlbHkuDQoNCiMjIyBDb2RlIHN0eWxpbmcNCg0KKiBgaGlnaGxpZ2h0YDogKGBUUlVFYCkgQSBsb2dpY2FsIHZhbHVlIGluZGljYXRpbmcgd2hldGhlciB0aGUgc291cmNlIGNvZGUgc3ludGF4IHNob3VsZCBiZSBoaWdobGlnaHRlZCB3aXRoIGRpZmZlcmVudCBjb2xvcnMuDQoqIGBjb21tZW50YDogKGAjI2ApIFRoZSB0ZXh0IHRoYXQgd2lsbCBiZSBzaG93biBwcmlvciB0byBldmFsdWF0ZWQgY29kZSBpbiB0aGUgb3V0cHV0IGJsb2NrLiANCiAgKiBVc2UgYCMjYCBvciBgIz5gIHRvIG1ha2UgdGhlIGNvZGUgYmxvY2tzIGVhc2llciB0byBjb3B5IGFuZCBwYXN0ZSBpbnRvIHRoZSBDb25zb2xlLiBgIz5gIGlzIGNsb3NlciB0byB3aGF0IHRoZSBDb25zb2xlIG91dHB1dCBhY3R1YWxseSBsb29rcyBsaWtlLg0KKiBgdGlkeWA6IChgRkFMU0VgKSBBIGxvZ2ljYWwgdmFsdWUgaW5kaWNhdGluZyB3aGV0aGVyIHRoZSBzb3VyY2UgY29kZSBiZSBhdXRvbWF0aWNhbGx5IHJlZm9ybWF0dGVkLg0KKiBgdGlkeS5vcHRzYDogKGBOVUxMYCkgQSBsaXN0IG9mIG9wdGlvbnMgdGhhdCBjYW4gYmUgdXNlZCB0byBjdXN0b21pemUgdGhlIGB0aWR5YCBvcHRpb24gYWJvdmUuDQogICogZS5nLiwgYHRpZHkub3B0cyA9IGxpc3Qod2lkdGguY3V0b2ZmID0gNjApYCBjb250cm9scyB0aGUgbGVuZ3RoIG9mIHRoZSBjb2RlIGFuZCB0cmllcyB0byBjdXQgdGhlIGNvZGUgbGluZXMgYXQgNjAgY2hhcmFjdGVycy4NCg0KIyMjIFBsb3RzDQoNCiogYGZpZy5zaG93YDogKGAnYXNpcydgKS4gSW5zdHJ1Y3Rpb25zIGZvciBkaXNwbGF5aW5nIHBsb3RzLiANCiAgKiBgJ2FzaXMnYDogU2hvdyBwbG90cyBpbiB0aGUgb3JkZXIgYW5kIHBsYWNlcyB0aGV5IHdvdWxkIGJlIGlmIGV4ZWN1dGVkIGluIHRoZSBDb25zb2xlLg0KICAqIGAnaG9sZCdgOiBPdXRwdXQgYWxsIHBsb3RzIGF0IHRoZSBlbmQgb2YgdGhlIGNodW5rLg0KICAqIGAnaGlkZSdgOiBIaWRlIGFsbCBwbG90cy4NCiAgKiBgJ2FuaW1hdGUnYDogQ29tYmluZSBhbmQgYW5pbWF0ZSB0aGUgcGxvdHMNCiogYGZpZy5hbGlnbmA6IChgJ2RlZmF1bHQnYCkuIEEgY2hhcmFjdGVyIHZlY3RvciBzcGVjaWZ5aW5nIGhvdyB0byBhbGlnbiB0aGUgZmlndXJlcy4NCiAgKiBBbGxvd2FibGUgdmFsdWVzIGFyZTogYCdkZWZhdWx0J2AsIGAnbGVmdCdgLCBgJ3JpZ2h0J2AsIGFuZCBgJ2NlbnRlcidgLg0KKiBgZmlnLndpZHRoYCwgYGZpZy5oZWlnaHRgOiAoNykuIEEgbnVtZXJpYyB2YWx1ZSBpbmRpY2F0aW5nIHRoZSB3aWR0aCBhbmQgaGVpZ2h0IG9mIHRoZSByZXN1bHQgZmlndXJlcy4NCiogYGZpZy5jYXBgOiAoYE5VTExgKS4gQSBjYXB0aW9uIGZvciB0aGUgZmlndXJlLg0KDQojIyMgWW91ciB0dXJuIChbQ2h1bmsgb3B0aW9uIHZpc3VhbGl6YXRpb25dKGh0dHBzOi8veW91dHUuYmUvdGVpd2JLSWZVblkpKQ0KDQpDb3B5IGFuZCBwYXN0ZSB0aGUgY29kZSBhdCBbaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2pmcmVuY2gvRGF0YVdyYW5nbGVWaXovbWFzdGVyL3JtZC1jaHVua3Mtdml6LlJtZF0oaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2pmcmVuY2gvRGF0YVdyYW5nbGVWaXovbWFzdGVyL3JtZC1jaHVua3Mtdml6LlJtZCkgaW50byBhbiBSIE1hcmtkb3duIGRvY3VtZW50IGFuZCB0aGVuIEtuaXQgdGhlIGZpbGUgdG8gc2VlIHZpc3VhbCBleGFtcGxlcyBvZiB0aGUgb3B0aW9ucyBkZXNjcmliZWQgYWJvdmUuDQoNCiMjIyBTb21lIGdlbmVyYWwgb3B0aW9ucyBub3QgZGlzY3Vzc2VkDQoNCiogQ2FjaGluZzogVGhpcyBoYXMgdG8gZG8gd2l0aCBzYXZpbmcgcHJldmlvdXMgY29kZSB0aGF0IGhhcyBiZWVuIGV2YWx1YXRlZC4gVGhpcyBpcyBpbXBvcnRhbnQgZm9yIGRvY3VtZW50cyB3aXRoIGxvdHMgb2YgY29kZSB0aGF0IGlzIHRpbWUgY29uc3VtaW5nIHRvIHJ1bi4NCiogQW5pbWF0aW9uOiBZb3UgY2FuIGFkZCBwbG90IGFuaW1hdGlvbnMgaWYgeW91IGhhdmUgdGhlIEZGTXBlZyBwcm9ncmFtIGluc3RhbGxlZCAoW2h0dHBzOi8vZmZtcGVnLm9yZy9dKGh0dHBzOi8vZmZtcGVnLm9yZy8pLikNCg0KIyMjIElubGluZSBjb2RlDQoNCllvdSBjYW4gcnVuIGNvZGUgaW4gdGhlIG1pZGRsZSBvZiB0ZXh0IHVzaW5nIHNvbWV0aGluZyBsaWtlIGBgIGByIGtuaXRyOjppbmxpbmVfZXhwcigibWVhbigxOjMpIilgIGBgLg0KDQpGb3IgZXhhbXBsZSwgYGAgYHIga25pdHI6OmlubGluZV9leHByKCIxICsgMSIpYCBgYCB3aWxsIHByb2R1Y2UgYHIgMSArIDFgLg0KDQojIyMgVGFibGVzDQoNCkJ5IGRlZmF1bHQsIFIgd2lsbCBwcmludCB0YWJsZXMgKGxpa2UgZGF0YSBmcmFtZXMpIGV4YWN0bHkgbGlrZSB5b3Ugd291bGQgc2VlIHRoZW0gaW4gdGhlIENvbnNvbGUgb3V0cHV0Lg0KDQpGb3IgZXhhbXBsZToNCg0KYGBgYA0KYGBge3J9YHIgJydgDQpoZWFkKGNhcnMpDQpgYGANCmBgYGANCmBgYHtyfQ0KaGVhZChjYXJzKQ0KYGBgDQoNClRoZSBmb3JtYXR0aW5nIGNhbiBiZSBpbXByb3ZlZCB3aXRoIHRoZSBga2FibGVgIGZ1bmN0aW9uIGluIHRoZSAqKmtuaXRyKiogcGFja2FnZS4NCg0KYGBgYA0KYGBge3J9YHIgJydgDQprbml0cjo6a2FibGUoY2Fyc1sxOjYsXSwgY2FwdGlvbiA9ICJLYWJsZSB0YWJsZSIpDQpgYGANCmBgYGANCg0KYGBge3J9DQprbml0cjo6a2FibGUoY2Fyc1sxOjYsXSwgY2FwdGlvbiA9ICJLYWJsZSB0YWJsZSIpDQpgYGANCg0KKipNYXJrZG93biB0YWJsZXMqKiAoW01hcmtkb3duIHRhYmxlcyB2aWRlb10oaHR0cHM6Ly95b3V0dS5iZS9ScDFFR0RZM1prUSkpDQoNClRhYmxlcyBjYW4gYmUgZGlyZWN0bHkgY3JlYXRlZCBpbiBNYXJrZG93biB1c2luZyBleHRlbmRlZCBzeW50YXggKFtodHRwczovL3d3dy5tYXJrZG93bmd1aWRlLm9yZy9leHRlbmRlZC1zeW50YXgvXShodHRwczovL3d3dy5tYXJrZG93bmd1aWRlLm9yZy9leHRlbmRlZC1zeW50YXgvKSkuIFRoZXNlIGFyZSBtb3N0IHVzZWZ1bCBmb3Igc21hbGwgdGFibGVzIHRoYXQgcmVxdWlyZSB2ZXJ5IHNwZWNpZmljIGZvcm1hdHRpbmcgYW5kIGRvbid0IGhhdmUgbWFueSByb3dzIG9yIGNvbHVtbnMuDQoNCkJhc2ljIHN0cnVjdHVyZToNCg0KLSBUaGUgZmlyc3QgdHdvIHJvd3Mgb2YgYSBNYXJrZG93biB0YWJsZSBwcm92aWRlIHRoZSB0YWJsZSdzIGhlYWRlciAodGhlIGNvbHVtbiBuYW1lcyBhbmQgYWxpZ25tZW50LikNCi0gVGhlIHJlbWFpbmluZyByb3dzIHByb3ZpZGUgdGhlIHJlc3Qgb2YgdGhlIHRhYmxlJ3MgZGF0YS4NCg0KQWRkaXRpb25hbCBkZXRhaWxzOiANCg0KLSBUaGUgcGlwZSAoYHxgKSBpcyB1c2VkIHRvIHNlcGFyYXRlIHRoZSB0YWJsZSBjb2x1bW5zIGFuZCBjb2x1bW4gbmFtZXMgaW4gdGhlIGZpcnN0IHJvdy4NCi0gVGhlIHBpcGUgYW5kIHRocmVlIChvciBtb3JlKSBoeXBoZW5zIChgLS0tYCkgYmV0d2VlbiBwaXBlcyBhcmUgdXNlZCBpbiB0aGUgc2Vjb25kIHJvdyB0byBjcmVhdGUgYSBsaW5lIGJldHdlZW4gdGhlIGNvbHVtbiBuYW1lcyBhbmQgdGhlIHZhbHVlcyBpbiB0aGUgdGFibGUuDQotIFRoZSBjb2xvbiAoYDpgKSBjYW4gYmUgdXNlZCBpbiB0aGUgc2Vjb25kIHJvdyB0byBhbGlnbiB0aGUgY29sdW1ucy4NCg0KICAgIC0gYDotLS1gICBwcm9kdWNlcyBhIGxlZnQtYWxpZ25lZCBjb2x1bW4uDQogICAgLSBgLS0tOmAgcHJvZHVjZXMgYSByaWdodC1hbGlnbmVkIGNvbHVtbi4NCiAgICAtIGA6LS0tOmAgcHJvZHVjZXMgYSBjZW50ZXItYWxpZ25lZCBjb2x1bW4uDQotIFlvdSBjYW4gdXNlIG1vcmUgdGhhbiB0aHJlZSBoeXBoZW5zIG9yIHNwYWNlcyB0byBhbGlnbiB0aGUgY29sdW1ucyB2aXN1YWxseS4NCi0gVGhlIHJlbWFpbmluZyB2YWx1ZXMgaW4gdGhlIHRhYmxlIGFyZSBwbGFjZWQgYmV0d2VlbiBwaXBlcyBhbmQgY2FuIGJlIGZvcm1hdHRlZCBzaW1pbGFyIHRvDQpvdGhlciB0ZXh0Lg0KLSBNYWtlIHN1cmUgZWFjaCByb3cgYmVnaW5zIGFuZCBlbmRzIHdpdGggYSBwaXBlLg0KDQpBIHNpbXBsZSBleGFtcGxlIGlzIHByb3ZpZGVkIGJlbG93LiBJZiB3ZSBpbmNsdWRlIHRoZSBmb2xsb3dpbmcgY29kZSBpbiBvdXIgUiBNYXJrZG93biBkb2N1bWVudDoNCg0KYGBgDQp8IENvZWZmaWNpZW50IHwgRXN0aW1hdGUgfCBFc3QuIFN0YW5kYXJkIEVycm9yIHwNCnwgOi0tLS0tLS0tLS0gfCAtLS0tLS0tOiB8IDotLS06ICAgICAgICAgICAgICAgfA0KfCAoSW50ZXJjZXB0KSB8IDMuMiAgICAgIHwgMS42ICAgICAgICAgICAgICAgICB8DQp8ICRcYmV0YV8xJCAgIHwgKjEuNSogICAgfCAqKjIuNyoqICAgICAgICAgICAgIHwgDQp8IFgyICAgICAgICAgIHwgOS40ICAgICAgfCB+fjAuNn5+ICAgICAgICAgICAgIHwNCmBgYA0KDQp0aGVuIHRoZSBmb2xsb3dpbmcgb3V0cHV0IHdpbGwgYmUgcmVuZGVyZWQ6DQoNCnwgQ29lZmZpY2llbnQgfCBFc3RpbWF0ZSB8IEVzdC4gU3RhbmRhcmQgRXJyb3IgfA0KfCA6LS0tLS0tLS0tLSB8IC0tLS0tLS06IHwgOi0tLTogICAgICAgICAgICAgICB8DQp8IChJbnRlcmNlcHQpIHwgMy4yICAgICAgfCAxLjYgICAgICAgICAgICAgICAgIHwNCnwgJFxiZXRhXzEkICAgfCAqMS41KiAgICB8ICoqMi43KiogICAgICAgICAgICAgfCANCnwgWDIgICAgICAgICAgfCA5LjQgICAgICB8IH5+MC42fn4gICAgICAgICAgICAgfA0KDQpOb3RpY2UgdGhlIGFsaWdubWVudCBhbmQgZm9ybWF0dGluZyBvZiB0aGUgdGV4dCBiYXNlZCBvbiB0aGUgY29kZSBhYm92ZS4NCg0KIyMgWUFNTCBoZWFkZXIgKFtZQU1MIGhlYWRlciB2aWRlb10oaHR0cHM6Ly95b3V0dS5iZS9KZ0hfcklKVXFaOCkpDQoNClRoZSBZQU1MIChZZXQgQW5vdGhlciBNYXJrZG93biBMYW5ndWFnZSkgaGVhZGVyIGNvbnRyb2xzIG1hbnkgYXNwZWN0cyBvZiB0aGUgUiBNYXJrZG93biBkb2N1bWVudC4gDQpVbmxlc3MgeW91J3JlIHVzaW5nIFIgTWFya2Rvd24gZm9yIGFkdmFuY2VkIHB1cnBvc2VzIChib29rcywgYmxvZ3MsIHdlYnNpdGVzLCBydW5uaW5nIHRoZSBzYW1lIGZpbGUgd2l0aCBtdWx0aXBsZSBpbnB1dCBwYXJhbWV0ZXJzKSB0aGVuIHlvdSBwcm9iYWJseSBkb24ndCBuZWVkIHRvIGtub3cgYSBsb3QgYWJvdXQgdGhlIFlBTUwgaGVhZGVyIGF0IHRoaXMgc3RhZ2UuIA0KDQpBbmQgaWYgeW91IGRvIG5lZWQgdG8ga25vdyBhYm91dCB0aGUgWUFNTCBoZWFkZXIgaW4gZGV0YWlsLCB0aGVuIHlvdSBwcm9iYWJseSBuZWVkIGEgbW9yZSBhZHZhbmNlZCBpbnRyb2R1Y3Rpb24gdG8gUiBNYXJrZG93biENCg0KIyMjIFJlZmVyZW5jZXMNCllvdSBjYW4gYWRkIGEgYmlibGlvZ3JhcGh5IHRvIHlvdXIgZG9jdW1lbnQgdXNpbmcgdGhlIFlBTUwgaGVhZGVyLg0KDQpZb3UgbmVlZCB0byBhZGQgc29tZXRoaW5nIGxpa2UgdGhlIGZvbGxvd2luZyB0byB0aGUgaGVhZGVyOg0KYGBge3IsIGV2YWwgPSBGQUxTRX0NCmJpYmxpb2dyYXBoeTogZmlsZW5hbWUuZmlsZXR5cGUNCmBgYA0KDQpNYW55IGJpYmxpb2dyYXBoeSB0eXBlcyBhcmUgc3VwcG9ydGVkLiBBIGxpc3Qgb2Ygc3VwcG9ydGVkIGZpbGUgdHlwZXMgaXMgY3VycmVudGx5IGF2YWlsYWJsZSBhdCBbaHR0cHM6Ly9ybWFya2Rvd24ucnN0dWRpby5jb20vYXV0aG9yaW5nX2JpYmxpb2dyYXBoaWVzX2FuZF9jaXRhdGlvbnMuaHRtbF0oaHR0cHM6Ly9ybWFya2Rvd24ucnN0dWRpby5jb20vYXV0aG9yaW5nX2JpYmxpb2dyYXBoaWVzX2FuZF9jaXRhdGlvbnMuaHRtbCkNCiANCkNpdGF0aW9ucyBtdXN0IGJlIHBsYWNlZCBpbiBzcXVhcmUgYnJhY2tldHMuDQoNCiogTXVsdGlwbGUgY2l0YXRpb25zIHNob3VsZCBiZSBzZXBhcmF0ZWQgYnkgc2VtaWNvbG9ucy4gDQoNCkEgY2l0YXRpb24gd2lsbCBoYXZlIGEga2V5IGFzc29jaWF0ZWQgd2l0aCBpdCBpbiB0aGUgYmlibGlvZ3JhcGh5IGZpbGUsIGFuZCB5b3UgbXVzdCB1c2UgYEBrZXlgIHRvIGNpdGUgdGhlIHJlbGV2YW50IHJlZmVyZW5jZS4NCg0KSGVyZSBhcmUgc29tZSBleGFtcGxlcyBmcm9tIHRoZSBSIFN0dWRpbyB3ZWJzaXRlOg0KDQpgYGB7ciwgZXZhbCA9IEZBTFNFfQ0KQmxhaCBibGFoIFtzZWUgQGRvZTk5LCBwcC4gMzMtMzU7IGFsc28gQHNtaXRoMDQsIGNoLiAxXS4NCg0KQmxhaCBibGFoIFtAZG9lOTksIHBwLiAzMy0zNSwgMzgtMzkgYW5kICpwYXNzaW0qXS4NCg0KQmxhaCBibGFoIFtAc21pdGgwNDsgQGRvZTk5XS4NCmBgYA0KDQpNYW55IGZvciBkZXRhaWxzIGFib3V0IGJpYmxpb2dyYXBoaWVzIHdpdGggUiBNYXJrZG93biBhcmUgYXZhaWxhYmxlIG9uIHRoZSBSIFN0dWRpbyB3ZWJzaXRlLCBhbmQgYXJlIGN1cnJlbnRseSBmb3VuZCBhdCBbaHR0cHM6Ly9ybWFya2Rvd24ucnN0dWRpby5jb20vYXV0aG9yaW5nX2JpYmxpb2dyYXBoaWVzX2FuZF9jaXRhdGlvbnMuaHRtbF0oaHR0cHM6Ly9ybWFya2Rvd24ucnN0dWRpby5jb20vYXV0aG9yaW5nX2JpYmxpb2dyYXBoaWVzX2FuZF9jaXRhdGlvbnMuaHRtbCkNCg0KIyMjIFByb2R1Y2luZyBkaWZmZXJlbnQgZG9jdW1lbnQgdHlwZXMNCg0KT25lIG9mIHRoZSBpbmNyZWRpYmxlIGZlYXR1cmVzIG9mIFIgTWFya2Rvd24gaXMgdGhhdCB5b3UgY2FuIGVhc2lseSBwcm9kdWNlIG11bHRpcGxlIGZpbGUgdHlwZXMgd2l0aCBhIHNpbmdsZSBjbGljayBvZiB0aGUgIktuaXQiIGJ1dHRvbi4NCg0KQWRkaW5nIHRoZSBmb2xsb3dpbmcgY29kZSBpbiB0aGUgWUFNTCBoZWFkZXIgd2lsbCBwcm9kdWNlIGEgcGRmIGRvY3VtZW50LCBhbiBodG1sIG5vdGVib29rLCBhbiBodG1sIGRvY3VtZW50LCBhbmQgYSBNaWNyb3NvZnQgV29yZCBkb2N1bWVudCwgYWxsIHdpdGggb25lIGNsaWNrIG9mIHRoZSBLbml0IGJ1dHRvbiENCmBgYHtyLCBldmFsID0gRkFMU0V9DQpvdXRwdXQ6DQogIHBkZl9kb2N1bWVudDogZGVmYXVsdA0KICBodG1sX25vdGVib29rOiBkZWZhdWx0DQogIGh0bWxfZG9jdW1lbnQ6DQogICAgZGZfcHJpbnQ6IHBhZ2VkDQogIHdvcmRfZG9jdW1lbnQ6IGRlZmF1bHQNCmBgYA0KDQoqIGBwZGZfZG9jdW1lbnRgOiBFeGNlbGxlbnQgZm9yIGRpc3RyaWJ1dGluZyBhIHN0YXRpYyAodW5jaGFuZ2luZykgZG9jdW1lbnQuIEFsc28gZ3JlYXQgZm9yIHN1Ym1pdHRpbmcgaG9tZXdvcmsgc29sdXRpb25zIHRvIHlvdXIgaW5zdHJ1Y3RvciENCiogYGh0bWxfZG9jdW1lbnRgOiBFeGNlbGxlbnQgZm9yIHNoYXJpbmcgaW50ZXJhY3RpdmUgZmlsZXMuIENhbiBiZSB2aWV3ZWQgaW4gYSB3ZWIgYnJvd3Nlci4NCiogYGh0bWxfbm90ZWJvb2tgOiBUaGUgZXhjZWxsZW50ICJSIG5vdGVib29rIi4NCiAgKiBJdCdzIGxpa2UgYW4gYGh0bWxfZG9jdW1lbnRgIGJ1dCB0aGUgc291cmNlIGNvZGUgY2FuIGJlIGRvd25sb2FkZWQgYnkgdG9nZ2xpbmcgdGhlICJDb2RlIiBidXR0b24gaW4gdGhlIHVwcGVyIHJpZ2h0IGhhbmQgY29ybmVyIG9mIHRoZSBmaWxlLg0KICAqIEdyZWF0IHRvIHNoYXJlIHdpdGggY29sbGFib3JhdG9ycyBiZWNhdXNlIHRoZXkgY2FuIHVwZGF0ZSB0aGUgZG9jdW1lbnQsIGFkZCBhbmFseXNpcywgZXRjLg0KICAqIE1ha2Ugc3VyZSB0byAiUnVuIEFsbCBDb2RlIiB1c2luZyBgQ3RybC9DbWQgKyBBbHQgKyByYCBwcmlvciB0byAiUHJldmlld2luZyIgdGhlIGRvY3VtZW50IG9yIHRoZSBjb2RlIGNodW5rIG91dHB1dCB3aWxsIG5vdCBiZSBpbmNsdWRlZC4NCiogYHdvcmRfZG9jdW1lbnRgOiBJZiB5b3UgaGF2ZSB0byBoYXZlIE1pY3Jvc29mdCBXb3JkIGVkaXRpbmcgY2FwYWJpbGl0aWVzLCBmb3Igc29tZSByZWFzb24uDQoNCiMjIyBZb3VyIHR1cm4NCg0KKiBFeGVjdXRlIHRoZSBjb21tYW5kIGBkb3dubG9hZC5maWxlKCJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vamZyZW5jaC9EYXRhV3JhbmdsZVZpei9tYXN0ZXIvMDItY3Jhc2gtY291cnNlLWluLXJtZC5uYi5odG1sIiwgZGVzdGZpbGUgPSAiMDItY3Jhc2gtY291cnNlLWluLXJtZC5uYi5odG1sIilgIGluIHRoZSBDb25zb2xlLg0KKiBDbG9zZSBSIFN0dWRpby4NCiogRmluZCB0aGUgZG93bmxvYWRlZCBmaWxlLg0KKiBUb2dnbGUgdGhlICJDb2RlIiBidXR0b24gaW4gdGhlIHJpZ2h0IGhhbmQgY29ybmVyIG9mIHRoZSBmaWxlIHRvIGRvd25sb2FkIHRoZSBvcmlnaW5hbCBzb3VyY2UgY29kZS4NCg0KIyMjIE90aGVyIHRoaW5ncyB5b3UgY2FuIGNyZWF0ZSBpbiBSIE1hcmtkb3duOg0KDQoqIFByZXNlbnRhdGlvbnM6IFVzZSB0aGUgYGlvc2xpZGVzX3ByZXNlbnRhdGlvbmAgb3IgdGhlIGBzbGlkeV9wcmVzZW50YXRpb25gIG91dHB1dCB0eXBlICh0aGVyZSBhcmUgb3RoZXJzKSB0byBjcmVhdGUgYSBwcmVzZW50YXRpb24uDQogICogVXNlIGAjYCB0byBzdGFydCBhIG5ldyBzbGlkZSB3aXRoIGEgdGl0bGUuDQogICogVXNlIGAqKipgIHRvIHN0YXJ0IGEgbmV3IHNsaWRlIHdpdGhvdXQgYSB0aXRsZS4NCiAgKiBVc2UgYCMjYCBmb3IgYSBzZWNvbmQgbGV2ZWwgaGVhZGVyLg0KKiBTaGlueSBhcHBzOiBUaGlzIGlzIGVzc2VudGlhbGx5IGFuIGludGVyYWN0aXZlIHdlYiBhcHAgY3JlYXRlZCB1c2luZyBSIE1hcmtkb3duLg0KKiBXZWJzaXRlcw0KKiBCb29rcyAoKipib29rZG93bioqKQ0KKiBCbG9ncyAoKipibG9nZG93bioqKQ0KKiBEYXNoYm9hcmRzICgqKmZsZXhkYXNoYm9hcmQqKikNCiogaHRtbF93aWRnZXRzICh2YXJpb3VzIHBhY2thZ2VzKQ0KDQo=</div>
+<div id="rmd-source-code">LS0tDQpwZGZfZG9jdW1lbnQ6IGRlZmF1bHQNCmRhdGU6ICJgciBmb3JtYXQoU3lzLnRpbWUoKSwgJyVZLSVtLSVkJylgIg0Kb3V0cHV0Og0KICBodG1sX25vdGVib29rOiBkZWZhdWx0DQogIHBkZl9kb2N1bWVudDogZGVmYXVsdA0KdGl0bGU6ICJKb3NodWEgRnJlbmNoIg0KYmlibGlvZ3JhcGh5Og0KICAtIGR3di5iaWINCiAgLSBwYWNrYWdlc19tYW5pcC5iaWINCi0tLQ0KDQpgYGB7ciwgaW5jbHVkZT1GQUxTRX0NCmtuaXRyOjpvcHRzX2NodW5rJHNldCgNCiAgdGlkeSA9IFRSVUUNCikNCmtuaXRyOjp3cml0ZV9iaWIoYygiZHBseXIiLCAidGliYmxlIiwgInRpZHlyIiwgInBhbG1lcnBlbmd1aW5zIiwgIm1hZ3JpdHRyIiwgImRhdGEudGFibGUiLCAicmVzaGFwZSIsICJyZXNoYXBlMiIsICJkYnBseXIiLCAiZHRwbHlyIiksIGZpbGUgPSAicGFja2FnZXNfbWFuaXAuYmliIikNCg0KYGBgDQoNClRoaXMgZG9jdW1lbnQgaXMgaW50ZW5kZWQgdG8gaGVscCB5b3UgcXVpY2tseSBsZWFybiBob3cgdG8gcGVyZm9ybSBiYXNpYyBkYXRhIHZpc3VhbGl6YXRpb24gdXNpbmcgKipkcGx5cioqIFtAUi1kcGx5cl0gYW5kICoqdGlkeXIqKiBbQFItdGlkeXJdLg0KDQpBbiBhY2NvbXBhbnlpbmcgWW91VHViZSBwbGF5bGlzdCB0aGF0IHdhbGtzIHRocm91Z2ggdGhpcyBkb2N1bWVudCBpcyBhdmFpbGFibGUNCmJ5IGZvbGxvd2luZyB0aGUgbGluayBbaGVyZV0oaHR0cHM6Ly95b3V0dWJlLmNvbS9wbGF5bGlzdD9saXN0PVBMa3JKckxzN3hmYlhhTTd1a3d4R3U2eGllM1g2NFhWSDMpLiBJIGhhdmUgYWxzbyBpbmNsdWRlZCBkaXJlY3QsIHJlbGV2YW50IHZpZGVvIGxpbmtzIHRocm91Z2hvdXQgdGhlIGZpbGUgKGUuZy4sIGltbWVkaWF0ZWx5IGFmdGVyIHRoZSB0aGUgcmVsZXZhbnQgaGVhZGluZykuIEFuIGh0bWwgdmVyc2lvbiBvZiB0aGlzIGRvY3VtZW50IGNhbiBiZSBkb3dubG9hZGVkIHRvIHlvdXIgY3VycmVudCB3b3JraW5nIGRpcmVjdGlvbiAocnVuIGBnZXR3ZCgpYCBpbiB0aGUgQ29uc29sZSB0byBzZWUgd2hlcmUgdGhpcyBpcykgYnkgcnVubmluZyB0aGUgZm9sbG93aW5nIGNvbW1hbmQ6DQpgYGB7ciwgZXZhbD1GQUxTRX0NCmRvd25sb2FkLmZpbGUoImh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9qZnJlbmNoL0RhdGFXcmFuZ2xlVml6L21hc3Rlci8wNC1kYXRhLWZyYW1lLW1hbmlwdWxhdGlvbi5uYi5odG1sIiwNCiAgICAgICAgICAgICAgIjA0LWRhdGEtZnJhbWUtbWFuaXB1bGF0aW9uLm5iLmh0bWwiKQ0KYGBgDQpUaGUgcmF3IFIgTWFya2Rvd24gY29kZSB1c2VkIHRvIGdlbmVyYXRlIHRoZSBodG1sIGZpbGUgY2FuIGJlIG9idGFpbmVkIGJ5IHRvZ2dsaW5nIHRoZSAiQ29kZSIgYm94IGluIHRoZSB1cHBlci1yaWdodCBjb3JuZXIgb2YgdGhlIGh0bWwgZmlsZSBhbmQgc2VsZWN0aW5nICJEb3dubG9hZCBSbWQiLg0KDQoNCiMgRGF0YSBmcmFtZSBtYW5pcHVsYXRpb24gd2l0aCAqKmRwbHlyKiogYW5kICoqdGlkeXIqKiAoW01hbmlwdWxhdGlvbiBwYWNrYWdlcyB2aWRlb10oaHR0cHM6Ly95b3V0dS5iZS9PNV9MajVGU1g2RSkpDQoNClRoZSAqKmRwbHlyKiogYW5kICoqdGlkeXIqKiBwYWNrYWdlcyBbQFItZHBseXI7IEBSLXRpZHlyXSBhcmUgcG93ZXJmdWwgcGFja2FnZXMgZm9yIHJlc3RydWN0dXJpbmcsIGVuaGFuY2luZywgYW5kIG1hbmlwdWxhdGluZyBkYXRhIGZyYW1lcy4NCg0KV2UnbGwgZGlzY3VzcyB0aGUgKipkcGx5cioqIHBhY2thZ2UgZmlyc3QsIGFzIGl0cyB1c2UgY2FzZXMgYXJlIGEgYml0IHNpbXBsZXIuDQoNCldlIGxvYWQgdGhlICoqdGliYmxlKiosICoqZHBseXIqKiwgYW5kICoqdGlkeXIqKiBwYWNrYWdlcyBmb3IgdGhlIGRpc2N1c3Npb24gYmVsb3cuIFdlIGFsc28gcHJlZW1wdGl2ZWx5IGxvYWQgdGhlIGBwZW5ndWluc2AgZGF0YSBmcmFtZSBmcm9tIHRoZSAqKnBhbG1lcnBlbmd1aW5zKiogcGFja2FnZSwgYXMgd2UgdXNlIGl0IGhlYXZpbHkgaW4gb3VyIGRpc2N1c3Npb24uDQoNCmBgYHtyLCBtZXNzYWdlID0gRkFMU0UsIHdhcm5pbmcgPSBGQUxTRX0NCmxpYnJhcnkodGliYmxlKQ0KbGlicmFyeShkcGx5cikNCmxpYnJhcnkodGlkeXIpDQpkYXRhKHBlbmd1aW5zLCBwYWNrYWdlID0gInBhbG1lcnBlbmd1aW5zIikNCmBgYA0KDQpXZSB3aWxsIGJlIGxvb2tpbmcgYXQgc3RyYWlnaHRmb3J3YXJkIGRhdGEgZnJhbWUgbWFuaXB1bGF0aW9uIGV4YW1wbGVzLiBEZXBlbmRpbmcgb24gd2hhdCB5b3UgbmVlZCB0byBkbywgeW91IG1heSBuZWVkIHRvIGRpZyBkZWVwZXIgaW50byB0aGUgcGFja2FnZXMgd2UgZGlzY3VzcyBvciBjb25zaWRlciBhbHRlcm5hdGl2ZSBwYWNrYWdlcy4gSG93ZXZlciwgeW91IHNob3VsZCBoYXZlIGEgc29saWQgZm91bmRhdGlvbiBmb3IgbWFuaXB1bGF0aW5nIGRhdGEgZnJhbWVzLg0KDQpBbHRlcm5hdGl2ZSBkYXRhIGZyYW1lIG1hbmlwdWxhdGlvbiBwYWNrYWdlczoNCg0KKiAqKmRhdGEudGFibGUqKiBbQFItZGF0YS50YWJsZV06IGFsbW9zdCBhIGRpcmVjdCBhbHRlcm5hdGl2ZSB0byAqKmRwbHlyKiogdGhhdCBtYW5pcHVsYXRlcyBgZGF0YS50YWJsZWAgb2JqZWN0cyBpbnN0ZWFkIG9mIHRpYmJsZXMgKHRoZSBlbmhhbmNlZCAqKmRwbHlyKiogZGF0YSBmcmFtZSkuDQogICogRmFzdGVyIHRoYW4gKipkcGx5cioqLg0KICAqIE1vcmUgbWVtb3J5IGVmZmljaWVudCB0aGF0ICoqZHBseXIqKi4NCiAgKiBMZXNzIGFjY2Vzc2libGUgc3ludGF4Pw0KKiAqKmR0cGx5cioqIFtAUi1kdHBseXJdOiBhbiBpbXBsZW1lbnRhdGlvbiBvZiAqKmRwbHlyKiogdGhhdCB1c2VzICoqZGF0YS50YWJsZSoqIGludGVybmFsbHkuDQogICogVGhlIGJlc3Qgb2YgYm90aCB3b3JsZHM/DQogICogKipkcGx5cioqIHN5bnRheCBpcyB0cmFuc2xhdGVkIHRvICoqZGF0YS50YWJsZSoqIHN5bnRheC4NCiAgKiBDb21wdXRhdGlvbiBtdXN0IGJlIGV4cGxpY2l0bHkgcmVxdWVzdGVkLiANCiogKipkYnBseXIqKiBbQFItZGJwbHlyXTogYW4gaW1wbGVtZW50YXRpb24gb2YgKipkcGx5cioqIHRoYXQgd29ya3Mgd2l0aCBkYXRhYmFzZXMgaW5zdGVhZCBvZiB0aWJibGVzLg0KDQpXZWIgc2VhcmNoZXMgYWJvdXQgZGF0YSBmcmFtZSBtYW5pcHVsYXRpb24gd2lsbCBsaWtlbHkgYnJpbmcgdXAgcmVmZXJlbmNlcyB0byB0aGUgKipyZXNoYXBlKiogW0BSLXJlc2hhcGVdIGFuZCAqKnJlc2hhcGUyKiogW0BSLXJlc2hhcGUyXSBwYWNrYWdlcy4NCg0KKiBUaGVzZSBwYWNrYWdlcyBhcmUgdGhlIHNwaXJpdHVhbCBwcmVkZWNlc3NvcnMgdG8gKip0aWR5cioqLiANCiogVGhlc2UgcGFja2FnZXMgZG8gbW9yZSB0aGFuICoqdGlkeXIqKiwgYnV0IHRoZSBzeW50YXggd2FzIG1vcmUgZGlmZmljdWx0Lg0KKiBUaGVzZSBwYWNrYWdlcyBhcmVuJ3QgaW4gYWN0aXZlIGRldmVsb3BtZW50LCBzbyBpdCdzIGJldHRlciB0byBhdm9pZCB1c2luZyB0aGVtIGZvciBhY3RpdmUgcHJvamVjdHMuDQogICogWW91IG1heSBoYXZlIGEgaGFyZCB0aW1lIGdldHRpbmcgaGVscCBpbiB1c2luZyB0aGUgb2xkZXIgcGFja2FnZXMuDQoNCiMjIFRpYmJsZXMgKFt0aWJibGUgdmlkZW9dKGh0dHBzOi8veW91dHUuYmUvQmxuZWJHeXVPS00pKQ0KV2hlbiB0aGUgKipkcGx5cioqIHBhY2thZ2UgaW50ZXJhY3RzIHdpdGggYSBkYXRhIGZyYW1lLCBpdCB1c3VhbGx5IHByb2R1Y2VzIGEgInRpYmJsZSIuIA0KDQoqIEEgdGliYmxlIGlzIHN1cHBvc2VkIHRvIGJlIGEgIm1vZGVybiByZS1pbWFnaW5pbmciIG9mIFIncyBzdGFuZGFyZCBkYXRhIGZyYW1lIChyZWZlcnJlZCB0byBhcyBgZGF0YS5mcmFtZWAgZm9yIGNsYXJpdHkpLg0KKiBBIHRpYmJsZSBoYXMgY2xhc3MgYHRibF9kZmAuDQoqIEEgdGliYmxlIGlzIGFsc28gYSBgZGF0YS5mcmFtZWAsIGJ1dCBoYXMgZGlmZmVyZW50IGRlZmF1bHQgYmVoYXZpb3JzLg0KKiBGdW5jdGlvbnMgdGhhdCB0YWtlIGEgYGRhdGEuZnJhbWVgIHNob3VsZCBhbHNvIHRha2UgYSB0aWJibGUuDQoqIFRpYmJsZXMgY29tZXMgZnJvbSB0aGUgKip0aWJibGUqKiBwYWNrYWdlIFtAUi10aWJibGVdLCB3aGljaCBpcyBhdXRvbWF0aWNhbGx5IGltcG9ydGVkIGJ5ICoqZHBseXIqKi4NCg0KIyMjIERpZmZlcmVuY2VzIGJldHdlZW4gYSB0aWJibGUgYW5kIGEgYGRhdGEuZnJhbWVgIChbdGliYmxlIHZlcnN1cyBgZGF0YS5mcmFtZWAgdmlkZW9dKGh0dHBzOi8veW91dHUuYmUvX3FIZHFXeC12c1EpKQ0KDQpBIHRpYmJsZSBnZW5lcmFsbHkgaGFzIG1vcmUgcmVzdHJpY3RpdmUgYmVoYXZpb3IgdGhhbiBhIGBkYXRhLmZyYW1lYC4NCg0KKiBUaWJibGVzIGRvbid0IGNvbnZlcnQgaW5wdXQgdHlwZXMuDQogICogVGhpcyBpc24ndCBhcyBiaWcgb2YgYSBkZWFsIHNpbmNlIHRoZSByZWxlYXNlIG9mIFIgNC4wLjAgd2hlbiB0aGUgYXJndW1lbnQgYHN0cmluZ3NBc0ZhY3RvcnNgIG9mIHRoZSBgZGF0YS5mcmFtZWAgZnVuY3Rpb24gd2FzIHNldCB0byBgRkFMU0VgIGJ5IGRlZmF1bHQuDQoqIFRpYmJsZXMgZG9uJ3QgYWxsb3cgZm9yIHBhcnRpYWwgbWF0Y2hpbmcgb2YgdmFyaWFibGUgbmFtZXMuDQoqIFRpYmJsZXMgZG9lc24ndCBhZGQgcm93IG5hbWVzIHRvIHRoZSBkYXRhIGZyYW1lLg0KKiBTdWJzZXR0aW5nIGEgdGliYmxlIGFsd2F5cyBwcm9kdWNlcyBhIHRpYmJsZS4NCiAgKiBTdWJzZXR0aW5nIGEgYGRhdGEuZnJhbWVgIGNhbiByZXR1cm4gYSB2ZWN0b3IsIHdoaWNoIGNhbiBjcmVhdGUgZWRnZS1jYXNlcyB0aGF0IHJlc3VsdHMgaW4gYSBidWcgaW4geW91ciBjb2RlIQ0KKiBUaWJibGVzIGRvIGFsbG93IGZvciBub24tdmFsaWQgUiB2YXJpYWJsZSBuYW1lcywgdGhvdWdoIEkgd291bGRuJ3QgZG8gdGhpcyBpbnRlbnRpb25hbGx5Lg0KICAqIEEgbm9uLXZhbGlkIFIgdmFyaWFibGUgbmFtZSBoYXMgdG8gYmUgc3Vycm91bmRlZCBieSBiYWNrdGlja3MuIA0KKiBWYXJpYWJsZXMgdXNlZCB0byBjcmVhdGUgYSB0aWJibGUgbXVzdCAoZ2VuZXJhbGx5KSBoYXZlIHRoZSBzYW1lIGxlbmd0aC4NCiAgKiBVbmxpa2UgYSBgZGF0YS5mcmFtZWAsIHRpYmJsZXMgZG9uJ3QgZ2VuZXJhbGx5ICJyZWN5Y2xlIiB0aGUgdmFsdWVzIG9mIGEgdmVjdG9yIHdoZW4gY3JlYXRpbmcgYSBkYXRhIGZyYW1lLg0KICAqIFRpYmJsZXMgb25seSByZWN5Y2xlIHZlY3RvcnMgb2YgbGVuZ3RoIDEsIGkuZS4sIGl0IHdpbGwgcmVjeWNsZSBhIHZlY3RvciBvZiBsZW5ndGggMSBzbyB0aGF0IHRoZSBuZXcgdmFyaWFibGUgaGFzIGxlbmd0aCBtYXRjaGluZyB0aGUgb3RoZXIgdmFyaWFibGVzLg0KKiBUaGUgcHJpbnRpbmcgY2FwYWJpbGl0aWVzIG9mIGEgdGliYmxlIGFyZSBkZXNpZ25lZCB0byBiZSBiZXR0ZXIgdGhhbiBhIGBkYXRhLmZyYW1lYC4gDQogICogVGhlIHVzZXIgY2FuIGRpcmVjdGx5IHNwZWNpZnkgdGhlIG51bWJlciBvZiByb3dzIHRvIHByaW50IGZvciBhIHRpYmJsZS4NCiAgKiBUaWJibGVzIG9ubHkgcHJpbnQgdGhlIG51bWJlciBvZiBjb2x1bW5zIHRoYXQgY2FuIGZpdCBob3Jpem9udGFsbHkgaW4gdGhlIENvbnNvbGUuDQoNCiMjIyBFeGFtcGxlDQoNCkxldCdzIGNvbXBhcmUgc29tZSBvZiBiZWhhdmlvcnMgZm9yIGEgYGRhdGEuZnJhbWVgIGFuZCBhIHRpYmJsZS4gVGhlIGxhc3QgZmV3IGxpbmVzIHVzZSB0aGUgYHBlbmd1aW5zYCBkYXRhIGZyYW1lIGZyb20gdGhlICoqcGFsbWVycGVuZ3VpbnMqKiBwYWNrYWdlIFtAUi1wYWxtZXJwZW5ndWluc10uIFJ1biB0aGUgZm9sbG93aW5nIGNvbW1hbmRzIGluIHRoZSBSIENvbnNvbGUuDQpgYGB7ciwgZXZhbD1GQUxTRX0NCiMgY3JlYXRlIGRhdGEuZnJhbWUNCmR0ZiA8LSBkYXRhLmZyYW1lKG51bWJlcnMgPSAxOjQsIGxldHRlcnMgPSBsZXR0ZXJzWzE6NF0sIHN0cmluZ3NBc0ZhY3RvcnMgPSBUUlVFKQ0KIyBvYnNlcnZlIHN0cnVjdHVyZS4gbG9vayBhdCB0aGUgY2xhc3Nlcw0Kc3RyKGR0ZikNCiMgcGFydGlhbCBtYXRjaGluZyBvZiB2YXJpYWJsZSBuYW1lDQpkdGYkbGV0DQojIHN1YnNldCBzaW5nbGUgY29sdW1uIG9mIGR0Zg0KZHRmWyxjKCJsZXR0ZXJzIildDQojIHN1YnNldCBzaW5nbGUgY29sdW1uIG9mIGR0ZiBubyBsb25nZXIgYSBkYXRhLmZyYW1lIQ0KaXMuZGF0YS5mcmFtZShkdGZbLGMoImxldHRlcnMiKV0pDQojIGFkZCBhIG5ldyBjb2x1bW4gdG8gZHRmDQpkdGYkbmV3diA8LSAxOjINCiMgcHJpbnQgZHRmDQpkdGYNCiMgY3JlYXRlIHRpYmJsZQ0KdGJsIDwtIHRpYmJsZShudW1iZXJzID0gMTo0LCBsZXR0ZXJzID0gbGV0dGVyc1sxOjRdKQ0KIyBvYnNlcnZlIHN0cnVjdHVyZS4gbG9vayBhdCB0aGUgY2xhc3Nlcw0Kc3RyKHRibCkNCiMgcGFydGlhbCBtYXRjaGluZyBvZiB2YXJpYWJsZSBuYW1lDQp0YmwkbGV0DQojIHBhcnRpYWwgbWF0Y2hpbmcgb2YgdmFyaWFibGUgbmFtZQ0KdGJsJGxldHRlcnMNCiMgc3Vic2V0IHNpbmdsZSBjb2x1bW4gb2YgdGJsDQp0YmxbLGMoImxldHRlcnMiKV0NCiMgc3Vic2V0IHNpbmdsZSBjb2x1bW4gb2YgdGJsIHN0aWxsIGEgdGliYmxlIQ0KaXNfdGliYmxlKHRibFssYygibGV0dGVycyIpXSkNCiMgYWRkIGEgbmV3IGNvbHVtbiB0byB0Ymwgb2Ygd3JvbmcgbGVuZ3RoIChub3QgT0spDQp0YmwkbmV3diA8LSAxOjINCiMgYWRkIGEgbmV3IGNvbHVtbiBieSByZWN5Y2x5aW5nIGEgc2luZ2xlIHZhbHVlIChPSykNCnRibCRuZXd2IDwtIDENCiMgYWRkIGEgbmV3IGNvbHVtbiB3aXRoIHRoZSBzYW1lIGxlbmd0aCBhcyBvdGhlciBjb2x1bW5zIChPSykNCnRibCRuZXd2IDwtIHJlcCgxOjIsIHRpbWVzID0gMikNCiMgcHJpbnQgdGJsDQp0YmwNCiMgcHJpbnQgb25seSB0d28gcm93cyBvZiB0YmwNCnByaW50KHRibCwgbiA9IDIpDQojIHByaW50IGxhcmdlLCByZWd1bGFyIGRhdGEuZnJhbWUgKHBlbmd1aW5zIGRhdGEpDQphcy5kYXRhLmZyYW1lKHBlbmd1aW5zKQ0KIyBwcmludCBsYXJnZSwgcmVndWxhciB0aWJibGUNCnBlbmd1aW5zDQpgYGANCiMjIyBTdWJzZXR0aW5nL2V4dHJhY3RpbmcgcGFydHMgb2YgYSB0aWJibGUgKFtzdWJzZXR0aW5nIGEgdGliYmxlIHZpZGVvXShodHRwczovL3lvdXR1LmJlL3hSM3g5TWJkXzZBKSkNCg0KVGhlIHN5bnRheCB1c2VkIHRvIHN1YnNldCBvciBleHRyYWN0IGVsZW1lbnRzIGZyb20gYSBgZGF0YS5mcmFtZWAgY2FuIGJlIHVzZWQgZm9yIHRpYmJsZXMuDQoNCiogQXMgc2VlbiBhYm92ZSwgdGhlIHJlc3VsdCBwcm9kdWNlZCB3aGVuIHVzaW5nIHRoZSBzeW50YXggbWF5IGRpZmZlciBmb3IgYSBgZGF0YS5mcmFtZWAgYW5kIGEgdGliYmxlLg0KDQpXZSB3aWxsIGV4YW1pbmUgdGhlIGJlaGF2aW9yIG9mIGEgdGliYmxlIHdoZW4gYXR0ZW1wdGluZyB0byBzdWJzZXQgb3IgZXh0cmFjdCBpdHMgZWxlbWVudHMuIFdlIHdpbGwgdXNlIHRoZSBgcGVuZ3VpbnNgIGRhdGEgc2V0IGluIHRoZSAqKnBhbG1lcnBlbmd1aW5zKiogcGFja2FnZSwgd2hpY2ggaXMgYSB0aWJibGUuIEV4ZWN1dGUgdGhlIGZvbGxvd2luZyBjb21tYW5kcyBpbiB0aGUgUiBDb25zb2xlLg0KYGBge3IsIGV2YWw9RkFMU0V9DQojIGNoZWNrIHdoZXRoZXIgdGhlIG9iamVjdCBpcyBhIHRpYmJsZQ0KaXNfdGliYmxlKHBlbmd1aW5zKQ0KIyBleHRyYWN0IHRoZSBzcGVjaWVzIGNvbHVtbiBvZiBwZW5ndWlucw0KcGVuZ3VpbnMkc3BlY2llcw0KIyBzdWJzZXQgdGhlIGZpcnN0IGNvbHVtbiBvZiBwZW5ndWlucw0KcGVuZ3VpbnNbLDFdDQojIHN1YnNldCB0aGUgZmlyc3QgYW5kIHRoaXJkIGNvbHVtbnMgb2YgcGVuZ3Vpbg0KcGVuZ3VpbnNbLCBjKDEsIDMpXQ0KIyBzdWJzZXQgdGhlIGlzbGFuZCB2YXJpYWJsZSBvZiBwZW5ndWlucw0KcGVuZ3VpbnNbLCBjKCJpc2xhbmQiKV0NCiMgc3Vic2V0IHRoZSBpc2xhbmQgYW5kIGJpbGxfbGVuZ3RoX21tIHZhcmlhYmxlcyBvZiBwZW5ndWlucw0KcGVuZ3VpbnNbLCBjKCJpc2xhbmQiLCAiYmlsbF9sZW5ndGhfbW0iKV0NCiMgc3Vic2V0IGZpcnN0IDMgY29sdW1ucyBvZiBwZW5ndWlucw0KcGVuZ3VpbnNbMTozXQ0KIyBzdWJzZXQgdGhlIGZpcnN0IDMgcm93cyBhbmQgbmFtZWQgY29sdW1ucyBvZiBwZW5ndWlucw0KcGVuZ3VpbnNbMTozLCBjKCJpc2xhbmQiLCAiYmlsbF9sZW5ndGhfbW0iKV0NCiMgc3Vic2V0IGFsbCBidXQgdGhlIGZpcnN0IDMgcm93cyBvZiBwZW5ndWlucyB3aXRoIHRoZSBuYW1lZCBjb2x1bW5zIA0KcGVuZ3VpbnNbLSgxOjMpLCBjKCJpc2xhbmQiLCAiYmlsbF9sZW5ndGhfbW0iKV0NCmBgYA0KDQojIyMgSW1wb3J0YW50IGZ1bmN0aW9ucyBmb3IgdGliYmxlcyAoW3RpYmJsZS1yZWxhdGVkIGZ1bmN0aW9ucyB2aWRlb10oaHR0cHM6Ly95b3V0dS5iZS8yemRkYk1LbnhyWSkpDQoNCkJlbG93IGFyZSBzb21lIG9mIHRoZSBtb3N0IGltcG9ydGFudCBmdW5jdGlvbnMgYXNzb2NpYXRlZCB3aXRoIHRpYmJsZXM6DQoNCiogYHRpYmJsZWA6IGNyZWF0ZSBhIHRpYmJsZSBzaW1pbGFybHkgdG8gaG93IHlvdSB3b3VsZCBjcmVhdGUgYSBgZGF0YS5mcmFtZWANCiogYGFzX3RpYmJsZWA6IHR1cm4gYSBgZGF0YS5mcmFtZWAgaW50byBhIHRpYmJsZQ0KKiBgaXNfdGliYmxlYDogZGV0ZXJtaW5lIHdoZXRoZXIgYW4gb2JqZWN0IGlzIGEgdGliYmxlDQoqIGBhZGRfcm93YDogYWRkIGEgcm93IHRvIGEgdGliYmxlDQoqIGBhZGRfY29sdW1uYDogYWRkIGEgY29sdW1uIHRvIGEgdGliYmxlDQoNClRoZXJlIGFyZSBzZXZlcmFsIG90aGVyIGZ1bmN0aW9uIGFzc29jaWF0ZWQgd2l0aCB0aWJibGVzIGZyb20gdGhlICoqdGliYmxlKiogcGFja2FnZSwgYnV0IHdlIGRvbid0IGRpc2N1c3MgdGhlbSBoZXJlLg0KDQpSdW4gdGhlIGZvbGxvd2luZyBjb2RlIGluIHRoZSBSIENvbnNvbGUgdG8gc2VlIHRoZSByZXN1bHRzIGZyb20gYXBwbHlpbmcgdGhlIGZ1bmN0aW9ucyBtZW50aW9uZWQgYWJvdmUuDQpgYGB7ciwgZXZhbCA9IEZBTFNFfQ0KIyBjcmVhdGUgYSBzaW1wbGUgdGliYmxlDQp0YmwxIDwtIHRpYmJsZShudW1iZXJzID0gMTozLCBsZXR0ZXJzID0gbGV0dGVyc1sxOjNdKQ0KdGJsMQ0KIyBjcmVhdGUgYSBzaW1wbGUgZGF0YS5mcmFtZQ0KZHRmMSA8LSBkYXRhLmZyYW1lKG51bWJlcnMgPSAxOjMsIGxldHRlcnMgPSBsZXR0ZXJzWzE6M10pDQpkdGYxDQojIGNvbnZlcnQgdGhlIGRhdGEuZnJhbWUgdG8gYSB0aWJibGUNCnRibDIgPC0gYXNfdGliYmxlKGR0ZjEpDQojIGNoZWNrIHRoYXQgdGhlIG9iamVjdHMgYXJlIA0KaWRlbnRpY2FsKHRibDEsIHRibDIpDQojIGNvbmZpcm0gdGhhdCB0YmwyIGlzIGEgdGliYmxlDQppc190aWJibGUodGJsMikNCiMgYWRkIGEgcm93IHRvIHRoZSB0aWJibGUNCnRibDEgPC0gYWRkX3Jvdyh0YmwxLCBudW1iZXJzID0gNDo1LCBsZXR0ZXJzID0gbGV0dGVyc1s0OjVdKQ0KdGJsMQ0KIyBhZGQgYSBjb2x1bW4gdG8gdGhlIHRpYmJsZQ0KdGJsMSA8LSBhZGRfY29sdW1uKHRibDEsIGNhdHMgPSBmYWN0b3IocmVwKGMoImcxIiwgImcyIiksIHRpbWVzID0gYygyLCAzKSkpLCAuYWZ0ZXIgPSAibnVtYmVycyIpDQp0YmwxDQpgYGANCiMjIFVzaW5nICoqZHBseXIqKiAoW2RwbHlyIG92ZXJ2aWV3IHZpZGVvXShodHRwczovL3lvdXR1LmJlL2tCLVlTUTRyMlljKSkNCg0KKipkcGx5cioqIHByb3ZpZGVzIGZ1bmN0aW9ucyBmb3IgdGhlICJ2ZXJicyIgKGkuZS4sIGFjdGlvbnMpIHJlbGF0ZWQgdG8gY29tbW9uIGRhdGEgZnJhbWUgbWFuaXB1bGF0aW9uIHRhc2tzLiBUaGUgdGFibGUgYmVsb3cgc3VtbWFyaXplcyBzb21lIG9mIHRoZSBtb3N0IGltcG9ydGFudCBmdW5jdGlvbnMgYnkgdGhlIGFzcGVjdCBvZiBhIGRhdGEgZnJhbWUgaXQgbWFuaXB1bGF0ZXMuDQoNCmFzcGVjdCB8IGZ1bmN0aW9uIHwgcHVycG9zZQ0KLS0tfC0tLXwtLS0NCnJvdyB8IGBmaWx0ZXJgIHwgc2VsZWN0cyByb3dzIGJhc2VkIG9uIGEgbG9naWNhbCBzdGF0ZW1lbnQNCnJvdyB8IGBzbGljZWAgfCBzZWxlY3Qgcm93cyBiYXNlZCBvbiBwb3NpdGlvbiBvciBvdGhlciBwcm9wZXJ0eQ0Kcm93IHwgYGFycmFuZ2VgIHwgcmVvcmRlcnMgdGhlIHJvd3MgYmFzZWQgb24gc29tZSBwcm9wZXJ0eQ0Kcm93IHwgYGdyb3VwX2J5YCB8IGdyb3VwcyBhIGNvbGxlY3Rpb24gb2Ygcm93cyBoaWVyYXJjaGljYWxseSBiYXNlZCBvbiBvbmUgb3IgbW9yZSB2YXJpYWJsZXMNCmdyb3VwIG9mIHJvd3MgfCBgc3VtbWFyaXplYCB8IHByb2R1Y2VzIGEgc3VtbWFyaXppbmcgdmFsdWUgb3IgdmFsdWVzIGZvciBhIGdyb3VwIG9mIHJvd3MNCmNvbHVtbiB8IGBzZWxlY3RgIHwgc2VsZWN0cyBjb2x1bW5zIGJhc2VkIG9uIGEgbG9naWNhbCBzdGF0ZW1lbnQsIGNvbHVtbiBuYW1lcywgZXRjLg0KY29sdW1uIHwgYHJlbmFtZWAgfCBjaGFuZ2VzIG9uZSBvciBtb3JlIGNvbHVtbiBuYW1lcw0KY29sdW1uIHwgYG11dGF0ZWAgfCBjaGFuZ2VzIGFuIGV4aXN0aW5nIGNvbHVtbiBvciBhZGRzIGEgbmV3IGNvbHVtbg0KY29sdW1uIHwgYHJlbG9jYXRlYCB8IHJlb3JkZXJzIHRoZSBjb2x1bW5zDQoNCiMjIyBUaGUgcGlwZSBvcGVyYXRvcg0KDQpUaGUgcGlwZSBvcGVyYXRvciwgYCU+JWAsIGlzIGEgcG9wdWxhciBhcHByb2FjaCBmb3IgInBpcGluZyIgYW4gb2JqZWN0IGludG8gdGhlIGZpcnN0IGFyZ3VtZW50ICh1c3VhbGx5KSBvZiBhbm90aGVyIGZ1bmN0aW9uLg0KDQoqIFRoZSBwaXBlIG9wZXJhdG9yIHdhcyBpbnRyb2R1Y2VkIGJ5IHRoZSAqKm1hZ3JpdHRyKiogcGFja2FnZSBbQFItbWFncml0dHJdLg0KKiBJdCBpcyBleHRyZW1lbHkgcG9wdWxhciBpbiB0aGUgKip0aWR5dmVyc2UqKiBmb3Igc3RyaW5naW5nIHNlcXVlbmNlcyBvZiBvcGVyYXRpb25zIHRvZ2V0aGVyIGluIGEgcmVhZGFibGUgd2F5Lg0KKiBSIHZlcnNpb24gNC4xIHdpbGwgZ2FpbiBhIG5hdGl2ZSBwaXBlIG9wZXJhdG9yIChgfD5gKSB0aGF0IHdpbGwgYmUgYSBiZXR0ZXIgY2hvaWNlIG1vdmluZyBmb3J3YXJkLg0KDQpUaGUgcGlwZSBvcGVyYXRvciBpcyBiZXN0IHVuZGVyc3Rvb2QgdGhyb3VnaCBleGFtcGxlLCBhcyB0aGVyZSBhcmUgc3BlY2lhbCBjYXNlcyB0aGF0IGhhdmUgdG8gYmUgY29uc2lkZXJlZC4NCg0KIyMjIEZpbHRlcmluZyAoW2RwbHlyIGZpbHRlcmluZyB2aWRlb10oaHR0cHM6Ly95b3V0dS5iZS84dGF6SmJnY0RXZykpDQoNClRoZSBgZmlsdGVyYCBmdW5jdGlvbiBmaWx0ZXJzIG91dCB0aGUgcm93cyBvZiBhIGRhdGEgZnJhbWUgdGhhdCBkb24ndCBtZWV0IHRoZSBkZXNpZ25hdGVkIGNyaXRlcmlhLg0KDQpMZXQncyBgZmlsdGVyYCB0aGUgcm93cyBvZiB0aGUgYHBlbmd1aW5zYCBkYXRhIGZyYW1lIGJhc2VkIG9uIHdoZXRoZXIgdGhlIGBib2R5X21hc3NfZ2AgdmFyaWFibGUgaXMgbW9yZSB0aGFuIDYwMDAuIEluIHRoZSBjb2RlIGJlbG93LCB0aGUgbG9naWNhbCBzdGF0ZW1lbnQgYGJvZHlfbWFzc19nID4gNjAwMGAgaW5kaWNhdGVzIHRoZSByb3dzIG9mIGBwZW5ndWluc2AgdG8gcmV0YWluLiBJbiB0aGUgZmlyc3QgZXhhbXBsZSwgd2UgdXNlIHRoZSBgZmlsdGVyYCBmdW5jdGlvbiB0byBkaXJlY3RseSBmaWx0ZXIgdGhlIGBwZW5ndWluc2AgZGF0YSBmcmFtZS4gSW4gdGhlIHNlY29uZCBleGFtcGxlLCB3ZSBwaXBlIHRoZSBgcGVuZ3VpbnNgIGRhdGEgZnJhbWUgaW50byB0aGUgYGZpbHRlcmAgZnVuY3Rpb24gYW5kIHRoZW4gdXNlIHRoZSBsb2dpY2FsIHN0YXRlbWVudCB0byBmaWx0ZXIgdGhlIHJvd3MuDQpgYGB7cn0NCnBlbmd1aW5zW3Blbmd1aW5zJGJvZHlfbWFzc19nID4gNjAwMCxdDQpwZW5ndWluc1twZW5ndWlucyRib2R5X21hc3NfZyA+IDYwMDAgJg0KICAgICAgICAgICAhaXMubmEocGVuZ3VpbnMkYm9keV9tYXNzX2cpLF0NCmZpbHRlcihwZW5ndWlucywgYm9keV9tYXNzX2cgPiA2MDAwKQ0KcGVuZ3VpbnMgJT4lIGZpbHRlcihib2R5X21hc3NfZyA+IDYwMDApDQpgYGANCg0KIyMjIFNsaWNpbmcgKFtkcGxyeSBzbGljZSB2aWRlb10oaHR0cHM6Ly95b3V0dS5iZS80X1lwdE0ydHdIMCkpDQoNCmBzbGljZWAgc3Vic2V0cyByb3dzIG9mIGEgZGF0YSBmcmFtZSBieSBpbmRleCBvciB3aXRoIHJlc3BlY3QgdG8gb3RoZXIgcHJvcGVydGllcy4NCg0KSW4gdGhlIGV4YW1wbGUgYmVsb3csIHdlIHVzZSB0aGUgYHNsaWNlYCBmdW5jdGlvbiB0byBzdWJzZXQgcm93cyAxMC0xMiBvZiBgcGVuZ3VpbnNgLCBmaXJzdCBkaXJlY3RseSwgYW5kIHRoZW4gdXNpbmcgdGhlIHBpcGUgb3BlcmF0b3IuDQpgYGB7cn0NCnBlbmd1aW5zWzEwOjEyLCBdDQpzbGljZShwZW5ndWlucywgMTA6MTIpDQpwZW5ndWlucyAlPiUgc2xpY2UoMTA6MTIpDQpgYGANCg0KYHNsaWNlX2hlYWRgIHN1YnNldHMgdGhlIGZpcnN0IGBuYCByb3dzIG9mIGEgZGF0YSBmcmFtZS4gQ29udmVyc2VseSwgYHNsaWNlX3RhaWxgIHN1YnNldHMgdGhlIGxhc3QgYG5gIHJvd3Mgb2YgYSBkYXRhIGZyYW1lLg0KDQoqIFRoaXMgaXMgc2ltaWxhciB0byB0aGUgYGhlYWRgIGFuZCBgdGFpbGAgZnVuY3Rpb25zIGluICoqYmFzZSoqIFIuDQoNCkluIHRoZSBleGFtcGxlcyBiZWxvdywgd2Ugc3Vic2V0IHRoZSBmaXJzdCAyIHJvd3MsIHRoZW4gdGhlIGxhc3QgdHdvIHJvd3MsIG9mIHRoZSBgcGVuZ3VpbnNgIGRhdGEgZnJhbWUuDQoNCmBgYHtyfQ0Kc2xpY2VfaGVhZChwZW5ndWlucywgbiA9IDIpDQpwZW5ndWlucyAlPiUgc2xpY2VfaGVhZChuID0gMikNCnNsaWNlX3RhaWwocGVuZ3VpbnMsIG4gPSAyKQ0KcGVuZ3VpbnMgJT4lIHNsaWNlX3RhaWwobiA9IDIpDQpgYGANCg0KYHNsaWNlX21heGAgc3Vic2V0cyB0aGUgYG5gIHJvd3Mgb2YgYSBkYXRhIGZyYW1lIHdpdGggdGhlIGBuYCBsYXJnZXN0IHZhbHVlcyB3aXRoIHJlc3BlY3QgdG8gYSBzcGVjaWZpYyB2YXJpYWJsZS4gQ29udmVyc2VseSwgYHNsaWNlX21pbmAgc3Vic2V0cyB0aGUgYG5gIHJvd3Mgb2YgYSBkYXRhIGZyYW1lIHdpdGggdGhlIGBuYCBzbWFsbGVzdCB2YWx1ZXMgd2l0aCByZXNwZWN0IHRvIGEgc3BlY2lmaWMgdmFyaWFibGUuDQoNCkluIHRoZSBleGFtcGxlcyBiZWxvdywgd2Ugc3Vic2V0IHRoZSByb3dzIG9mIHRoZSBgcGVuZ3VpbnNgIGRhdGEgZnJhbWUgd2l0aCB0aGUgbGFyZ2VzdCBhbmQgc21hbGxlc3QgYGJpbGxfbGVuZ2hfbW1gIHZhbHVlcywgcmVzcGVjdGl2ZWx5LiANCg0KYGBge3J9DQpzbGljZV9tYXgocGVuZ3VpbnMsIGJpbGxfbGVuZ3RoX21tLCBuID0gMikNCnBlbmd1aW5zICU+JSBzbGljZV9tYXgoYmlsbF9sZW5ndGhfbW0sIG4gPSAyKQ0Kc2xpY2VfbWluKHBlbmd1aW5zLCBiaWxsX2xlbmd0aF9tbSwgbiA9IDIpDQpwZW5ndWlucyAlPiUgc2xpY2VfbWluKGJpbGxfbGVuZ3RoX21tLCBuID0gMikNCmBgYA0KDQpgc2xpY2Vfc2FtcGxlYCByYW5kb21seSBzZWxlY3RzIGBuYCByb3dzIG9mIGEgZGF0YSBmcmFtZS4gV2UgcmFuZG9tbHkgc2VsZWN0IDMgcm93cyBvZiBgcGVuZ3VpbnNgIGJlbG93LiBUbyBtYWtlIHRoZSByZXN1bHRzIHJlcHJvZHVjaWJsZSwgd2Ugd291bGQgbmVlZCB0byBzZXQgdGhlIHJhbmRvbSBudW1iZXIgc2VlZCB1c2luZyBgc2V0LnNlZWRgIHNpbmNlIHRoZSByb3dzIGFyZSByYW5kb21seSBzZWxlY3RlZC4NCg0KYGBge3J9DQpzbGljZV9zYW1wbGUocGVuZ3VpbnMsIG4gPSAzKQ0KcGVuZ3VpbnMgJT4lIHNsaWNlX3NhbXBsZShuID0gMykNCmBgYA0KDQojIyMgQXJyYW5naW5nDQoNClRoZSBgYXJyYW5nZWAgZnVuY3Rpb24gYXJyYW5nZXMgdGhlIHJvd3Mgb2YgYSBkYXRhIGZyYW1lIHdpdGggcmVzcGVjdCB0byBhIGNlcnRhaW4gdmFyaWFibGUuDQoNCiogQnkgZGVmYXVsdCwgdGhlIHJvd3MgYXJlIG9yZGVyZWQgaW4gYXNjZW5kaW5nIG9yZGVyLg0KKiBUaGUgYGRlc2NgIGZ1bmN0aW9uIGNhbiBiZSB1c2VkIHRvIGFycmFuZ2UgdGhlIHJvd3MgaW4gZGVzY2VuZGluZyBvcmRlci4NCiogVGhlIG9yZGVyaW5nIGNhbiBiZSBkb25lIHdpdGhpbiBncm91cHMgaWYgc3BlY2lmaWVkLg0KDQpJbiB0aGUgY29kZSBiZWxvdywgd2UgYXJyYW5nZSB0aGUgcm93cyBvZiBgcGVuZ3VpbnNgIGluIGFzY2VuZGluZyBhbmQgdGhlbiBkZXNjZW5kaW5nIG9yZGVyLCByZXNwZWN0aXZlbHksIHdpdGggcmVzcGVjdCB0byBgYmlsbF9sZW5ndGhfbW1gLg0KDQpgYGB7cn0NCmFycmFuZ2UocGVuZ3VpbnMsIGJpbGxfbGVuZ3RoX21tKQ0KYXJyYW5nZShwZW5ndWlucywgZGVzYyhiaWxsX2xlbmd0aF9tbSkpDQpgYGANCldlIGNvdWxkIGRvIHRoZSBzYW1lIHRoaW5nIHVzaW5nIHBpcGUgb3BlcmF0b3JzIHVzaW5nIHRoZSBjb2RlIGJlbG93Lg0KDQpgYGB7ciwgZXZhbCA9IEZBTFNFfQ0KcGVuZ3VpbnMgJT4lIGFycmFuZ2UoYmlsbF9sZW5ndGhfbW0pDQpwZW5ndWlucyAlPiUgYXJyYW5nZShkZXNjKGJpbGxfbGVuZ3RoX21tKSkNCmBgYA0KDQpUaGUgZGF0YSBmcmFtZSBjYW4gYWxzbyBiZSBhcnJhbmdlZCB3aXRoaW4gZ3JvdXBzLiBJbiB0aGUgY29kZSBiZWxvdywgd2Ugc2VsZWN0IHRocmVlIHJvd3MgZnJvbSBlYWNoIGBzcGVjaWVzYCBvZiBgcGVuZ3VpbnNgIGFuZCBhc3NpZ24gaXQgdGhlIG5hbWUgYHBlbmd1aW5zX3NsaWNlYC4gV2UgdGhlbiAgb3JkZXIgdGhlIHJvd3Mgb2YgYHBlbmd1aW5zX3NsaWNlYCBieSBgYmlsbF9sZW5ndGhfbW1gIGluIGVhY2ggZ3JvdXAgYnkgc2V0dGluZyBgLmJ5X2dyb3VwYCB0byBgVFJVRWAuDQoNCmBgYHtyfQ0KcGVuZ3VpbnNfc2xpY2UgPC0gcGVuZ3VpbnMgJT4lIGdyb3VwX2J5KHNwZWNpZXMpICU+JSBzbGljZSgxOjMpDQphcnJhbmdlKHBlbmd1aW5zX3NsaWNlLCBiaWxsX2xlbmd0aF9tbSwgLmJ5X2dyb3VwID0gVFJVRSkNCmBgYA0KDQojIyMgR3JvdXBpbmcgYW5kIHN1bW1hcml6aW5nIChbZHBseXIgZ3JvdXBpbmcgYW5kIHN1bW1hcml6aW5nIHZpZGVvXShodHRwczovL3lvdXR1LmJlL0xhQTdzVmU3NlBBKSkNCg0KVGhlIGBncm91cF9ieWAgZnVuY3Rpb24gZ3JvdXBzIHJvd3Mgb2YgYSBkYXRhIGZyYW1lIHdpdGggcmVzcGVjdCB0byBvbmUgb3IgbW9yZSB2YXJpYWJsZXMsIHdoaWNoIGNhbiB0aGVuIGJlIG1hbmlwdWxhdGVkIGluIHZhcmlvdXMgd2F5cy4gDQoNCmBncm91cF9ieWAgaXMgb2Z0ZW4gdXNlZCBpbiBjbG9zZSBjb25uZWN0aW9uIHRvIHRoZSBgc3VtbWFyaXplYCBmdW5jdGlvbiwgd2hpY2ggY29tcHV0ZXMgc3RhdGlzdGljYWwgc3VtbWFyaWVzIGZvciAoZ3JvdXBlZCkgcm93cyBpbnRvIGEgc2luZ2xlIHZhbHVlLg0KDQpTaW5jZSB3ZSBub3cgd2FudCB0byBzdHJpbmcgc2V2ZXJhbCBvcGVyYXRpb24gaW4gYSByb3csIHRoZSBwaXBlIG9wZXJhdG9yIGlzIHVzZWZ1bCBmb3Igc3RyaW5naW5nIHRoZSBjb21tYW5kcyB0b2dldGhlci4NCg0KSW4gdGhlIGNvZGUgYmVsb3csIHdlIGdyb3VwIHRoZSBgcGVuZ3VpbnNgIGRhdGEgd2l0aCByZXNwZWN0IHRvIGBzcGVjaWVzYCBhbmQgYGlzbGFuZGAgYW5kIHN1bW1hcml6ZSB0aGUgdmFyaW91cyBhc3BlY3RzIG9mIHRoZSBncm91cGVkIGRhdGEgKGNvbXB1dGUgdGhlIG1lYW4sIHRoZSBtZWRpYW4sIGFuZCB0aGUgbnVtYmVyIG9mIG9ic2VydmF0aW9ucyBpbiBlYWNoIGdyb3VwIGZvciBgYmlsbF9sZW5ndGhfbW1gLikNCg0KKiBXZSBjcmVhdGUgdmFyaWFibGVzIHdpdGggZGVzaWduYXRlZCBuYW1lcyBpbnNpZGUgYHN1bW1hcml6ZWAuDQoqIGBuKClgIGNvdW50cyB0aGUgbnVtYmVyIG9mIG9ic2VydmF0aW9ucyBpbiBlYWNoIGdyb3VwaW5nLg0KKiBgbmEucm1gIGlzIG5lZWQgdG8gY29tcHV0ZSB0aGUgc3RhdGlzdGljcyB3aXRob3V0IHRoZW0gYmVpbmcgcG9pc29uZWQgYnkgYE5BYCB2YWx1ZXMuDQoNCmBgYHtyLCB0aWR5ID0gVFJVRX0NCnBlbmd1aW5zICU+JQ0KICBncm91cF9ieShzcGVjaWVzLCBpc2xhbmQpICU+JQ0KICBzdW1tYXJpemUobWVhbl9iaWxsX2xlbmd0aF9tbSA9IG1lYW4oYmlsbF9sZW5ndGhfbW0sIG5hLnJtID0gVFJVRSksDQogICAgICAgICAgICBtZWRpYW5fYmlsbF9sZW5ndGhfbW0gPSAgbWVkaWFuKGJpbGxfbGVuZ3RoX21tLCBuYS5ybSA9IFRSVUUpLA0KICAgICAgICAgICAgY291bnQgPSBuKCkpDQpgYGANCiMjIyBTZWxlY3RpbmcgKFtkcGx5ciBzZWxlY3QgdmlkZW9dKGh0dHBzOi8veW91dHUuYmUvU3UxVmNMbklCdU0pKQ0KDQpUaGUgYHNlbGVjdGAgZnVuY3Rpb24gY2FuIGJlIHVzZWQgdG8gc2VsZWN0IGNvbHVtbnMgb2YgYSBkYXRhIGZyYW1lLiBZb3UgY2FuIGdldCBwcmV0dHkgY3JlYXRpdmUgaW4gaG93IHlvdSBzZWxlY3QgdGhlIGNvbHVtbnMgKGUuZy4sIHVzaW5nIHN0cmluZyBtYXRjaGluZyksIGJ1dCB3ZSBvbmx5IGNvbnNpZGVyIHNvbWUgc2ltcGxlIGV4YW1wbGVzLg0KDQoqIFJ1biBgP2RwbHlyOjpzZWxlY3RgIGZvciBtb3JlIGNvbXBsZXggZXhhbXBsZXMuDQoNCldlIGNhbiBzZWxlY3Qgc3BlY2lmaWMgY29sdW1ucyBvZiBhIGRhdGEgZnJhbWUgYnkgcHJvdmlkaW5nIHRoZSBjb2x1bW4gbmFtZXMuIFdlIHNlbGVjdCB0aGUgYHNwZWNpZXNgIGFuZCBgaXNsYW5kYCBjb2x1bW5zIGJlbG93IG9mIGBwZW5ndWluc2AgYmVsb3cuDQoNCmBgYHtyfQ0Kc2VsZWN0KHBlbmd1aW5zLCBzcGVjaWVzLCBpc2xhbmQpDQpwZW5ndWlucyAlPiUgc2VsZWN0KHNwZWNpZXMsIGlzbGFuZCkNCmBgYA0KDQpOZXh0LCB3ZSBzZWxlY3QgdGhlIGNvbHVtbnMgb2YgYHBlbmd1aW5zYCB0aGF0IGVuZCBpbiBgbW1gLg0KDQpgYGB7cn0NCnNlbGVjdChwZW5ndWlucywgZW5kc193aXRoKCJtbSIpKQ0KcGVuZ3VpbnMgJT4lIHNlbGVjdChlbmRzX3dpdGgoIm1tIikpDQpgYGANCg0KIyMjIENvbHVtbiByZW5hbWluZyAoW2RwbHlyIHJlbmFtZSB2aWRlb10oaHR0cHM6Ly95b3V0dS5iZS81eHVBQ0gxYTVVSSkpDQoNClRoZSBgcmVuYW1lYCBmdW5jdGlvbiByZW5hbWVzIHRoZSBjb2x1bW5zIG9mIGEgZGF0YSBmcmFtZS4NCg0KKiBUaGUgc3ludGF4IGlzIGBuZXdfbmFtZSA9IG9sZF9uYW1lYC4NCg0KSW4gdGhlIGV4YW1wbGUgYmVsb3csIHdlIHJlbmFtZSB0aGUgYGJpbGxfbGVuZ3RoX21tYCBjb2x1bW4gdG8gYGJpbGxgIGFuZCBgZmxpcHBlcl9sZW5ndGhfbW1gIHRvIGBmbGlwcGVyYC4NCg0KYGBge3J9DQojIHJlbmFtaW5nIGNvbHVtbnMgdXNpbmcgYmFzZSBSDQpuYW1lcyhwZW5ndWlucykNCiMgbmFtZXMocGVuZ3VpbnMpW2MoMywgNSldIDwtIGMoImJpbGwiLCAiZmxpcHBlciIpDQojIHJlbmFtaW5nIGNvbHVtbnMgdXNpbmcgZHBseXINCnJlbmFtZShwZW5ndWlucywgYmlsbCA9IGJpbGxfbGVuZ3RoX21tLCBmbGlwcGVyID0gZmxpcHBlcl9sZW5ndGhfbW0pDQpwZW5ndWlucyAlPiUgcmVuYW1lKGJpbGwgPSBiaWxsX2xlbmd0aF9tbSwgZmxpcHBlciA9IGZsaXBwZXJfbGVuZ3RoX21tKQ0KYGBgDQojIyMgTXV0YXRpbmcgYSBjb2x1bW4gKFtkcGx5ciBtdXRhdGUgdmlkZW9dKGh0dHBzOi8veW91dHUuYmUvdWlFemJGZjV6SncpKQ0KDQpUaGUgYG11dGF0ZWAgZnVuY3Rpb24gbW9kaWZpZXMgYW4gZXhpc3RpbmcgY29sdW1uIG9yIGNhbiBjcmVhdGUgYSBuZXcgY29sdW1uIGZyb20gdGhlIGV4aXN0aW5nIGNvbHVtbnMuDQoNCiAgKiBUbyBjcmVhdGUgYSBuZXcgY29sdW1uLCB0aGUgc3ludGF4IGlzIGBuZXdfY29sdW1uID0gZnVuY3Rpb24oZXhpc3RpbmdfY29sdW1ucylgDQogICogVG8gbW9kaWZ5IGFuIGV4aXN0aW5nIGNvbHVtbiwgdGhlIHN5bnRheCBpcyBgZXhpc3RpbmdfY29sdW1uID0gZnVuY3Rpb24oZXhpc3RpbmdfY29sdW1ucylgLg0KICANCkluIHRoZSBleGFtcGxlIGJlbG93LCB3ZSB0cmFuc2Zvcm0gYGJpbGxfbGVuZ3RoX21tYCBpbnRvIGEgbmV3IHZhcmlhYmxlIGBiaWxsX2xlbmd0aF9pbmAgdGhhdCBkZXNjcmliZXMgdGhlIGJpbGwgbGVuZ3RoIGluIGluY2hlcyBpbnN0ZWFkIG9mIG1pbGxpbWV0ZXJzIChhbmQgdGhlbiBzZWxlY3RzIHRoZSB0d28gYmlsbCBsZW5ndGggY29sdW1ucykNCg0KYGBge3J9DQptdXRhdGUocGVuZ3VpbnMsIGJpbGxfbGVuZ3RoX2luID0gYmlsbF9sZW5ndGhfbW0gKiAwLjAzOTM3MDEpICU+JSANCiAgc2VsZWN0KGJpbGxfbGVuZ3RoX21tLCBiaWxsX2xlbmd0aF9pbikNCnBlbmd1aW5zICU+JSANCiAgbXV0YXRlKGJpbGxfbGVuZ3RoX2luID0gYmlsbF9sZW5ndGhfbW0gKiAwLjAzOTM3MDEpICU+JQ0KICBzZWxlY3QoYmlsbF9sZW5ndGhfbW0sIGJpbGxfbGVuZ3RoX2luKQ0KYGBgDQoNCiMjIyBSZWxvY2F0aW5nIGEgY29sdW1uIChbZHBseXIgcmVsb2NhdGUgdmlkZW9dKGh0dHBzOi8veW91dHUuYmUvZWZFdmNGM1ZMTVkpKQ0KDQpUaGUgYHJlbG9jYXRlYCBmdW5jdGlvbiBtb3ZlcyBvbmUgb3IgbW9yZSBjb2x1bW5zLg0KDQoqIEJ5IGRlZmF1bHQgdGhlIGNvbHVtbiBpcyBtb3ZlZCB0byB0aGUgZnJvbnQgb2YgdGhlIGRhdGEgZnJhbWUuDQoqIFRoZSBgLmJlZm9yZWAgYW5kIGAuYWZ0ZXJgIGFyZ3VtZW50cyBjYW4gYmUgdXNlZCB0byBzcGVjaWZ5IHdoZXJlIHRoZSBjb2x1bW5zIHNob3VsZCBiZSBwbGFjZWQuDQoNCkluIHRoZSBleGFtcGxlIGJlbG93LCB3ZSBtb3ZlIHRoZSBgc2V4YCB2YXJpYWJsZSB0byB0aGUgZnJvbnQgb2YgdGhlIGRhdGEgZnJhbWUuDQoNCmBgYHtyfQ0KcmVsb2NhdGUocGVuZ3VpbnMsIHNleCkNCnBlbmd1aW5zICU+JSByZWxvY2F0ZShzZXgpDQpgYGANCg0KSW4gdGhlIG5leHQgZXhhbXBsZSwgd2UgcmVsb2NhdGUgdGhlIGBzZXhgIGFuZCBgeWVhcmAgY29sdW1ucyB0byBhZnRlciB0aGUgYHNwZWNpZXNgIGNvbHVtbi4NCg0KYGBge3J9DQpyZWxvY2F0ZShwZW5ndWlucywgc2V4LCB5ZWFyLCAuYWZ0ZXIgPSBzcGVjaWVzKQ0KcGVuZ3VpbnMgJT4lIHJlbG9jYXRlKHNleCwgeWVhciwgLmFmdGVyID0gc3BlY2llcykNCmBgYA0KSW4gdGhpcyBleGFtcGxlLCB3ZSBtb3ZlIGFsbCBjb2x1bW5zIGVuZGluZyBpbiBgbW1gIHRvIGJlZm9yZSB0aGUgYGlzbGFuZGAgY29sdW1uLg0KDQpgYGB7cn0NCnJlbG9jYXRlKHBlbmd1aW5zLCBlbmRzX3dpdGgoIm1tIiksIC5iZWZvcmUgPSBpc2xhbmQpDQpwZW5ndWlucyAlPiUgcmVsb2NhdGUoZW5kc193aXRoKCJtbSIpLCAuYmVmb3JlID0gaXNsYW5kKQ0KYGBgDQojIyBUaWR5IGRhdGEgKFt0aWR5IGRhdGEgb3ZlcnZpZXddKGh0dHBzOi8veW91dHUuYmUvdXZES0xJSzhpN0UpKQ0KDQpAcjRkczIwMTcgYW5kIG1hbnkgb3RoZXJzIHJlY29tbWVuZCB0aGF0IGRhdGEgc2NpZW50aXN0cyBvcmdhbml6ZSBkYXRhIGZyYW1lcyBzbyB0aGF0IHRoZXkgYXJlICJ0aWR5Ii4gVGlkeSBkYXRhIFtAcjRkczIwMTc7IENoYXB0ZXIgMTJdIGlzIHN0cnVjdHVyZWQgc28gdGhhdDoNCg0KMS4gRWFjaCB2YXJpYWJsZSBpcyBpbiBhIHNpbmdsZSBjb2x1bW4gYW5kIG5vIHZhcmlhYmxlcyBzaGFyZSBhIGNvbHVtbi4NCjIuIEVhY2ggb2JzZXJ2YXRpb24gaXMgaW4gYSBzaW5nbGUgcm93Lg0KMy4gRWFjaCBkYXRhIHZhbHVlIGhhcyBpdHMgb3duIGNlbGwuDQoNClRoZXNlIHByaW5jaXBsZXMgYXJlIGJlc3QgZXhwbGFpbmVkIHdpdGggZGF0YSBzZXRzIHRoYXQgYXJlIG5vdCB0aWR5LiBUaGUgKip0aWR5cioqIHBhY2thZ2UgcHJvdmlkZXMgc2V2ZXJhbCBpbGx1c3RyYXRpdmUgZGF0YSBzZXRzIChgdGFibGUxYCwgYHRhYmxlMmAsIGB0YWJsZTNgLCBgdGFibGU0YWAsIGB0YWJsZTRiYCwgYW5kIGB0YWJsZTVgKSByZWxhdGVkIHRvIHRpZHkgZGF0YS4gVGhlc2UgZGF0YSBzZXRzIHByb3ZpZGUgZGF0YSBhYm91dCB0dWJlcmN1bG9zaXMgY2FzZXMgZm9yIHZhcmlvdXMgY291bnRyaWVzIGluIGRpZmZlcmVudCB5ZWFycy4gVGhlIHZhcmlhYmxlcyBwcm92aWRlZCBpbmNsdWRlOg0KDQoqIGBjb3VudHJ5YDogdGhlIG5hbWUgb2YgdGhlIGNvdW50cnkNCiogYHllYXJgOiB0aGUgeWVhciBhbiBvYnNlcnZhdGlvbiB3YXMgb2JzZXJ2ZWQNCiogYGNhc2VzYDogdGhlIG51bWJlciBvZiB0dWJlcmN1bG9zaXMgY2FzZXMgb2JzZXJ2ZWQgaW4gdGhlIHNwZWNpZmllZCB5ZWFyDQoqIGBwb3B1bGF0aW9uYDogdGhlIHBvcHVsYXRpb24gb2YgdGhlIGNvdW50cnkgaW4gdGhlIHNwZWNpZmllZCB5ZWFyDQoqIGByYXRlYDogdGhlIHJhdGUgb2YgZGlzZWFzZSBvYnNlcnZlZCBpbiBhIGNvdW50cnkgaW4gYSBzcGVjaWZpZWQgeWVhciAoYGNhc2VzL3BvcHVsYXRpb25gKQ0KKiBgMTk5OWAsIGAyMDAwYDogdmFsdWVzIG9mIGEgdmFyaWFibGUgb2JzZXJ2ZWQgZm9yIGEgY291bnRyeSBpbiB0aGF0IHllYXINCg0KIyMjIENvbHVtbnMNCg0KRWFjaCB2YXJpYWJsZSBpbiBhIHRpZHkgZGF0YSBzZXQgc2hvdWxkIGJlIGluIGEgc2luZ2xlIGNvbHVtbiBhbmQgc2hvdWxkIG5vdCBiZSBpbiB0aGUgc2FtZSBjb2x1bW4gYXMgYW5vdGhlciB2YXJpYWJsZS4NCg0KYHRhYmxlMmAgaW4gdGhlICoqdGlkeXIqKiBwYWNrYWdlIHZpb2xhdGVzIHRoaXMgcnVsZS4gV2UgcHJpbnQgYHRhYmxlMmAgYmVsb3cuDQpgYGB7cn0NCmRhdGEodGFibGUyLCBwYWNrYWdlID0gInRpZHlyIikNCnRhYmxlMg0KYGBgDQoNCk5vdGljZSB0aGF0IHRoZSBgY2FzZXNgIGFuZCBgcG9wdWxhdGlvbmAgdmFsdWVzIGFyZSBib3RoIGluIHRoZSBgY291bnRgIGNvbHVtbi4gVGhlIHZhbHVlcyBmb3IgYGNhc2VzYCBhbmQgYHBvcHVsYXRpb25gIHNob3VsZCBiZSBpbiBzZXBhcmF0ZSBjb2x1bW5zLg0KDQojIyMgUm93cw0KDQpFYWNoIG9ic2VydmF0aW9uIGluIGEgdGlkeSBkYXRhIHNldCBzaG91bGQgYmUgaW4gaXRzIG93biByb3cuIA0KDQpOb3RpY2UgdGhhdCBgdGFibGUyYCBhbHNvIHZpb2xhdGVzIHRoaXMgcHJpbmNpcGxlLiBlLmcuLCBSb3dzIDEgYW5kIDIgb2YgYHRhYmxlMmAgYXJlIHZhbHVlcyBmb3IgdGhlIHNhbWUgb2JzZXJ2YXRpb24sIEFmZ2hhbmlzdGFuIGluIDE5OTkuDQoNCiMjIyBWYWx1ZXMNCg0KRWFjaCB2YWx1ZSBpbiBhIHRpZHkgZGF0YSBzZXQgc2hvdWxkIGhhdmUgaXRzIG93biBjZWxsLiBUaGlzIG1lYW5zIHRoYXQgeW91IGRvbid0IGNvbWJpbmUgaW5mb3JtYXRpb24gYWJvdXQgdHdvIHZhcmlhYmxlcyBpbnRvIGEgc2luZ2xlIGNlbGwuIFRoaXMgbGlrZWx5IHNlZW0gbGlrZSBhbiBhcnRpZmljaWFsIHVzZSBjYXNlLCBidXQgbm9uLWRhdGEgc2NpZW50aXN0cyBhcmUgc29tZXRpbWVzIHF1aXRlIGNyZWF0aXZlIGluIGhvdyB0aGV5IGVudGVyIHRoZWlyIGRhdGEhDQoNCmB0YWJsZTNgIGluIHRoZSAqKnRpZHlyKiogcGFja2FnZSB2aW9sYXRlcyB0aGlzIHJ1bGUuIFdlIHByaW50IGB0YWJsZTNgIGJlbG93Lg0KYGBge3J9DQpkYXRhKHRhYmxlMywgcGFja2FnZSA9ICJ0aWR5ciIpDQp0YWJsZTMNCmBgYA0KDQpOb3RpY2UgdGhhdCB0aGUgYHJhdGVgIGNvbHVtbiBpcyBhY3R1YWxseSBgY2FzZXMvcG9wdWxhdGlvbmAuIEl0IHdvdWxkIG5vdCBiZSBhIHByb2JsZW0gaWYgdGhpcyB3ZXJlIGEgbnVtYmVyIChlLmcuLCA3NDUvMTk5ODcwNzE9MC4wMDAwMzcyKS4gVGhlIGlzc3VlIGlzIHRoYXQgdGhlIHZhbHVlcyBmb3IgYGNhc2VzYCBhbmQgYHBvcHVsYXRpb25gIGFyZSBjb21iaW5lZCBpbnRvIGEgc2luZ2xlIGNvbHVtbi4NCg0KIyMjIEFub3RoZXIgbm9uLXRpZHkgZXhhbXBsZQ0KDQpUaW1lcyBzZXJpZXMgZGF0YSBhcmUgb2Z0ZW4gc3RvcmVkIGluIGEgbm9uLXRpZHkgd2F5LiBJbiB0aGF0IGNhc2UsIHRoZSB2YWx1ZXMgb2YgYSB2YXJpYWJsZSBhcmUgc3RvcmVkIGluIGEgdGltZS1yZWxhdGVkIGNvbHVtbiAobGlrZSBkYXkgb3IgeWVhcikuIERpZmZlcmVudCB2YXJpYWJsZXMgbWF5IHRoZW4gYmUgc3RvcmVkIGFjcm9zcyBtdWx0aXBsZSBkYXRhIGZyYW1lcyENCg0KYHRhYmxlNGFgIGFuZCBgdGFibGU0YmAgaW4gdGhlICoqdGlkeXIqKiBwYWNrYWdlIGV4aGliaXQgdGhpcyB0eXBlIG9mIG5vbi10aWR5bmVzcy4gYHRhYmxlNGFgIHByb3ZpZGVzIHRoZSBgY2FzZXNgIHZhbHVlcyBmb3IgZWFjaCBgY291bnRyeWAgZm9yIGVhY2ggYHllYXJgLiBgdGFibGU0YmAgcHJvdmlkZXMgdGhlIHNhbWUgdGhpbmcgZm9yIHRoZSBgcG9wdWxhdGlvbmAgdmFsdWVzLg0KDQpgYGB7cn0NCmRhdGEodGFibGU0YSwgcGFja2FnZSA9ICJ0aWR5ciIpDQpkYXRhKHRhYmxlNGIsIHBhY2thZ2UgPSAidGlkeXIiKQ0KdGFibGU0YQ0KdGFibGU0Yg0KYGBgDQoNCkluIHRoZXNlIHR3byB0YWJsZXMsIHRoZSB2YWx1ZXMgZm9yIGBjYXNlc2AgYW5kIGBwb3B1bGF0aW9uYCBhcmUgc3BsaXQgYWNyb3NzIG11bHRpcGxlIGNvbHVtbnMuIFNwZWNpZmljYWxseSwgdGhlIGBjYXNlc2AgYXJlIHNwbGl0IGFjcm9zcyBjb2x1bW5zIGJ5IGB5ZWFyYCAoYW5kIHNpbWlsYXJseSBmb3IgYHBvcHVsYXRpb25gKS4gQWRkaXRpb25hbGx5LCBvYnNlcnZhdGlvbnMgYXJlIG5vdCBpbiBhIHNpbmdsZSByb3cgc2luY2UgdGhlIHZhbHVlcyBvZiBgY2FzZXNgIGFuZCBgcG9wdWxhdGlvbmAgZm9yIGVhY2ggYGNvdW50cnlgIGZvciBlYWNoIGB5ZWFyYCBhcmUgbm90IGluIGEgc2luZ2xlIHJvdy4NCg0KIyMjIEEgdGlkeSBleGFtcGxlDQoNCkEgdGlkeSB2ZXJzaW9uIG9mIHRoZSB0dWJlcmN1bG9zaXMgZGF0YSBpcyBhdmFpbGFibGUgaW4gYHRhYmxlMWAuIFRoaXMgZGF0YSBmcmFtZSBzYXRpc2ZpZXMgdGhlIHRocmVlIHJlcXVpcmVtZW50cyBvZiB0aWR5IGRhdGEuDQoNCmBgYHtyfQ0KdGFibGUxDQpgYGANCg0KIyMgVXNpbmcgKip0aWR5cioqIChbdGlkeSBkYXRhIHRpcHMgdmlkZW9dKGh0dHBzOi8veW91dHUuYmUvajVpSDljaU1rTDgpKQ0KDQpUaGUgbWFpbiBmdW5jdGlvbnMgaW4gdGhlICoqdGlkeXIqKiBwYWNrYWdlIGFyZSBgcGl2b3Rfd2lkZXJgIGFuZCBgcGl2b3RfbG9uZ2VyYC4NCg0KKiBgcGl2b3Rfd2lkZXJgOiBzcHJlYWRzIGEgY29sdW1uIGludG8gbXVsdGlwbGUgY29sdW1ucy4gVGhlIHJlc3VsdGluZyBkYXRhIGZyYW1lIHdpbGwgaGF2ZSBmZXdlciByb3dzIGFuZCBtb3JlIGNvbHVtbnMgKHdpZGVyKS4NCiogYHBpdm90X2xvbmdlcmA6IGdhdGhlcnMgbXVsdGlwbGUgY29sdW1ucyBpbnRvIGEgc2luZ2xlIGNvbHVtbi4gVGhlIHJlc3VsdGluZyBkYXRhIGZyYW1lIHdpbGwgaGF2ZSBtb3JlIHJvd3MgKGxvbmdlcikgYW5kIGZld2VyIGNvbHVtbnMuDQoNClRpZHlpbmcgY29tcGxpY2F0ZWQgZGF0YSBzZXRzIG1heSByZXF1aXJlIHlvdSB0byBkbyBzZWVtaW5nbHkgb2RkIHN0ZXBzIGxpa2UgbWFraW5nIGEgZGF0YSBmcmFtZSBsb25nZXIgYW5kIHRoZW4gd2lkZW5pbmcgc29tZSBvZiB0aGUgbGVuZ3RoZW5lZCBjb2x1bW5zLiBIZXJlIGFyZSBzb21lIHRpcHMgZm9yIHRpZHlpbmcgYSBkYXRhIGZyYW1lOg0KDQoxLiBJZGVudGlmeSB0aGUgd2F5cyBpbiB3aGljaCB5b3VyIGRhdGEgYXJlIG5vdCB0aWR5Lg0KMi4gSWRlbnRpZnkgYSBzaW5nbGUgYXNwZWN0IG9mIHRoZSBkYXRhIHRoYXQgeW91IHdhbnQgdG8gbWFrZSB0aWR5IChvciBhdCBsZWFzdCBjbG9zZXIgdG8gYmVpbmcgdGlkeSkuDQozLiBUaWR5IHRoYXQgc2luZ2xlIGFzcGVjdCBvZiB0aGUgZGF0YS4NCjQuIFJlcGVhdCBzdGVwcyAyIGFuZCAzIHVudGlsIHRoZSBkYXRhIGFyZSB0aWR5DQo1LiBJZiBkZXNpcmVkLCBjb21iaW5lIHRoZSBtYW55IHRpZHlpbmcgc3RlcHMgaW50byBhIHNpbmdsZSBjb21tYW5kIHVzaW5nIHRoZSBwaXBlIG9wZXJhdG9yLg0KDQojIyMgV2lkZW5pbmcgZGF0YSBmcmFtZXMgKFt0aWR5ciBwaXZvdF93aWRlciB2aWRlb10oaHR0cHM6Ly95b3V0dS5iZS83Y054SGw1YWotYykpDQoNClRoZSBgcGl2b3Rfd2lkZXJgIGZ1bmN0aW9uIGluY3JlYXNlcyB0aGUgbnVtYmVyIG9mIGNvbHVtbnMgaW4gYSBkYXRhIGZyYW1lIGJ1dCByZWR1Y2VzIHRoZSBudW1iZXIgb2Ygcm93cy4gVGhlIG1haW4gYXJndW1lbnRzIG9mIHRoZSBgcGl2b3Rfd2lkZXJgIGZ1bmN0aW9uIGFyZToNCg0KKiBgZGF0YWA6IHRoZSBkYXRhIGZyYW1lIHRvIHBpdm90DQoqIGBuYW1lc19mcm9tYDogdGhlIGNvbHVtbiBmcm9tIHdoaWNoIHRoZSBuYW1lcyBvZiB0aGUgbmV3IGNvbHVtbnMgd2lsbCBiZSB0YWtlbg0KKiBgdmFsdWVzX2Zyb21gOiB0aGUgY29sdW1uIGZyb20gd2hpY2ggdGhlIHZhbHVlcyBvZiB0aGUgbmV3IGNvbHVtbnMgd2lsbCBiZSB0YWtlbg0KDQpUbyB0aWR5IGB0YWJsZTJgLCB3ZSBtdXN0IHdpZGVuIGl0LiBXZSBuZWVkIHRvIHRha2UgdGhlIG5ldyBjb2x1bW4gbmFtZXMgZnJvbSB0aGUgYHR5cGVgIGNvbHVtbiBhbmQgdGhlIHZhbHVlcyBmcm9tIHRoZSBgY291bnRgIGNvbHVtbi4NCg0KYGBge3J9DQp0YWJsZTINCnBpdm90X3dpZGVyKHRhYmxlMiwgbmFtZXNfZnJvbSA9IHR5cGUsIHZhbHVlc19mcm9tID0gY291bnQpDQp0YWJsZTIgJT4lIHBpdm90X3dpZGVyKG5hbWVzX2Zyb20gPSB0eXBlLCB2YWx1ZXNfZnJvbSA9IGNvdW50KQ0KYGBgDQojIyMgTGVuZ3RoZW5pbmcgZGF0YSBmcmFtZXMgKFt0aWR5ciBwaXZvdF9sb25nZXIgdmlkZW9dKGh0dHBzOi8veW91dHUuYmUvbmh3Y3lrN2JwUWMpKQ0KDQpUaGUgYHBpdm90X2xvbmdlcmAgZnVuY3Rpb24gZGVjcmVhc2VzIHRoZSBudW1iZXIgb2YgY29sdW1ucyBpbiBhIGRhdGEgZnJhbWUgYnV0IGluY3JlYXNlcyB0aGUgbnVtYmVyIG9mIHJvd3MuIFRoZSBtYWluIGFyZ3VtZW50cyBvZiB0aGUgYHBpdm90X2xvbmdlcmAgZnVuY3Rpb24gYXJlOg0KDQoqIGBkYXRhYDogdGhlIGRhdGEgZnJhbWUgdG8gcGl2b3QNCiogYGNvbHNgOiB0aGUgY29sdW1ucyBmcm9tIHdoaWNoIHRvIGdhdGhlciB2YWx1ZXMNCiogYG5hbWVzX3RvYDogdGhlIGNvbHVtbiBuYW1lIGZvciB0aGUgY29sdW1uIHRoYXQgdGhlIG5hbWVzIG9mIHRoZSBnYXRoZXJlZCBjb2x1bW5zIGFyZSBwbGFjZWQNCiogYHZhbHVlc190b2A6IHRoZSBuYW1lIG9mIHRoZSBjb2x1bW4gdG8gd2hpY2ggdGhlIHZhbHVlcyBhcmUgZ2F0aGVyZWQNCg0KVG8gdGlkeSBgdGFibGU0YWAgYW5kIGB0YWJsZTRiYCwgd2UgbXVzdCBsZW5ndGhlbiB0aGVtLiBGb3IgYHRhYmxlNGFgIHRoZSBuZXcgY29sdW1uIG5hbWUgc2hvdWxkIGJlIGBjYXNlc2AsIHdoaWxlIGZvciBgdGFibGU0YmAgaXQgc2hvdWxkIGJlIGBwb3B1bGF0aW9uYC4gVGhlIHZhbHVlcyBmb3IgYGNhc2VzYCBhbmQgYHBvcHVsYXRpb25gIHdpbGwgY29tZSBmcm9tIHRoZSBgMTk5OWAgYW5kIGAyMDAwYCBjb2x1bW5zLiANCg0KVG8gdGlkeSBgdGFibGU0YWAgYW5kIGB0YWJsZTRiYCwgd2UgbmVlZCB0byBnYXRoZXIgdGhlIGAxOTk5YCBhbmQgYDIwMDBgIGNvbHVtbnMgaW50byBhIHNpbmdsZSBjb2x1bW4gYW5kIGdpdmUgdGhlbSB0aGUgYXBwcm9wcmlhdGUgdmFyaWFibGUgbmFtZS4NCg0KYGBge3J9DQp0YWJsZTRhDQp0Ymw0YSA8LSBwaXZvdF9sb25nZXIodGFibGU0YSwgYyhgMTk5OWAsIGAyMDAwYCksIG5hbWVzX3RvID0gInllYXIiLCB2YWx1ZXNfdG8gPSAiY2FzZXMiKQ0KdGJsNGENCnRhYmxlNGINCnRibDRiIDwtIHRhYmxlNGIgJT4lIHBpdm90X2xvbmdlcihjKGAxOTk5YCwgYDIwMDBgKSwgbmFtZXNfdG8gPSAieWVhciIsIHZhbHVlc190byA9ICJwb3B1bGF0aW9uIikNCnRibDRiDQpgYGANCg0KIyMjIE1lcmdpbmcvam9pbmluZyBkYXRhIGZyYW1lcyAoW21lcmdpbmcgZGF0YSBmcmFtZXMgdmlkZW9dKGh0dHBzOi8veW91dHUuYmUvLU00Vkl1ZW1OMDgpKQ0KDQpUaGUgcmVtYWluaW5nIGlzc3VlIHdpdGggb3VyIGB0Ymw0YWAgYW5kIGB0Ymw0YmAgZGF0YSBmcmFtZXMgYXJlIHRoYXQgdGhlIGluZm9ybWF0aW9uIGlzIHNwcmVhZCBhY3Jvc3MgdHdvIGRhdGEgZnJhbWVzIHdpdGggc29tZSByZWR1bmRhbnQgaW5mb3JtYXRpb24uIFdlIG5lZWQgdG8gbWVyZ2Ugb3Igam9pbiB0aGUgdHdvIGRhdGEgZnJhbWVzIGludG8gYSBzaW5nbGUgZGF0YSBmcmFtZS4NCg0KVGhlIG1vc3Qgc3RyZWFtbGluZWQgc29sdXRpb25zIGZvciB0aGlzIGFyZSB0byB1c2UgdGhlIGBiYXNlOjptZXJnZWAgb3IgYGRwbHlyOjoqX2pvaW5gZnVuY3Rpb25zIHRvIGpvaW4gdGhlIGNvbHVtbnMgb2YgdGhlIHR3byBkYXRhIGZyYW1lcyBgYnlgIHRoZWlyIHNoYXJlZCBjb2x1bW5zLiBCeSBkZWZhdWx0LCB0aGUgYG1lcmdlYCBmdW5jdGlvbiBkZXRlcm1pbmVzIHRoZSBpZGVudGljYWwgY29sdW1ucyBpbiBib3RoIGRhdGEgZnJhbWVzIGFuZCBqb2lucyB0aGUgcm93cyBob3Jpem9udGFsbHkgKHJlbW92aW5nIHJlZHVuZGFudCBpbmZvcm1hdGlvbikuIEFsdGVybmF0aXZlbHksIHlvdSBjYW4gc3BlY2lmeSBjb2x1bW5zIGBieWAgd2hpY2ggdG8gam9pbiB0aGUgcm93cy4NCg0KV2UgaWxsdXN0cmF0ZSB1c2FnZSBvZiB0aGUgYG1lcmdlYCBmdW5jdGlvbiBiZWxvdy4NCg0KKiBUaGUgYHhgIGFuZCBgeWAgYXJndW1lbnRzIGFyZSB0aGUgZGF0YSBmcmFtZXMgd2Ugd2FudCB0byBtZXJnZS4NCiogVGhlIGBieWAgYXJndW1lbnQgaW5kaWNhdGVzIHRoZSBzaGFyZWQgY29sdW1ucyB3ZSB3YW50IHRvIG1hdGNoIHRoZSByb3dzIGJ5Lg0KKiBUaGVyZSBhcmUgc29tZSBvdGhlciBmYW5jeSBhcmd1bWVudHMgeW91IGNhbiB1c2UgaWYgdGhlcmUgYXJlIG1hdGNoaW5nIGNvbHVtbnMgaW4gdGhlIGRhdGEgZnJhbWVzIHRoYXQgaGF2ZSBkaWZmZXJlbnQgbmFtZXMuDQoNClNpbmNlIGBtZXJnZWAgaXMgYSAqKmJhc2UqKiBSIGZ1bmN0aW9uLCB0aGUgcmVzdWx0IGlzIGEgYGRhdGEuZnJhbWVgLg0KDQpgYGB7cn0NCm1lcmdlKHggPSB0Ymw0YSwgeSA9IHRibDRiKQ0KbWVyZ2UoeCA9IHRibDRhLCB5ID0gdGJsNGIsIGJ5ID0gYygiY291bnRyeSIsICJ5ZWFyIikpDQpgYGANCg0KSWYgd2Ugd2lzaCB0byBzdGF5IHdpdGhpbiB0aGUgKip0aWR5dmVyc2UqKiBlY29zeXN0ZW0sIHdlIGNhbiB1c2Ugb25lIG9mIHRoZSBgKl9qb2luYCBmdW5jdGlvbnMgaW4gKipkcGx5cioqLiBUaGVzZSBmdW5jdGlvbnMgaW5jbHVkZSBgeGAsIGB5YCwgYW5kIGBieWAgYXJndW1lbnRzIHRoYXQgd29yayBpZGVudGljYWxseSB0byB0aG9zZSBpbiB0aGUgYG1lcmdlYCBmdW5jdGlvbi4NCg0KKiBgbGVmdF9qb2luYCBtZXJnZXMgdGhlIHJvd3Mgb2YgYHlgIHRoYXQgbWF0Y2ggdGhlIHJvd3Mgb2YgYHhgIGludG8gYHhgLg0KKiBgcmlnaHRfam9pbmAgbWVyZ2VzIHRoZSByb3dzIG9mIGB4YCB0aGF0IG1hdGNoIHRoZSByb3dzIG9mIGB5YCBpbnRvIGB5YC4NCiogYGlubmVyX2pvaW5gIG1lcmdlcyB0aGUgcm93cyBvZiBgeGAgYW5kIGB5YCB0aGF0IGFyZSBpbiBib3RoIGRhdGEgZnJhbWVzLg0KKiBgZnVsbF9qb2luYCBtZXJnZXMgdGhlIHJvd3Mgb2YgYHhgIGFuZCBgeWAgdGhhdCBhcmUgaW4gZWl0aGVyIGRhdGEgZnJhbWUuDQoqIFNlZSBgP2RwbHlyOjppbm5lcl9qb2luYCBmb3IgZXhhbXBsZXMNCg0KSW4gdGhpcyBleGFtcGxlLCBzaW5jZSByb3dzIG9mIHRoZSB0d28gZGF0YSBmcmFtZXMgbWF0Y2ggZXhhY3RseSwgdGhlbiBhbnkgb2YgdGhlIGpvaW5zIHByb2R1Y2UgaWRlbnRpY2FsIHJlc3VsdHMuIFdlIHdpbGwgdXNlIGBmdWxsX2pvaW5gLCBzaW5jZSBhbmVjZG90YWxseSwgaXQgaXMgdGhlIG1vc3QgY29tbW9uIHR5cGUgb2Ygam9pbiB1c2VkLg0KDQpgYGB7cn0NCmZ1bGxfam9pbih0Ymw0YSwgdGJsNGIpDQpgYGANCiMjIFNlcGFyYXRpbmcgYW5kIHVuaXRpbmcgY29sdW1ucyAoW3RpZHlyIHNlcGFyYXRlIGFuZCB1bml0ZSB2aWRlb10oaHR0cHM6Ly95b3V0dS5iZS9HUU1GMnFOdVpISSkpDQoNClRoZSBgcmF0ZWAgY29sdW1uIG9mIGB0YWJsZTNgIGluY2x1ZGVkIGJvdGggYGNhc2VzYCBhbmQgYHBvcHVsYXRpb25gLiBXZSB3YW50IHRvIHNlcGFyYXRlIHRoZXNlIHZhbHVlcy4NCg0KQSBjb2x1bW4gY2FuIGJlIHNlcGFyYXRlZCBpbnRvIG11bHRpcGxlIGNvbHVtbnMgd2hpbGUgcmV0YWluaW5nIHRoZSBzYW1lIG51bWJlciBvZiByb3dzIHVzaW5nIHRoZSBgc2VwYXJhdGVgIGZ1bmN0aW9uLiBJbXBvcnRhbnQgYXJndW1lbnRzIGluY2x1ZGU6DQoNCiogYGRhdGFgOiB0aGUgZGF0YSBmcmFtZSB0byBtYW5pcHVsYXRlDQoqIGBjb2xgIHRoZSBjb2x1bW4gdG8gc2VwYXJhdGUNCiogYGludG9gOiB0aGUgbmFtZXMgb2YgdGhlIHZhcmlhYmxlcyBpbnRvIHdoaWNoIHRoZSBjb2x1bW4gd2lsbCBiZSBzZXBhcmF0ZWQNCiogYHNlcGA6IHRoZSBjaGFyYWN0ZXIgb3IgcG9zaXRpb24gYnkgd2hpY2ggdG8gc2VwYXJhdGUgYGNvbGANCiogYHJlbW92ZWA6IGEgbG9naWNhbCB2YWx1ZSBpbmRpY2F0aW5nIHdoZXRoZXIgYGNvbGAgd2lsbCBiZSByZW1vdmVkIGFmdGVyIHNlcGFyYXRpb24uIFRoZSBkZWZhdWx0IGlzIGBUUlVFYC4NCg0KYGBge3J9DQp0YWJsZTMNCnNlcGFyYXRlKHRhYmxlMywgY29sID0gcmF0ZSwgaW50byA9IGMoImNhc2VzIiwgInBvcHVsYXRpb24iKSwgc2VwID0gIi8iKQ0KdGFibGUzICU+JSBzZXBhcmF0ZShjb2wgPSByYXRlLCBpbnRvID0gYygiY2FzZXMiLCAicG9wdWxhdGlvbiIpLCBzZXAgPSAiLyIpDQpgYGANCg0KYHRhYmxlNWAgaGFzIHRoZSBvcHBvc2l0ZSBwcm9ibGVtIG9mIGB0YWJsZTNgLiBJdCBoYXMgY29sdW1ucyBgY2VudHVyeWAgYW5kIGB5ZWFyYCB0aGF0IHNob3VsZG4ndCBiZSBzcGxpdC4NCg0KYGBge3J9DQp0YWJsZTUNCmBgYA0KDQpUaGUgYHVuaXRlYCBmdW5jdGlvbiB1bml0ZXMgbXVsdGlwbGUgY29sdW1ucyBvZiBhIGRhdGEgZnJhbWUgd2hpbGUgcmV0YWluaW5nIHRoZSBzYW1lIG51bWJlciBvZiByb3dzLiBJbXBvcnRhbnQgYXJndW1lbnRzIGluY2x1ZGU6DQoNCiogYGRhdGFgOiB0aGUgZGF0YSBmcmFtZSB0byBtYW5pcHVsYXRlDQoqIGBjb2xgIHRoZSBuYW1lIG9mIHRoZSBuZXcgY29sdW1uIGZvciB0aGUgdW5pdGVkIHZhbHVlcw0KKiBgLi4uYDogdGhlIGNvbHVtbnMgdG8gdW5pdGUNCiogYHNlcGA6IHRoZSBkZWxpbWl0ZXIgdG8gc2VwYXJhdGUgdGhlIHZhbHVlcyBpbiB0aGUgY29sdW1ucw0KKiBgcmVtb3ZlYDogYSBsb2dpY2FsIHZhbHVlIGluZGljYXRpbmcgd2hldGhlciB0aGUgY29sdW1ucyBpbiBgLi4uYCB3aWxsIGJlIHJlbW92ZWQgYWZ0ZXIgdW5pZmljYXRpb24uIFRoZSBkZWZhdWx0IGlzIGBUUlVFYC4NCg0KV2UgdXNlIHRoZSBgdW5pdGVgIGZ1bmN0aW9uIHRvIHVuaXRlIHRoZSBgY2VudHVyeWAgYW5kIGB5ZWFyYCBjb2x1bW5zIG9mIGB0YWJsZTVgLg0KDQpgYGB7cn0NCnVuaXRlKHRhYmxlNSwgY29sID0gInllYXIiLCAiY2VudHVyeSIsICJ5ZWFyIiwgc2VwID0gIiIpDQp0YWJsZTUgJT4lIHVuaXRlKGNvbCA9ICJ5ZWFyIiwgImNlbnR1cnkiLCAieWVhciIsIHNlcCA9ICIiKQ0KYGBgDQoNCkZvciBmdW4sIGNhbiBzdHJpbmcgdG9nZXRoZXIgYHVuaXRlYCBhbmQgYHNlcGFyYXRlYCBvcGVyYXRpb25zIHRvIG1hbmlwdWxhdGUgYHRhYmxlNWAgaW50byBhIGZ1bGx5IHRpZHkgZGF0YSBmcmFtZS4NCg0KYGBge3J9DQp0YWJsZTUgJT4lDQogIHVuaXRlKGNvbCA9ICJ5ZWFyIiwgImNlbnR1cnkiLCAieWVhciIsIHNlcCA9ICIiKSAlPiUgDQogIHNlcGFyYXRlKGNvbCA9IHJhdGUsIGludG8gPSBjKCJjYXNlcyIsICJwb3B1bGF0aW9uIiksIHNlcCA9ICIvIikNCmBgYA0KIyMgUmVmZXJlbmNlcw==</div>
 
 
 
@@ -756,7 +1069,7 @@ $(document).ready(function () {
 <!-- code folding -->
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("02-crash-course-in-rmd.Rmd");
+  window.initializeSourceEmbed("04-data-frame-manipulation.Rmd");
   window.initializeCodeFolding("show" === "show");
 });
 </script>
