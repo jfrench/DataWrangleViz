@@ -1,10 +1,10 @@
 ---
-pdf_document: default
+title: "Data frame manipulation with dplyr and tidyr"
+author: "Joshua French"
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
 output:
-  html_notebook: default
   pdf_document: default
-title: "Joshua French"
+  html_notebook: default
 bibliography:
   - dwv.bib
   - packages_manip.bib
@@ -18,7 +18,7 @@ knitr::write_bib(c("dplyr", "tibble", "tidyr", "palmerpenguins", "magrittr", "da
 
 ```
 
-This document is intended to help you quickly learn how to perform basic data visualization using **dplyr** [@R-dplyr] and **tidyr** [@R-tidyr].
+This document is intended to help you quickly learn how to perform basic data frame manipulation using **dplyr** [@R-dplyr] and **tidyr** [@R-tidyr].
 
 An accompanying YouTube playlist that walks through this document is available
 by following the link [here](https://youtube.com/playlist?list=PLkrJrLs7xfbXaM7ukwxGu6xie3X64XVH3). I have also included direct, relevant video links throughout the file (e.g., immediately after the the relevant heading). An html version of this document can be downloaded to your current working direction (run `getwd()` in the Console to see where this is) by running the following command:
@@ -27,7 +27,6 @@ download.file("https://raw.githubusercontent.com/jfrench/DataWrangleViz/master/0
               "04-data-frame-manipulation.nb.html")
 ```
 The raw R Markdown code used to generate the html file can be obtained by toggling the "Code" box in the upper-right corner of the html file and selecting "Download Rmd".
-
 
 # Data frame manipulation with **dplyr** and **tidyr** ([Manipulation packages video](https://youtu.be/O5_Lj5FSX6E))
 

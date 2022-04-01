@@ -1,5 +1,6 @@
 ---
-title: "Joshua French"
+title: "Basic data visualization with ggplot2"
+author: "Joshua French"
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
 output:
   bookdown::pdf_document2:
