@@ -1,5 +1,6 @@
 ---
-title: "Joshua French"
+title: "Interactive ggplot2 graphics with ggiraph"
+author: "Joshua French"
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
 output:
   bookdown::html_document2:
@@ -9,6 +10,9 @@ output:
 bibliography:
 - dwv.bib
 - packages_interactive.bib
+editor_options: 
+  markdown: 
+    wrap: sentence
 ---
 
 ```{r, include=FALSE}
@@ -16,749 +20,502 @@ knitr::opts_chunk$set(
   tidy = TRUE
 )
 ```
+
 ```{r, include=FALSE}
 # automatically create a bib database for R packages
 knitr::write_bib(c(
-  .packages(), 'tidyverse', 'bookdown', 'knitr', 'rmarkdown', 'ggplot2', 'dplyr', 'purrr', 'tidyr', 'readr', 'stringr', 'tibble', 'forcats', 'palmerpenguins', 'plotly', 'ggiraph', 'shiny', 'htmlwidgets', 'starwars'
-), 'packages_interactive.bib')
+  .packages(), 'tidyverse', 'bookdown', 'knitr', 'rmarkdown', 'ggplot2', 'dplyr', 'purrr', 'tidyr', 'readr', 'stringr', 'tibble', 'forcats', 'palmerpenguins', 'plotly', 'ggiraph', 'shiny', 'htmlwidgets', 'MASS'), 'packages_interactive.bib')
 ```
 
 # What are interactive graphics?
 
-Interactive graphics are visual displays that dynamically provide information
-to users based on the user interacting with the graphic.
+Interactive graphics are visual displays that dynamically provide information to users based on the user interacting with the graphic.
 
 There are a few types of interactive graphics related to R.
-- Graphics that you interact with in R itself (e.g., **ggiraph** [@R-ggiraph] and **plotly** [@R-plotly])
-- Graphics that are produced within an html document that can be viewed within a web browser (**htmlwidgets**, @R-htmlwidgets) or are executed code that required a web server (**shiny**, @R-shiny).
 
-To illustrate creation of interactive graphics, we will use the `starwars` data set from the **dplyr** package [@R-dplyr]. The original data were obtained from the Star Wars API (https://swapi.dev/)[https://swapi.dev/] and have been revised based on additional research into gender and sex determinations of characters.
+- Graphics that you interact within R itself (e.g., **plotly** [@R-plotly])
+- Graphics that are produced within an html document that can be viewed within a web browser (e.g., **ggiraph** [@R-ggiraph] and **htmlwidgets** [@R-htmlwidgets])
+- Graphics that can be manipulated within a web browser or server (**shiny**, @R-shiny) 
 
-We load the data set memory
+# Interactive **ggplot2** graphics with **ggiraph**
 
-```{r, include = FALSE}
-data(starwars, package = "dplyr")
-```
-
-The `starwars` data set is a data frame (`tibble`) with `r nrow(starwars)` rows and `r ncol(starwars)` variables:
-
-`name`: the character's name.
-`height`: the character's height (cm).
-`mass`: the character's mass (kg).
-`hair_color`: the character's hair color.
-`skin_color`: the character's skin color.
-`eye_color`: the character's eye color.
-`birth_year`: the character's birth year (BBY = Before Battle of Yavin).
-`sex`: the character's biological sex (male, female, hermaphroditic, or none (as in the case for Droids)).
-`gender`: the character's gender role or gender identity as determined by their personality or the way they were programmed (as in the case for Droids).
-`homeworld`: the name of the character's homeworld.
-`species`: the character's species.
-`films`: the films the character appeared in.
-`vehicles`: the vehicles the character has piloted.
-`starships`: the starships the character has piloted.
-
-We start by loading the data set into memory.
-
-```{r, include = FALSE}
-data(starwars, package = "dplyr")
-```
-
-# Interactive **ggplot2* graphics with **ggiraph**
-
-**ggiraph** is a powerful package [@R-ggiraph] that allows you to create interactive **ggplot2** [@ggplot22016, @R-ggplot2] graphics. The package is an htmlwidget, though you don't need to know about the **htmlwidgets** package to use it. **ggiraph** can be utilized within **shiny** applications, but we don't describe that here.
+**ggiraph** is a powerful package [@R-ggiraph] that allows you to create interactive **ggplot2** [@ggplot22016; @R-ggplot2] graphics.
+The **ggiraph** package is technically an `htmlwidget`, though you don't need to know about the **htmlwidgets** package to use it.
+**ggiraph** can be utilized within **shiny** applications, but we don't describe that here.
 
 The **ggiraph** package:
 
-* Extends **gpplot2** by adding interactive geometries, scales, guides, and themes.
-* Provides the aesthetics `tooltip`, `data_id`, and `onclick` to add interactivity to a graphic.
+-   Extends **gpplot2** by adding interactive geometries, scales, guides, and themes.
+-   Provides the aesthetics `tooltip`, `data_id`, and `onclick` to add interactivity to a graphic.
 
-A `tooltip` is the text displayed above a graphical element when a user's mouse hovers over the element.
+More specifically, the **ggiraph** package extends the various **ggplot2** components with interactive versions such as:
 
-A `data_id` associated with an element causes an animation to occur when a user's mouse hovers over the element.
+-   Interactive geom functions: e.g., `geom_bar_interactive`, `geom_boxplot_interactive`, `geom_histogram_interactive`, etc.
+-   Interactive scale functions: e.g., `scale_color_continuous_interactive`, `scale_fill_gradient_interactive`, `scale_size_discrete_interactive`, etc.
+-   Interactive guide functions: e.g., `guide_bins_interactive`, `guide_colorbar_interactive`, `guide_legend_interactive`, etc.
+-   Interactive theme elements: `element_line_interactive`, `element_rect_interactive`, `element_text_interactive`.
 
-A `onclick` aesthetic associated with an element executes a JavaScript function when an element is clicked.
+The functions above generally provide three aesthetics to let you add interactivity to a standard **ggplot** graphic:
 
-The `giraffe` function 
+-   `data_id`: a variable that contains the id to associate with each graphical element. This will usually result in the element changing color when the user's mouse hovers over the element.
+-   `tooltip`: a variable that contains text to be displayed when the mouse hovers over the graphical element.
+-   `onclick`: a variable that contains a javascript command to be executed when an element is clicked.
 
+**Once the interactive ggplot object has been specified and assigned a name, the `girafe` function is used to display the interactive graphic in the web browser.**
 
-In order to use
+A great many useful interactive graphics can be created using the interactive geometries alone.
+We will focus on this aspect of interactive **ggplot2** graphics below.
+We list some of the interactive geometries provided by **ggiraph** in Table \@ref(tab:interactive-geometry-table) below.
 
+```{r, include=FALSE}
+# create geometry table
+geometry <- c("`geom_bar_interactive`",
+              "`geom_density_interactive`",
+              "`geom_histogram_interactive`",
+              "`geom_boxplot_interactive`",
+              "`geom_violin_interactive`", 
+              "`geom_point_interactive`",
+              "`geom_path_interactive`, `geom_line_interactive`",
+              "`geom_abline_interactive`, `geom_hline_interactive`, `geom_vline_interactive`",
+              "`geom_segment_interactive`",
+              "`geom_curve_interactive`",
+              "`geom_smooth_interactive`",
+              "`geom_density2d_interactive`, `geom_density2d_filled_interactive`",
+              "`geom_contour_interactive`, `geom_contour_filled_interactive`",
+              "`geom_sf_interactive`")
 
-Introduction
-
-It extends ggplot2 with:
-
-    interactive geom functions: geom_point_interactive(), geom_col_interactive, etc.
-    interactive scale functions: scale_color_continuous_interactive(), scale_fill_manual_interactive(), etc.
-    interactive guide functions: guide_colorbar_interactive(), guide_colourbar_interactive(), guide_legend_interactive().
-    interactive theme elements: element_line_interactive(), element_rect_interactive(), element_text_interactive(), label_interactive.
-
-These understand three aesthetics to let you add interactivity:
-
-    tooltip: column of dataset that contains tooltips to be displayed when mouse is over elements.
-    data_id: column of dataset that contains id to be associated with elements. This aesthetic is mandatory when you want to use an hover effect or when you want to enable selection of points in shiny applications.
-    onclick: column of dataset that contains javascript function to be executed when elements are clicked.
-    
-We list some of the interactive geometries below:
-
-| geometry       | purpose
-| `geom_bar_interactive`     | Draws an interactive bar chart.
-| `geom_density_interactive` | Draws an interactive  density plot.
-| `geom_histogram_interactive` | Draws an interactive histogram.
-| `geom_boxplot_interactive` | Draws an interactive boxplot.
-| `geom_violin_interactive`  | Draws an interactive violin plot.
-| `geom_point_interactive`   | Draws interactive points.
-| `geom_path_interactive`, `geom_line_interactive` | Draws interactive lines
-| `geom_abline_interactive`, `geom_hline_interactive`, `geom_vline_interactive` | Draws interactive diagonal, horizontal, and vertical lines.
-| `geom_segment_interactive` | Draws interactive segments.
-| `geom_curve_interactive` | Draws interactive curves between points.
-| `geom_smooth_interactive` | Draws an interactive fitted model of the data.
-| `geom_density2d_interactive`, `geom_density2d_filled_interactive` | Draws 2d contours of the density estimate for two variables.
-| `geom_contour_interactive`, `geom_contour_filled_interactive` | Draws interactive 2d contours of 3d data.
-
-The interactive scales, guides, and themes also have *_interactive* appended to the function name (e.g., `guide_legend_interactive`).
-
-We will explore some of the interactive capabilities of **ggiraph** below.
-
-## `tooltip` versus `data_id`
-
-In the code below we create an interactive bar chart of the `hair_color` variable. By specifiying the `tooltip` aesthetic, the hair color associated with each bar will be displayed when the user's mouse cursor hovers above the bar.
-
-```{r}
-library(ggplot2)
-library(ggiraph)
-ibar <- ggplot(data = starwars) + geom_bar_interactive(aes(x = hair_color, tooltip = hair_color)) + 
-  theme(axis.text.x = element_text(angle = 90))
-girafe(ggobj = ibar)
+purpose <- c("Draws a interactive bar chart.",
+             "Draws an interactive density plot.",
+             "Draws an interactive histogram.",
+             "Draws an interactive boxplot.",
+             "Draws an interactive violin plot.",
+             "Draws interactive lines that connect a sequence of points.",
+             "Draws interactive points.",
+             "Draws interactive lines.",
+             "Draws interactive segments.",
+             "Draws interactive curves between points.",
+             "Draws interactive smooths.",
+             "Draws interactive  2d contours of the density estimate for two variables.",
+             "Draws interactive 2d contours of 3d data.",
+             "Draws an interactive geometry for `sf` data.")
+geometry_df <- data.frame(geometry, purpose)
 ```
 
-If we specify the `data_id` aesthetic, then the `bar` will "light up" when the user's mouse cursor
-hovers over the bar. This isn't very useful unless we also specify the `tooltip` aesthetic.
-
-```{r}
-ibar2 <- ggplot(data = starwars) + geom_bar_interactive(aes(x = hair_color, data_id = hair_color))  + 
-  theme(axis.text.x = element_text(angle = 90))
-girafe(ggobj = ibar2)
+```{r interactive-geometry-table, echo=FALSE}
+knitr::kable(geometry_df, caption = "Common interactive geometries provided by **ggiraph**.", )
 ```
 
-We get much more useful information when we we specify both the `tooltip` and `data_id` aesthetics.
+# The `diamonds` data set
 
-```{r}
-ibar3 <- ggplot(data = starwars) +
-  geom_bar_interactive(aes(x = hair_color, tooltip = hair_color, data_id = hair_color))  + 
-  theme(axis.text.x = element_text(angle = 90))
-girafe(ggobj = ibar3)
+```{r, echo=FALSE}
+data(diamonds, package = "ggplot2")
 ```
 
-```{r}
-ggplot(data = starwars) + geom_density(aes(x = height))
+To illustrate creation of interactive graphics using **ggiraph**, we will use the `diamonds` data set from the **ggplot2** package [@R-ggplot2]. The `diamonds` data set is a data frame (technically, a tibble data frame) with `r nrow(diamonds)` rows and `r ncol(diamonds)` variables. The `diamonds` documentation (`?ggplot2::diamonds`) describes the variables as:
+
+* `price`: the diamond's price in US dollars
+* `carat`: the diamond's weight
+* `cut`: the quality of the diamond's cut (`Fair`, `Good`, `Very Good`, `Premium`, `Ideal`)
+* `color`: the diamond's color from (`D` = best to `J` = worst).
+* `clarity`: the diamond's clarity (I1 = worst, SI2, SI1, VS2, VS1, VVS2, VVS1, IF = best)
+* `x`: the diamond's length (mm)
+* `y`: the diamond's width (mm)
+* `z`: the diamond's depth (mm)
+* `depth`: the diamond's total depth percentage = 100 * 2 * `z` / (`x` + `y`) (the depth divided by the average of the length and width).
+* `table`: the diamond's relative width of the top width to widest point.
+
+We start by loading the data set into memory.
+
+```{r, include = TRUE, message = FALSE}
+data(diamonds, package = "ggplot2")
 ```
 
-```{r}
-idens <- ggplot(data = starwars) + geom_density_interactive(aes(x = height, tooltip = "density", data_id = "density"))
-girafe(ggobj = idens)
+# Basic useage of the `data_id` and `tooltip` aesthetics
+
+We now compare the impact of the three aesthetics provided by **ggiraph** to create interactive graphics.
+We load the **ggplot2** and **ggiraph** packages before continuing our discussion, as well as **dplyr** for basic data frame manipulation.
+
+```{r, message=FALSE}
+library(ggplot2) # for graphical output
+library(ggiraph) # to make ggplot2 interactive
+library(dplyr)   # for basic data frame manipulation
 ```
 
+In the code below we create an interactive bar chart of the `cut` variable in the `diamonds` data set. We will examine how the different interactive aesthetics impact the graphic.
 
+**The `data_id` aesthetic changes the color of a graphical element when the user hovers over that element.** In the code below, we map the `cut` variable with `data_id` so that the bar for each cut type changes color when we hover our mouse over the bar. By itself, the `data_id` aesthetic isn't very useful.
 
 ```{r}
-iscatter <- ggplot(data = starwars) + geom_point_interactive(aes(x = height, y = mass,
-                                                              tooltip = name, data_id = name))
+ibar_data_id <- ggplot(data = diamonds) +
+  geom_bar_interactive(aes(x = cut, data_id = cut))
+# the girafe actually displays the graphic
+girafe(ggobj = ibar_data_id)
+```
+
+**The `tooltip` aesthetic allows text to be displayed when the mouse cursor hovers over a graphical element**. In the code chunk below, we associate the `cut` variable with the `tooltip` aesthetic. The `cut` associated with each bar will be displayed when the user's mouse cursor hovers over that bar. Since we haven't specified hte `data_id`, the bars do not change color.
+
+```{r}
+ibar_tooltip <- ggplot(data = diamonds) +
+  geom_bar_interactive(aes(x = cut, tooltip = cut))
+girafe(ggobj = ibar_tooltip)
+```
+
+If we specify both the `data_id` and `tooltip` aesthetics in our graphic, then the `bar` will "light up" when the user's mouse cursor hovers over the bar and the associated `tooltip` text will be displayed.
+We specify both aesthetics in the code chunk below.
+
+```{r}
+ibar_both <- ggplot(data = diamonds) +
+  geom_bar_interactive(aes(x = cut, tooltip = cut, data_id = cut))
+girafe(ggobj = ibar_both)
+```
+
+# Using `after_stat` for advanced interactive graphics
+
+We sometimes want to add information to our interactive graphic that is likely computed during the graphic's construction but is not immediately accessible. For example, it would be helpful to add the count associated with each bar of a bar chart as a tooltip. The count of each factor level must be computed to create bars of the appropriate height but that information is not accessible by default. How do we get access to that information?
+
+The `after_stat` function can be used to access information computed during a graphic's construction. One of the challenges with using the `after_stat` function is that you may not know what variables are computed for the graphic. In order to access that information, we can use the `layer_data` function on our constructed object. Consider the output produced when applying the `layer_data` function to `ibar_both`.
+
+```{r}
+# peek at information used to produce the bar chart
+layer_data(ibar_both)
+```
+
+We see that the `count` variable was computed when producing that bar chart. The `count` variable indicates the number of values each level of `cut` appears in the data set (1610 for `Fair`, 4906 for `Good`, etc.) To display the `count` associated with each bar as a `tooltip`, we wrap the `after_stat` function around the `count` variable. Our interactive bar chart now more useful, as the count assicated with each bar is displayed when our mouse cursor hovers over a bar.
+
+```{r}
+ibar_count <- ggplot(data = diamonds) +
+  geom_bar_interactive(aes(x = cut,
+                           tooltip = after_stat(count),
+                           data_id = after_stat(count)))
+girafe(ggobj = ibar_count)
+```
+
+# Using the `onclick` aesthetic
+
+**The `onclick` aesthetic enables dynamic JavaScript actions to run when the user clicks on certain graphical elements.** This is the most difficult interactive aesthetic to work with. The only examples I have seen are opening a web browser to a certain website when the graphical element is clicked. In order to do this, we need to learn a bit more about how to include quotes within a character string.
+
+## How to make quotes within a string
+
+Recall that to create a character string in R, you place single quotes (\' \') or double quotes (\" \") around some text. E.g., we create character string vector with the words `ham` and `spam` in the code chunk below.
+
+```{r}
+c("ham", "spam")
+```
+In order to perform `onclick` actions, we need to actually include quotes inside a character string. In order to properly include quotes in a character string in R you must alternate use of the characters `"` and `'` to indicate the beginning and end of the quote. If you want to include a single or double quote in a character string, then you need to surround: a single quote by double quotes or a double quote by single quotes. If you want to include multiple single or double quotes in a string you have to be more creative and use something like the `paste` or `paste0` functions to combine complex strings into a single string.
+
+The Merriam-Webster dictionary [@onomatopoeia] defines onomatopoeia as
+
+> The naming of a thing or action by a vocal imitation of the sound associated with it (such as buzz, hiss).
+
+In the code chunk below, we demonstrate how to include single or double quotes within the character strings for several examples of onomatopeoia. Note that when printing a character string with a double quote that R will put a backslash `\` before the double quote to indicate that it is part of the string.
+
+First, we create the character string `buzz`.
+```{r}
+# character string buzz
+"buzz"
+```
+
+Next, we create the character string `buzz` surrounded by double quotes. To make sure the double quotes are included in the string, we must place single quotes around the string. Note the `\` before the double quotes when we print the string to indicate that the double quotes are part of the string.
+
+```{r}
+# character string buzz surrounded by double quotes
+' "buzz" '
+```
+Now, we create the character string `buzz` surrounded by  single quotes. We place double quotes outside the single quotes to get the desired effect.
+
+```{r}
+# character string buzz surrounded by single quotes
+" 'buzz' "
+```
+We now create a lengthier character string that places single quotes around multiple words in the character string.
+
+```{r}
+# a lengthier character string created using double quotes that uses single quotes
+# within the string
+"Some examples of onomatopoeia are 'buzz', 'hiss', and 'boom'"
+```
+Lastly, to create a character string that includes both double and single quotes, we need to use the `paste0` function to combine separate character strings into a longer character string having the desired behavior.
+
+```{r}
+# create the string:
+# She said, "Some examples of onomatopoeia are 'buzz', 'hiss', and 'boom'".
+paste0('She said, ',
+       '"Some examples of onomatopoeia are ', "'buzz', 'hiss', and 'boom'",
+       '".')
+```
+We will use what we have learned in this section to create click functionality in an interactive graphic.
+
+### Adding click functionality to an interactive graphic
+
+To open a website based on a user clicking a graphical element (e.g., a bar or observation), you must specify what website to open for each observation. A column of your data frame must supply a character string for each observation of the form `window.open("... website to open ...")`. This can be quite complex. 
+
+In the example below, we choose to open a google search when the user clicks one of the bars of our bar chart. A google search will take the form `"https://www.google.com/search?q=thing"`, where `thing` is a sequence of words linked by the plus sign. e.g., to search for "Which president was the best athlete", we would need `"https://www.google.com/search?q=which+president+was+the+best+athlete"`. To then turn this into a click action, we need to add the `window.open()` command around the website, specifically: `window.open(https://www.google.com/search?q=which+president+was+the+best+athlete")`
+
+For the bar graph, we want to open a google search for the type of diamond cut (Good, Premium, Ideal, etc.) when the user clicks their mouse on the associated bar. We first add a variable, `bar_google`, to the `diamonds` data frame that contains the google query with the cut of diamond.
+
+```{r}
+# add variable that would perform a google search for each observation's cut
+diamonds <- diamonds |>
+  mutate(bar_google = paste0("https://www.google.com/search?q=diamond+cut+", as.character(cut)))
+# look at first 3 values in bar_google
+diamonds |> select(bar_google) |> print(n = 3)
+```
+
+Next, we add another variable, `bar_onclick` to the `diamonds` data frame to add the `window.open(" ... ")` part of the `onlick` command to the `bar_google` variable. We use the `paste0` function and a series of single and double quotes to get the desired format.
+
+```{r}
+# add column that actually performs the google search on click
+diamonds <- diamonds |>
+  mutate(bar_onclick = paste0('window.open("', bar_google,'")'))
+# look at first 3 values in bar_onclick
+diamonds |> select(bar_onclick) |> print(n = 3)
+```
+
+Lastly, we map the `bar_onclick` variable to the `onclick` aesthetic in our interactive bar chart so that when the user clicks a bar, a corresponding google search for that diamond cut is opened.
+
+```{r}
+# specify interactive bar chart that searches for the cut if associated bar clicked
+ibar_click <- ggplot(data = diamonds) + 
+  geom_bar_interactive(aes(x = cut, data_id = cut, tooltip = cut,
+                           onclick = bar_onclick))
+girafe(ggobj = ibar_click)
+```
+
+# The `starwars` data set
+
+To illustrate the creation of additional interactive graphics using **ggiraph**, we will use the `starwars` data set from the **dplyr** package [@R-dplyr].
+As stated in its documentation (`?dplyr::starwars`) the original data were obtained from the Star Wars API ([https://swapi.dev/])(https://swapi.dev/) and were updated based on additional research into gender and sex determinations of the characters.
+
+The `starwars` data set is a data frame (technically, a tibble data frame) with `r nrow(starwars)` rows and `r ncol(starwars)` variables:
+
+- `name`: the character's name.
+- `height`: the character's height (cm).
+- `mass`: the character's mass (kg).
+- `hair_color`: the character's hair color.
+- `skin_color`: the character's skin color.
+- `eye_color`: the character's eye color.
+- `birth_year`: the character's birth year (BBY = Before Battle of Yavin).
+- `sex`: the character's biological sex (male, female, hermaphroditic, or none (as in the case for Droids)).
+- `gender`: the character's gender role or gender identity as determined by their personality or the way they were programmed (as in the case for Droids).
+- `homeworld`: the name of the character's homeworld.
+- `species`: the character's species.
+- `films`: the films the character appeared in.
+- `vehicles`: the vehicles the character has piloted.
+- `starships`: the starships the character has piloted.
+
+We start by loading the data set into memory.
+
+```{r, include = TRUE, message=FALSE}
+data(starwars, package = "dplyr")
+```
+
+# Creating an interactive scatter plot
+
+In this section, we create some interactive scatter plots using the `starwars` data. We will create a scatter plot of each observation's `mass` (kg) versus height (`cm`).
+
+A simple (non-interactive) scatter plot is shown below.
+
+```{r}
+ggplot(data = starwars) +
+  geom_point(aes(x = height, y = mass))
+```
+
+For the most part, there is a linear trend among the observations, However, there is a clear outlier around (175, 1375). An interactive plot would help us to identify this observation.
+
+## A simple interactive scatterplot
+
+In the interactive scatter plot below, we use `geom_point_interative` to construct the interactive scatter plot and use the `name` variable as a `tooltip` and `data_id` so that the character's name appears when we hover over an observation. What character is the outlier?
+
+```{r}
+iscatter <- ggplot(data = starwars) +
+  geom_point_interactive(aes(x = height, y = mass,
+                             tooltip = name, data_id = name))
 girafe(ggobj = iscatter)
 ```
 
+## Creating a more complex tooltip
+
+While the previous graphic was useful for identifying the character name of the outlying observation, it might be interesting to create a `tooltip` that provides additional information such as the character's home world and eye color. To do this, we add a new variable to the `starwars` data frame, `complex_tooltip`, that combines the variables `name`, `homeworld`, and `eye_color` into a single character vector with some additional explanatory text. The `\n` indicates a new line so that the three characteristics are on separate lines in the `tooltip`.
+
 ```{r}
-iscatter2 <- ggplot(data = starwars) + geom_point_interactive(aes(x = height, y = mass,
-                                                              tooltip = name, data_id = name,
-                                                              onclick = sex))
+starwars <- starwars |> mutate(
+  complex_tooltip =
+    paste0(
+      "name = ",
+      name,
+      "\n home world = ",
+      homeworld,
+      "\n eye color = ",
+      eye_color
+    )
+)
+starwars |> select(complex_tooltip) |> print(n = 3)
+```
+
+We now add the `complex_tooltip` variable as the `tooltip` in an updated scatter plot to create a more informative interactive scatter plot.
+
+```{r}
+iscatter2 <- ggplot(data = starwars) + 
+  geom_point_interactive(aes(x = height, y = mass,
+                             tooltip = complex_tooltip, 
+                             data_id = name))
 girafe(ggobj = iscatter2)
 ```
 
+## Creating a clickable scatterplot
 
+While Star Wars is a popular movie franchise, not all of us are experts on the various characters. It might be helpful to make each observation clickable so that a google search for the character's name opens when the observation is clicked. 
+
+Similar to our previous `onclick` aesthetic example, we use the `paste0` function to create a variable, `google_search`, that is a string for the google search query of each character's name.
 
 ```{r}
-p <- ggplot(diamonds, aes(carat, fill = cut)) +
-  geom_density_interactive(aes(tooltip=cut, data_id=cut), position = "stack")
-x <- girafe(ggobj = p)
-if( interactive() ) print(x)
+# create google link
+starwars <- starwars |> mutate(google_search =
+                                  paste0("https://www.google.com/search?q=",
+                                         as.character(name)))
+# print top 3 results
+starwars |> select(google_search) |> print(n = 3)
 ```
 
+Next, we use the `paste0` function to add the `window.open("...")` text around the desired search and assign that string the name `complex_onclick`.
 
-<!-- # Basic data visualization with **ggplot2** -->
+```{r}
+starwars <- starwars |> mutate(complex_onclick =
+                                 paste0('window.open("', google_search,'")'))
+# print top 3 results
+starwars |> select(complex_onclick) |> print(n = 3)
+```
 
-<!-- In this chapter we discuss how to perform basic data visualization. -->
+Lastly, we specify the `onclick` aesthetic in our interactive scatter plot to create an interactive scatterplot that allows the user to perform a google search for a character by clicking on the relevant observation. Click on some of the observations to learn more info about the associated character. Did you know all of the characters?
 
-<!-- Data graphics should be as *informative* as possible. -->
+```{r}
+iscatter3 <- ggplot(data = starwars) + 
+  geom_point_interactive(aes(x = height, y = mass,
+                             data_id = name,
+                             tooltip = name,
+                             onclick = complex_onclick))
+girafe(ggobj = iscatter3)
+```
 
-<!-- * Graphics do *not*  need to contain as much *information* as possible. -->
-<!-- * Make it as easy as possible to understand the information you want to -->
-<!-- reveal about the data. -->
+## Adding an interactive smooth to a scatterplot
 
-<!-- In general, simpler graphics are easier to understand and should be preferred.  -->
-<!-- However, adding complexity to a graphic can sometimes reveal far more about the data than -->
-<!-- a simple graphic. You will have to decide what is needed in a graphic to make it as informative -->
-<!-- as possible. -->
+It is very natural to add an (interactive) regression line to a scatter plot. In the context of the `starwars` data set, it makes sense to fit a robust regression line so that the outlier doesn't adversely affect the fitted model. To add the robust regression line to the scatterplot, we use `method = MASS::rlm` in `geom_smooth_interactive` to use the `rlm` function (robust linear model) from the **MASS** package [@R-MASS]. Similar to the example in the documentation of `geom_smooth_interactive`, we specify `tooltip = "smooth"`. The interactive robust regression line is added to the scatter plot and displays the word `smooth` when you hover over the line. This is not particularly useful.
 
-<!-- Be careful to not to include too much information in a single graphic. Complicated graphics -->
-<!-- may present far more information than we are able to process. We'll see some examples of this later. -->
+```{r}
+iscatter4 <- ggplot(data = starwars, aes(x = height, y = mass)) + 
+  geom_point_interactive(aes(data_id = name,
+                             tooltip = name)) +
+  geom_smooth_interactive(method = MASS::rlm, 
+                          se = FALSE, tooltip = "smooth")
+girafe(ggobj = iscatter4)
+```
 
-<!-- We will use **ggplot2** [@ggplot22016] to construct the graphics in this chapter. **ggplot2** has become increasingly popular for producing flexible graphics within an elegant framework. -->
+Our graphic would be more useful if the regression equation were displayed when the user hovered over the regression line. I know of no easy way to do this using `geom_smooth_interactive`. Instead, we first manually fit the robust linear model, extract the coefficients, and then use the coefficients to create a character string for the regression equation (recall that `\n` means to start a new line).
 
-<!-- We start by loading the **ggplot2** package. -->
+```{r}
+# fit the robust linear model
+rlmod <- MASS::rlm(mass ~  height, data = starwars)
+# extract the coefficients
+coeffs <- rlmod$coefficients
+# turn coefficients into a useful character string
+equation <- paste0("intercept: ", round(coeffs[[1]], 2),
+                   "\nslope: ", round(coeffs[[2]], 2))
+equation
+```
+Instead of using `geom_smooth_interactive` to draw our regression line, we use `geom_abline_interactive` to manually add the regression line and use the character string we created as the `tooltip`. The equation of the regression line is now displayed when we hover the mouse cursor over the line.
 
-<!-- ```{r} -->
-<!-- library(ggplot2) -->
-<!-- ``` -->
+```{r}
+iscatter5 <- ggplot(data = starwars, aes(x = height, y = mass)) + 
+  geom_point_interactive(aes(data_id = name,
+                             tooltip = name)) +
+  geom_abline_interactive(intercept = coeffs[1],
+                      slope = coeffs[2],
+                      tooltip = equation,
+                      data_id = coeffs[1],
+                      color = "blue")
+girafe(ggobj = iscatter5)
+```
 
-<!-- ## Graphics ecosystems in R -->
-
-<!-- There are three main graphics ecosystems in R: -->
-
-<!-- 1. **base** -->
-<!-- 2. **lattice** -->
-<!-- 3. **ggplot2** -->
-
-<!-- **base** graphics are traditional S-like graphics. -->
-
-<!-- * Run `?graphics-package` in the Console for more details. -->
-<!-- * These are the graphics you get by default when you use the `plot` function, the `hist` function, the `boxplot` function, etc. -->
-
-<!-- **lattice** graphics are an implementation of Trellis graphics [@BeckerClevelandShyu1996] for R. -->
-
-<!-- * Run `?lattice` in the Console for additional information about the **lattice** package. -->
-<!-- * The **lattice** package focuses on elegantly plotting multivariate data and makes it easy to distinguish different levels of `factor` data. -->
-<!-- * **lattice** and **base** graphics do not interface with each other (changing aspects of one graphics system has not impact on the other.) -->
-
-<!-- **ggplot2** is a layered graphical system based on implementing the Grammar of Graphics [@Wilkinson2005]. -->
-
-<!-- * It has gained widespread popularity because of its friendliness for visual exploration of data by data scientists. -->
-<!-- * It provides an elegant approach for constructing complex plots in a systematic way. -->
-<!-- * Run `?ggplot2-package` in the Console for more information. -->
-
-<!-- The code below can be used to generate plots using each of the ecosystems. -->
-
-<!-- ```{r} -->
-<!-- # load data -->
-<!-- data(penguins, package = "palmerpenguins") -->
-<!-- # base graphics -->
-<!-- plot(bill_length_mm ~ body_mass_g, data = penguins, col = penguins$species) -->
-<!-- legend(x = "topleft", legend = levels(penguins$species), -->
-<!--        col = c("black", "red", "green"), pch = 1) -->
-<!-- # lattice graphics -->
-<!-- lattice::xyplot(bill_length_mm ~ body_mass_g, data = penguins, group = species, -->
-<!--                 auto.key = TRUE) -->
-<!-- # ggplot2 graphics -->
-<!-- ggplot2::ggplot(data = penguins) + -->
-<!--   ggplot2::geom_point(mapping = aes(x = body_mass_g, y = bill_length_mm, -->
-<!--                                     color = species, shape = species)) -->
-<!-- ``` -->
-
-<!-- ## Basic ingredients -->
-
-<!-- There are 4 main components needed to produce a graphic using **ggplot2**. -->
-
-<!-- 1. A data frame containing your data. -->
-<!--     * Each column should be a variable and each row should be an observation of data. -->
-<!-- 2. A `ggplot` object. -->
-<!--     * This is initialized using the `ggplot` function. -->
-<!-- 3. A geometric object. -->
-<!--     * These are called "geoms" for short. -->
-<!--     * geoms indicate the geometric object used to visualize the data. E.g., points, lines, polygons etc. More generally, geoms indicate the type of plot that is desired, e.g., histogram, density, or boxplot, which aren't exactly a simple geometric argument. -->
-<!-- 4. An aesthetic. -->
-<!--     * An aesthetic mapping indicates what role a variable plays in the plot. -->
-<!--     * e.g., which variable will play the "x" variable in the plot, the "y" variable in the plot, control the "color" of the observations, etc. -->
-
-<!-- In *R for Data Science*, @r4ds2017 provide the following template for creating graphics using **ggplot2**: -->
-<!-- ```{r, eval=FALSE, tidy=FALSE} -->
-<!-- ggplot(data = <DATA>) + <GEOM_FUNCTION>(mapping = aes(<MAPPINGS>)) -->
-<!-- ``` -->
-
-<!-- `<DATA>`, `<GEOM_FUNCTION>`, and `<MAPPINGS>` are placeholders that you replace with the data frame, geometric object, and aesthetic mappings you want to use in your specific plot. -->
-
-<!-- An explanation of the template above: -->
-
-<!-- 1. Every `ggplot` starts with a call to the `ggplot` function. -->
-<!--     * You can create a blank plot by running `ggplot()` in the Console. -->
-<!-- 2. Generally, you pass your data frame to the `ggplot` through the `data` argument. -->
-<!--     * You can also pass `data` inside the `<GEOM_FUNCTION>` when you intend to use multiple geometric objects with different data sources. -->
-<!-- 3. The `<GEOM_FUNCTION>` indicates the geometric object you want to use in the plot. -->
-<!-- 4. The `<MAPPINGS>` describes the aesthetics mappings you want to use for this particular geometry. -->
-<!--     * One of the reasons **ggplot2** is so powerful is that you can use different mappings for different geometric objects. -->
-<!-- 5. The `+` symbol is used to add a layer to your graphic. -->
-<!--     * If your code spans multiple lines, then you need to make sure all lines but the last end with the `+` operator to stack the layers properly. -->
-
-<!-- ### Some geometric objects -->
-
-<!-- There are many geometric objects available in **ggplot2**. A complete list may be (currently) found at [https://ggplot2.tidyverse.org/reference/](https://ggplot2.tidyverse.org/reference/). We provide a partial list of geometric objects that I frequently use.  -->
-
-<!-- data dimensionality | geometry       | purpose -->
-<!-- ----------|----------------|------------------------------- -->
-<!-- 1d        | `geom_bar`     | Draws a bar chart. -->
-<!-- 1d        | `geom_density` | Draws a density plot. -->
-<!-- 1d        | `geom_histogram` | Draws a histogram. -->
-<!-- 1d        | `geom_boxplot` | Draws a boxplot. -->
-<!-- 1d        | `geom_violin`  | Draws a violin plot. -->
-<!-- 1d        | `geom_qq`      | Draws a quantile-quantile plot. -->
-<!-- 2d        | `geom_point`   | Draws points. Used for scatter plots. -->
-<!-- 2d        | `geom_path`, `geom_line` | Connects observations. Used for line plots. -->
-<!-- 2d | `geom_segment` | Draws straight lines between points. -->
-<!-- 2d | `geom_curve` | Draws curved lines between points. -->
-<!-- 2d | `geom_smooth` | Draws a "smooth" fitted model of the data. -->
-<!-- 2d | `geom_density2d` | Draws 2d contours of density estimate for two variables. -->
-<!-- 2d | `geom_density2d_filled` | Draws 2d contours of density estimate for two variables with colors. -->
-<!-- 3d | `geom_contour` | Draws 2d contours of 3d data. -->
-<!-- 3d | `geom_contour_filled` | Draws 2d contours of 3d data (colored). -->
-<!-- NA  | `geom_abline`, `geom_hline`, `geom_vline` | Draws diagonal, horizontal, and vertical lines. -->
-
-<!-- ### Some aesthetic mappings -->
-
-<!-- Aesthetic mappings are unique to each geometric object. However, here are some of the most common ones that show up in many geoms: -->
-
-<!-- aesthetic | purpose -->
-<!-- ----------|-------- -->
-<!-- `x` | Controls the x-variable in the plot. -->
-<!-- `y` | Controls the y-variable in the plot. -->
-<!-- `alpha` | Controls the transparency of the object. -->
-<!-- `color` or `colour` | Controls the colors of the object. -->
-<!-- `fill` | Controls the color of the interior of an object. -->
-<!-- `group` | Controls how the data are grouped. -->
-<!-- `linetype` | Controls the type of line used to draw the object. -->
-<!-- `size` | Controls the size of the drawn object. -->
-<!-- `shape` | Controls the shape of the object. -->
-
-
-
-
-
-<!-- This doesn't really add any new information, but does make the graphic "pop" a bit more. We could remove the legend to simpify, if we wanted. -->
+<!-- # Creating an interactive histogram -->
 
 <!-- ```{r} -->
-<!-- ggplot(penguins) + geom_bar(aes(x = species, fill = species)) + theme(legend.position = "none") -->
+<!-- ihist <- ggplot(diamonds) + -->
+<!--   geom_histogram_interactive(aes(x = price, -->
+<!--                                  data_id = after_stat(count), -->
+<!--                                  tooltip = paste0("count = ", after_stat(count)))) -->
+<!-- girafe(ggobj = ihist) -->
 <!-- ``` -->
-
-<!-- ### Histogram -->
-
-<!-- A *histogram* is used to display the distribution of a continuous `numeric` variable. The range of the variable is partitioned into classes. The number of observations falling in each class is counted. A histogram draws a bar for each class with height corresponding to the number of observations in that class. -->
-
-<!-- Let's construct a histogram of bill length. -->
 
 <!-- ```{r} -->
-<!-- ggplot(penguins) + geom_histogram(aes(x = bill_length_mm)) -->
+<!-- # take a peek at the statistics to produce a histogram -->
+<!-- ggplot_build(ihist)$data[[1]] -->
+<!-- # xmin and xmax specify the endpoints of each bar -->
+<!-- ihist2 <- ggplot(diamonds) + -->
+<!--   geom_histogram_interactive(aes(x = price, -->
+<!--                                  data_id = price, -->
+<!--                                  tooltip = paste0("bin range: ", -->
+<!--                                                   round(after_stat(xmin), 2), -->
+<!--                                                   "-", -->
+<!--                                                   round(after_stat(xmax), 2)))) -->
+<!-- girafe(ggobj = ihist2) -->
 <!-- ``` -->
 
-<!-- The histogram is multimodal (i.e., has multiple prominent peaks), having 2 or 3 prominent peaks. There may be sub-populations we should distinguish. This isn't easy to do with histograms unless we split it up into separate plots, which we will learn to do later with "facets", or make the bars semi-transparent. -->
-
-<!-- ### Density plot -->
-
-<!-- A density plot is often preferred to a histogram because it's more flexible, though it often provides similar information. A density plot is essentially a smoothed version of a histogram.  -->
-
-<!-- A density plot is appropriate for displaying the distribution of a continuous `numeric` variable and indicates the values for which the data is more "dense". More specifically, density plots indicates the values of data you are most likely to observe. A higher density region means you are more likely to observe data with values in that region. There is a statistical definition we will not go into. -->
-
-<!-- A simple density plot is shown below. We can't learn a lot because of the sub-populations previously mentioned. -->
+<!-- # Creating an interactive density plot -->
 
 <!-- ```{r} -->
-<!-- ggplot(penguins) + geom_density(aes(x = bill_length_mm)) -->
+<!-- idensity <- ggplot(data = diamonds) + -->
+<!--   geom_density_interactive(aes(x = price, data_id = "density", tooltip = "density")) -->
+<!-- girafe(ggobj = idensity) -->
 <!-- ``` -->
-
-<!-- There are at least two modes in the `bill_length_mm` density plot. -->
-
-<!-- Let's create separate densities for the different `species`. -->
 
 <!-- ```{r} -->
-<!-- ggplot(penguins) + geom_density(aes(x = bill_length_mm, col = species)) -->
+<!-- # create and save density object -->
+<!-- idensity <- ggplot(data = diamonds) + geom_density(aes(x = price)) -->
+<!-- # extract data used to build density plot -->
+<!-- d_data <- ggplot_build(idensity)$data[[1]] -->
+<!-- # add new variable that contains (x, y) coordinate of density point -->
+<!-- d_data <- d_data |> mutate(density_point =  -->
+<!--                              paste0("height = ", round(x, 2),  -->
+<!--                                     ", density = ", round(density, 6))) -->
+<!-- # use geom_line to draw the plot -->
+<!-- # use geom_point_interactive to make points that have hover effect. specify -->
+<!-- # size = 0.1 to make the points smaller than the lines but still accessible -->
+<!-- # manually change x axis label -->
+<!-- idensity2 <- ggplot(data = d_data) + -->
+<!--   geom_line(aes(x = x, y = density)) + -->
+<!--   geom_point_interactive(aes(x = x, y = density, data_id = x, tooltip = density_point), -->
+<!--                          size = 0.5, col = "lightgrey") + -->
+<!--   xlab("price") -->
+<!-- girafe(ggobj = idensity2) -->
+<!-- ``` -->
+<!-- ## Creating interactive density with multiple groups -->
+<!-- ```{r} -->
+<!-- idens2 <- ggplot(data = filter(starwars, sex == "male" | sex == "female")) + -->
+<!--   geom_density_interactive(aes(x = height, fill = sex, data_id = sex, tooltip = sex), -->
+<!--                            alpha = 0.3) -->
+<!-- girafe(ggobj = idens2) -->
 <!-- ``` -->
 
-<!-- There are clear differences in the bill length of Adelie, Chinstrap, and Gentoo penguins. The bill length for the Adelie penguins is about 35 mm and closer to 47 mm for the Gentoo penguins. The Chinstrap penguins have the greatest bill length, in general. It appears the Chinstrap penguins may have a further sub-population. -->
-
-<!-- A weakness of the previous graphic is that the legend distinguishing the different `species` is a bit subtle. The line around the border may not be easy to distinguish for everyone. We could consider changing the `linetype` or we could use both `color` and `linetype`. -->
+<!-- # Creating an interactive histogram -->
 
 <!-- ```{r} -->
-<!-- ggplot(penguins) + geom_density(aes(x = bill_length_mm, linetype = species)) -->
-<!-- ggplot(penguins) + geom_density(aes(x = bill_length_mm, col = species, linetype = species)) -->
+<!-- height_hist <- ggplot(starwars) -->
 <!-- ``` -->
 
-<!-- An even better option is to `fill` the densities with different colors. However, they will overlap, masking some of the information. -->
+<!-- # Interactive two-dimensional density plots -->
 
 <!-- ```{r} -->
-<!-- ggplot(penguins) + geom_density(aes(x = bill_length_mm, fill = species)) -->
+<!-- ggplot(starwars) + geom_density2d(aes(x = mass, y = height)) -->
+
 <!-- ``` -->
 
-<!-- To address the masking issue, we can control the transparency of the colors using the `alpha` aesthetic. This value, between 0 and 1, controls how transparent the objects are. `0` means transparent, `1` means completely opaque. We will set `alpha = 0.3`. Notice that we specify this OUTSIDE the aesthetic mapping since we are controlling the aesthetic manually instead of having **ggplot2** *scale* the provided variable.  -->
+<!-- # interactive with sf -->
 
 <!-- ```{r} -->
-<!-- ggplot(penguins) + geom_density(aes(x = bill_length_mm, fill = species), alpha = 0.3) -->
+<!-- nc <- sf::st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE) -->
+<!-- gg <- ggplot(nc) + -->
+<!--   geom_sf_interactive(aes(fill = AREA, tooltip = NAME, data_id = NAME)) -->
+<!-- girafe(ggobj = gg) -->
 <!-- ``` -->
-
-<!-- ### Scaling -->
-
-<!-- When a variable is mapped to an aesthetic, **ggplot2** will assign a unique value to each unique level of the variable. This process is known as *scaling*. -->
-
-<!-- Scaling is often not very exciting, but it can be important when customizing the look of a `ggplot`. -->
-
-<!-- When a variable is mapped to a non `x` or `y` aesthetic, **ggplot2** will automatically add a legend to indicate how the variable was scaled. -->
-
-<!-- ### Boxplots -->
-
-<!-- A boxplot is a robust display of information for a continuous `numeric` variable. Boxplots are robust because they rely on robust statistics not easily affected by outliers.  -->
-
-<!-- In general, a boxplot: -->
-
-<!-- * Draws a box extending from Q1 (the 0.25 quantile) to Q3 (the 0.75 quantile) of the data. -->
-<!-- * A line between Q1 and Q3 indicates the median (the 0.5 quantile) of the data. -->
-<!-- * A "whisker" extends from Q1 to the smallest observation that is not an outlier. -->
-<!-- * A "whisker" extends from Q3 to the largest observation that is not an outlier. -->
-<!-- * An **outlier** is typically defined as an observation smaller than Q1 - 1.5 (Q3 - Q1) or larger than Q3 + 1.5 (Q3 - Q1). -->
-
-<!-- Parallel boxplots are an effective tool for comparing differences between a variable across multiple levels of a `factor` variable. -->
-
-<!-- Consider parallel boxplots of bill length distinguished by `species`. -->
-
-<!-- ```{r} -->
-<!-- ggplot(penguins) + geom_boxplot(aes(y = bill_length_mm, x = species)) -->
-<!-- ``` -->
-
-<!-- We can see that the typical responses for the Adelie penguins tend to be lower than for the Chinstrap and Gentoo penguins. The Chinstrap penguins tend to have slightly longer beaks that the Gentoo penguins. All three penguins species seem to have similar variability (i.e., the spread of the data is similar). -->
-
-<!-- A weakness of boxplots is that they throw away a lot of information. e.g., We don't see the two sub-populations in the Chinstrap penguins that we noticed earlier when looking at density plots. -->
-
-<!-- Adding a `fill` color to the boxplots (while removing the legend) could possibly be a better plot. -->
-<!-- ```{r} -->
-<!-- ggplot(penguins) + geom_boxplot(aes(y = bill_length_mm, x = species, fill = species)) + theme(legend.position = "none") -->
-<!-- ``` -->
-
-<!-- ### Violin plots -->
-
-<!-- A violin plot is like a cross between a boxplot and a density plot. A violin plot unites a density with its mirror image and then displays the unified object like a boxplot.  -->
-
-<!-- We construct violin plots of bill length for each penguin `species`. -->
-
-<!-- ```{r} -->
-<!-- ggplot(penguins) + geom_violin(aes(x = species, y = bill_length_mm)) -->
-<!-- ``` -->
-
-<!-- While the Adelie bill lengths are approximately symmetric and unimodal, both the Chinstrap and Gentoo bill lengths are bimodal and asymmetric. -->
-
-<!-- ### Scatter plots -->
-
-<!-- A scatter plot draws the locations of (x, y) positions based on two `numeric` variables. In general, you're trying to learn information about the *association* between the two variables. -->
-
-<!-- * A positive association is present when both variables tend to increase together. -->
-<!-- * A negative association is present when one variable tends to decrease when the other increases. -->
-<!-- * A linear association is present when the relationship between the two variables is a straight line. -->
-<!-- * A nonlinear association is present when the relationship between the two variables is a curve. -->
-<!-- * It is possible that no clear association is present in the data. -->
-
-<!-- Let's consider a scatter plot of `bill_length_mm` versus `body_mass_g`. -->
-
-<!-- ```{r} -->
-<!-- ggplot(penguins) + geom_point(aes(x = body_mass_g, y = bill_length_mm)) -->
-<!-- ``` -->
-
-<!-- We see a positive association in the graphic above. As `body_mass_g` increases, `bill_length_mm` also tends to increase. However, it appears that there may be some observations in the upper left part of the graph that do not match the overall linear trend. -->
-
-<!-- This could mean: -->
-
-<!-- 1. The data are *noisy*, which simply means the patterns aren't as strong and clear as we would like. -->
-<!-- 2. There is a third variable that not accounted for in our plot but that has a relationship with the other two variables. -->
-<!--     * When we are not accounting for this variable, it is called a *lurking variable*. -->
-<!--     * When we account for a lurking variable in our analysis, it becomes a *confounding variable*. -->
-<!--     * We are defining lurking and confounding variables in a general sense and not with statistical rigor. -->
-
-<!-- Let's consider an analysis of `body_mass_g` and `bill_length_mm` that accounts for `species`. -->
-
-<!-- ```{r} -->
-<!-- ggplot(penguins) + geom_point(aes(x = body_mass_g, y = bill_length_mm, col = species)) -->
-<!-- ``` -->
-
-<!-- Accounting for `species` in the analysis shows clear patterns between the three penguin types. Chinstrap penguins tend smaller body mass but longer bill lengths. Adelie penguins have smaller body mass and bill lengths. Gentoo penguins tend to have higher body mass and bill lengths than the other two species. -->
-
-<!-- As previously mentioned, we want our plots to be as clear as possible. Some individuals have difficulty interpreting colors in graphics. We can add another distinguishing characteristic for the different species. In this case, we will change the `shape` of the plotted points. This provides another way to aid the reader in correctly interpeting the plot. -->
-
-<!-- ```{r} -->
-<!-- ggplot(penguins) + geom_point(aes(x = body_mass_g, y = bill_length_mm, color = species, shape = species)) -->
-<!-- ``` -->
-
-<!-- ### Adding smooths -->
-
-<!-- A smooth in **ggplot2** is a model that that attempts to estimate the average relationship between a response variable (typically the `y` variable) and one or more predictor variables (typically the `x`  and possibly other variables) -->
-
-<!-- Adding a "smooth" to a plot can make relationships between variables even clearer. There are many different smoothing methods. -->
-
-<!-- A smoothing layer can be added to a plot using `geom_smooth`. Many methods can be used for the smooth. **ggplot2** takes the methods `lm` (linear model), `glm` (generalized linear model), `gam` (generalized additive model), `loess` (local fitting), or a function (e.g., `MASS::rlm` for a robust linear model). If you don't know what these are, do not add them to your plot because they won't help you to explain the data. -->
-
-<!-- A simple linear regression model fits the straight line the minimizes the squared deviations between the y values and the fitted line. We add simple linear regression lines to each penguin `species` by adding a `geom_smooth` layer. -->
-
-<!-- ```{r} -->
-<!-- ggplot(penguins) + geom_point(aes(x = body_mass_g, y = bill_length_mm, color = species, shape = species)) + geom_smooth(aes(x = body_mass_g, y = bill_length_mm), method = "lm") -->
-<!-- ``` -->
-
-<!-- This only adds a single line across all groups, which clearly doesn't explain the relationship when accounting for `species`. To add a separate line for each `species`, we need to include that in the aesthetic mapping for `geom_smooth`. -->
-
-<!-- ```{r} -->
-<!-- ggplot(penguins) + geom_point(aes(x = body_mass_g, y = bill_length_mm, color = species, shape = species)) + geom_smooth(aes(x = body_mass_g, y = bill_length_mm, col = species), method = "lm") -->
-<!-- ``` -->
-
-<!-- Notice that we had to specify the aesthetic mappings in each geom. This seems redundant. -->
-
-<!-- If you specify an aesthetic mapping in a geom, then the aesthetic mapping is *local* and only applies to that particular geom. If you want to specify a *global* aesthetic mapping that applies across all geoms, then you can specify the `mapping` in the `ggplot` function. -->
-
-<!-- Here is a simpler version of the previous plot. -->
-
-<!-- ```{r} -->
-<!-- ggplot(data  = penguins, mapping = aes(x = body_mass_g, y = bill_length_mm, color = species)) + geom_point(aes(shape = species)) + geom_smooth(method = "lm") -->
-<!-- ``` -->
-
-<!-- ## Customizing plots -->
-
-<!-- Unsurprisingly, the graphics produced by **ggplot2** can be greatly customized. We consider some of the basic customizations below. -->
-
-<!-- ### Assigning a plot -->
-
-<!-- One of the strengths of **ggplot2** is that you can easily build a plot layer by layer. In this case, it is useful to assign the current plot a name that can then be added to later.  -->
-
-<!-- Note: When you assign a `ggplot` a name, it will NOT be displayed, as is typical when assigning objects in R. You have to then print the object using the `print` function or by simply running the object name in the Console. Let's assign the name `ggp` to the basic penguin scatter plot displaying bill length versus body mass, using colors and shapes to distinguish between different species. -->
-
-<!-- ```{r} -->
-<!-- ggp <- ggplot(data  = penguins, mapping = aes(x = body_mass_g, y = bill_length_mm, color = species)) + geom_point(aes(shape = species)) -->
-<!-- ggp -->
-<!-- ``` -->
-
-<!-- We'll customize this plot below. -->
-
-<!-- ### Axis labels and titles -->
-<!-- The x-axis labels, y-axis labels, and title of a plot are controlled using the `xlab`, `ylab`, and `ggtitle` functions, respectively. Let's customize the penguin scatter plot previously discussed. We'll update the `ggp` object to include our improvements then print the result. -->
-
-<!-- ```{r} -->
-<!-- ggp <- ggp + xlab("body mass (g)") + ylab("bill length (mm)") + ggtitle("Penguin body characteristics") -->
-<!-- ggp -->
-<!-- ``` -->
-
-<!-- ### Axis limits -->
-<!-- The x-axis and y-axis limits are controlled using the `xlim` and `ylim` functions. Each function takes the lower and upper limit you want to set, e.g., `xlim(0, 100)`. Let's change the axes for the penguin scatter plot previously discussed. There's nothing wrong with the previous limits, but we'll extend them a bit for demonstration. -->
-
-<!-- ```{r} -->
-<!-- ggp + xlim(2000, 7000) + ylim(0, 80) -->
-<!-- ``` -->
-
-<!-- ### Manual aesthetics -->
-<!-- Aesthetics can be set manually in a geom by specifying the aesthetic directly in the geom but outside the `aes` function. Let's change the shape of the points for a scatter plot, increase the size of the points, and manually change the color of the points. -->
-
-<!-- ```{r} -->
-<!-- ggplot(data  = penguins) + geom_point(aes(x = body_mass_g, y = bill_length_mm), shape = 15, size = 5, color = "blue") -->
-<!-- ``` -->
-
-<!-- ### Scale customization -->
-
-<!-- *Scaling* is the name of the process used by **ggplot2** to map a variable to a unique value. This is particularly important for `factor` variables. For example, color scaling is the process by which the the `color` aesthetic is mapped to particular colors. These can be customized using the various `scale_*` functions, where the "\*" is a placeholder for the rest of the function name. -->
-
-<!-- Let's manually set the color scaling using the `scale_color_manual` function. The colors provided below come from the *Dark2* color palette of the *qualitative* type provided by the ColorBrewer website ([https://colorbrewer2.org/](https://colorbrewer2.org/)), which provides color advice. It's particularly great for identifying colorblind-friendly color palettes. -->
-
-<!-- ```{r} -->
-<!-- ggp + scale_color_manual(values = c("#1b9e77", "#d95f02", "#7570b3")) -->
-<!-- ``` -->
-
-<!-- Alternatively, we could have used `scale_color_brewer` function instead, which automatically includes the color palettes desigend by Color Brewer. Run `?scale_color_brewer` for more details. -->
-
-<!-- ```{r} -->
-<!-- ggp + scale_color_brewer(type = "seq", palette = "Dark2") -->
-<!-- ``` -->
-
-<!-- Scalings can be customized in many ways, but it quickly becomes complicated, so we don't discuss them further. -->
-
-<!-- ### Legend customization -->
-
-<!-- The legend can be customized in many ways. To move the location of the legend, you can specify the `legend.position` argument of the `theme` function. -->
-
-<!-- ```{r} -->
-<!-- ggp + theme(legend.position = "bottom") -->
-<!-- ``` -->
-
-<!-- You can customize legend size, background, names, colors, etc. For specific implementation details, it is probably best to do a web search. -->
-
-<!-- ### Themes -->
-
-<!-- A theme is a customized style that changes the overall appearance of your graphic. **ggplot2** provides a number of built-in themes. Some of the built-in themes include: -->
-
-<!-- * `theme_gray`: the default theme. Gray background and white grid lines. -->
-<!-- * `theme_bw`: white background and gray grid lines. -->
-<!-- * `theme_classic`: white background and no grid lines. -->
-<!-- * `theme_minimal`: white background, no gridlines, no axis lines. -->
-<!-- * `theme_light`: white background, gray grid lines and box around plot. -->
-<!-- * `theme_dark`: essentially a "dark" opposite to `theme_light`. -->
-
-<!-- We will use the **patchwork** package [@patchwork] to easily combine several plots into a single graphic. The **patchwork** package uses `()` to group a set of plots, `|` to separate plots horizontally, and `/` to stack sets of plots vertically. -->
-
-<!-- ```{r} -->
-<!-- ggp_gray <- ggp + theme_gray() + ggtitle("theme_gray") -->
-<!-- ggp_bw <- ggp + theme_bw() + ggtitle("theme_bw") -->
-<!-- ggp_classic <- ggp + theme_classic() + ggtitle("theme_classic") -->
-<!-- ggp_minimal <- ggp + theme_minimal() + ggtitle("theme_minimal") -->
-<!-- ggp_light <- ggp + theme_light() + ggtitle("theme_light") -->
-<!-- ggp_dark <- ggp + theme_dark() + ggtitle("theme_dark") -->
-<!-- library(patchwork) -->
-<!-- (ggp_gray | ggp_bw) / (ggp_classic | ggp_minimal) / (ggp_light | ggp_dark) -->
-
-<!-- ``` -->
-
-<!-- These themes can be customized further by changing the appropriate aspects of the plots. We leave the user to use web searches for the desired customizations. -->
-
-<!-- ## Other components of a `ggplot`  -->
-
-<!-- ### Facetting -->
-
-<!-- *Facetting* a data set creates separate plotting panels for each level of one or more discrete variables. Facetting is useful for examining patterns for combinations of levels for one or more discrete variables. Technically, facetting can be performed for `numeric` variables with a relatively small number of unique values, but for practical reasons, facetting is most appropriate for `factor` variables.  -->
-
-<!-- There are two functions for creating facetted graphics in **ggplot2**: -->
-
-<!-- * `facet_wrap` facets the plots based on a single `factor` variable. The panels are wrapped around the plotting window. -->
-<!-- * `facet_grid` forms a matrix of panels based on row and column facetting variables. -->
-
-<!-- In the plot below, we facet scatter plots of `bill_length_mm` versus `body_mass_g` by `species`. -->
-
-<!-- ```{r} -->
-<!-- ggplot(penguins) + geom_point(aes(x = body_mass_g, y = bill_length_mm)) + facet_wrap(~species) -->
-<!-- ``` -->
-
-<!-- By default, the same x and y axes are used in all panels. This is standard because it facilitates direct comparisons across panels. This can be customized using the `scales` argument of the `facet_*` functions. The allowable `scales` argument values are: -->
-
-<!-- * `fixed`: same x and y axes for all panels. The default. -->
-<!-- * `free`: individual x and y axes for each panel -->
-<!-- * `free_x`: individual x axes for each panel, common y axis -->
-<!-- * `free_y`: individual y axes for each panel, common x axis -->
-
-<!-- We now consider use the `facet_grid` function to facet by two `factor` variables, `species` and `sex`. Prior to plotting, we remove the observations with `NA` for the `sex` variable. -->
-
-<!-- ```{r} -->
-<!-- ggplot(subset(penguins, !is.na(sex))) + geom_point(aes(x = body_mass_g, y = bill_length_mm)) + facet_grid(species ~ sex) -->
-<!-- ``` -->
-
-<!-- There appears to be differences in the sizes of the male and female penguins, bit it is difficult to compare the patterns across panels. It may be more useful to facet by `species` but distinguish by `sex` in a single panel. -->
-
-<!-- ```{r} -->
-<!-- ggplot(subset(penguins, !is.na(sex))) + geom_point(aes(x = body_mass_g, y = bill_length_mm, color = sex, shape = sex)) + facet_wrap(~ species) -->
-<!-- ``` -->
-
-<!-- It is clear now that across species, the males tend to have greater body mass and bill length in comparison to the females. -->
-
-<!-- ### Statistical transformations -->
-
-<!-- *Statistical transformations* are the process that **ggplot2** uses to summarize the data before plotting. By default, every geom uses a default `stat` argument that summarizes the data before plotting. Perhaps surprisingly, every `stat_*` has a default `geom` argument to specify how the summarized data should be plotted. -->
-
-<!-- In general, you can simply learn to use the geom that summarizes and plots the data to your liking. Depending on the data you have, sometimes you may want to specify a different `stat` argument. In general, custom `stat` arguments are beyond the scope of this tutorial. -->
-
-<!-- However, we do consider a simple example involving bar charts. -->
-
-<!-- By default, `geom_bar` uses `stat_count` to count the number of values having each level of a `factor` variable and then plots the height of each bar above the names of the `factor` levels. -->
-
-<!-- ```{r} -->
-<!-- ggplot(penguins) + geom_bar(aes(x = sex)) -->
-<!-- ``` -->
-
-<!-- However, let's suppose our data frame already has counts for the number of values in each level. In the case, we must change the `stat` argument for `geom_bar` to `"identity"` (for `stat_identity`). We do this in the example below, where we also have to clearly indicate the `x` variable and the `y` variable in the plot. -->
-
-<!-- ```{r} -->
-<!-- # count values with each level -->
-<!-- penguins_count <- as.data.frame(table(penguins$sex, useNA = "ifany")) -->
-<!-- # rename variales -->
-<!-- names(penguins_count) <- c("sex", "count") -->
-<!-- # print data frame -->
-<!-- penguins_count -->
-<!-- # create plot -->
-<!-- ggplot(penguins_count) + geom_bar(aes(x = sex, y = count), stat = "identity") -->
-<!-- ``` -->
-
-<!-- ### Position -->
-
-<!-- The `position` argument of a geom describes the positions of the objects produced. Most of the time this is pretty straightforward, but there can be times when it is helpful (or unhelpful) to customize `position`. -->
-
-<!-- #### Jittering data -->
-<!-- Sometimes, data values/information overlap, which makes interpreting the plot more difficult. In that case, it can be useful to "jitter" the data so that the values/information are not overlapping. The data are not technically as accurate, but the large-scale distribution of the data is easier to interpret. -->
-
-<!-- The `Galton` data set in the **HistData** package [@HistData] includes variables for `parent` and `child` for 928 observations. `parent` is a `numeric` variable indicating the average height of a child's mother and father (in). The `child` variable is a `numeric` variable indicating the height of each child (in). The data are rounded to the nearest 0.1 inch. Additional information can be found by running `?HistData::Galton` in the Console.  -->
-
-<!-- The data rounding leads to overplotting. Below, we load the `Galton` data and create a scatter plot of child height versus parents' average height. -->
-
-<!-- ```{r} -->
-<!-- data(Galton, package = "HistData") -->
-<!-- ggplot(Galton) + geom_point(aes(x = parent, y = child)) -->
-<!-- ``` -->
-
-<!-- There is a lot of overplotting in this graphic. We use the `position` argument to `jitter` the data to make the overall distribution clearer. I wouldn't say there's a lot of information gain from jittering the data in this particular example, but you can see that there are more observations in the central part of the plot. -->
-
-<!-- ```{r} -->
-<!-- ggplot(Galton) + geom_point(aes(x = parent, y = child), position = "jitter") -->
-<!-- ``` -->
-
-<!-- #### Stacking, filling, and dodging  -->
-
-<!-- I was tempted to title this section, "plots that make me emotional" because several of the graphics below cause me to go through a range of mostly unpleasant emotions when I view them. -->
-
-<!-- In this section, we'll see how `stack`, `fill`, and `dodge` can be used in the `position` argument. While these examples demonstrate their use, some of the results are an absolute mess. I will conclude with alternative recommendations. -->
-
-<!-- When creating a bar chart, a `factor` variable is mapped to the `x` aesthetic. If a different `factor` variable is mapped to the `fill` aesthetic, then **ggplot2** will `stack` the bars for the `fill` variable inside the bars for the `x` variable. Consider the bar chart below in which we "stack" penguin `sex` within the bars for the different species. -->
-
-<!-- ```{r} -->
-<!-- ggplot(penguins) +  geom_bar(aes(x = species, fill = sex)) -->
-<!-- ``` -->
-
-<!-- If you compare this bar chart with the original one that doesn't fill by `sex`, the bar height is identical. However, within each species, we `fill` the bars to show the number of penguins with each level of `sex`. -->
-
-<!-- This plot is difficult to interpret. It takes a lot of mental energy to compute approximately how many male, female, and NA observations there are within each species. While the updated bar chart compactly provides a lot of information, it doesn't facilitate easy interpretation. -->
-
-<!-- If we wanted to compare the proportion of male, female, and NA penguins in each species, we can change the `position` argument to `fill`. In that case, the bars within each level of `species` will be scaled to one, directly facilitating comparisons between the colors within each bar. -->
-
-<!-- ```{r} -->
-<!-- ggplot(penguins) +  geom_bar(aes(x = species, fill = sex), position = "fill") -->
-<!-- ``` -->
-
-<!-- I still consider this a poor display of the data, but we can see that the proportion of males is close to 50% for all species. -->
-
-<!-- Lastly, if we don't want to `stack` or `fill` the bars, we can have them `dodge` each other. In that case, the overlapping bars will "dodge" each other and sit next to each other in the plot. -->
-
-<!-- ```{r} -->
-<!-- ggplot(penguins) +  geom_bar(aes(x = species, fill = sex), position = "dodge") -->
-<!-- ``` -->
-
-<!-- If you want to compare the number of penguins with each `sex` within each `species`, this graphic isn't too bad. However, the bars representing male penguins (or alternatively, female penguins) are spread out and more difficult to compare directly because of the other bars between them. -->
-
-<!-- While the above charts provide a fair amount of information compactly, to facilitate ease of interpretation we should construct our graphics to highlight the characteristic of importance. -->
-
-<!-- e.g., If we want to compare the counts of each penguin `species` within each `sex`, it would be better to facet the data by `sex` and display the count of each species. -->
-
-<!-- ```{r} -->
-<!-- ggplot(penguins) +  geom_bar(aes(x = species, fill = species)) + facet_wrap(~ sex) -->
-<!-- ``` -->
-
-<!-- Alternatively, if we want to highlight the composition of `sex` within each `species`, then I recommend creating a bar chart of `sex` while facetting by `species`. This plot is quite similar to the "dodge" plot above, but provides further distinction between the charts for each species. -->
-
-<!-- ```{r} -->
-<!-- ggplot(penguins) +  geom_bar(aes(x = sex, fill = sex)) + facet_wrap(~ species) -->
-<!-- ``` -->
-
-<!-- The examples above are shown for factor variables with only three levels of each factor, and you may think I'm overreacting (and perhaps I am). However, the issues mentioned above are magnified when our `factor` variables have many levels. To illustrate this point, I present "stack" and "dodge" bar charts of the `diamonds` data in the **ggplot2** package, in which we compare the `cut` and `clarity` of diamonds. Each variable has at least 5 levels. The large number of levels for the `cut` and `clarity` variables make it difficult to quickly interpret the relationship between the two variables. The **patchwork** package is used to combine the two charts into a single graphic. (We also rotate the x-axis labels 90 degrees so they don't overlap each other). How easy is it for you to interpret the information below? -->
-
-<!-- ```{r} -->
-<!-- ggp_stack <- ggplot(diamonds) + geom_bar(aes(x = cut, fill = clarity)) + ggtitle("stack") + theme(axis.text.x = element_text(angle = 90, hjust = 1)) -->
-<!-- ggp_dodge <- ggplot(diamonds) + geom_bar(aes(x = cut, fill = clarity), position = "dodge") + ggtitle("dodge") + theme(axis.text.x = element_text(angle = 90, hjust = 1)) -->
-<!-- ggp_stack + ggp_dodge -->
-<!-- ``` -->
-
-<!-- ### Coordinate Systems -->
-
-<!-- A coordinate system is used to define the position of coordinates relative to one another. By default, **ggplot2** uses the Cartesian coordinate system ([https://en.wikipedia.org/wiki/Cartesian_coordinate_system](https://en.wikipedia.org/wiki/Cartesian_coordinate_system)), which treats coordinates as points on a flat plane, which is how humans tend to think about coordinates in relationship to one another. -->
-
-<!-- Other coordinates systems are commonly used for maps because points are actually on an ellipsoidal object (the earth!), which complicates their relationship. -->
-
-<!-- We do not discuss coordinate systems in detail here. The only coordinate system I want to mentioned is the "flipped" coordinate system (`coord_flip`), which flips the x and y axes. This is useful for rotating objects in a plot. Consider the boxplots below. -->
-
-
-<!-- ```{r} -->
-<!-- ggplot(penguins) + geom_boxplot(aes(x = species, y = body_mass_g, fill = species)) -->
-<!-- ggplot(penguins) + geom_boxplot(aes(x = species, y = body_mass_g, fill = species)) + coord_flip() -->
-<!-- ``` -->
-
 
 ## References
-  
-  
-  

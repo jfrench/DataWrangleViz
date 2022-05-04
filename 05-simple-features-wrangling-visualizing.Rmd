@@ -3,19 +3,20 @@ title: "Wrangling and visualizing simple features spatial data in R"
 author: "Joshua French"
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
 output:
-  html_notebook: default
-  html_document: default
+  html_notebook:
+      code_folding: show
   pdf_document: default
+  html_document: default
 bibliography:
   - dwv.bib
-  - packages_manip.bib
+  - packages_sf.bib
 ---
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(
   tidy = TRUE
 )
-knitr::write_bib(c("dplyr", "tibble", "tidyr", "palmerpenguins", "magrittr", "data.table", "reshape", "reshape2", "dbplyr", "dtplyr", "sf", "sp", "colorspace", "remotes", "viridis"), file = "packages_manip.bib")
+knitr::write_bib(c("dplyr", "tibble", "tidyr", "palmerpenguins", "magrittr", "data.table", "reshape", "reshape2", "dbplyr", "dtplyr", "sf", "sp", "colorspace", "remotes", "viridis"), file = "packages_sf.bib")
 set.seed(10403)
 ```
 
@@ -302,8 +303,8 @@ In our case, we want to read the file `cb_2018_us_state_20m.shp` in the `cb_2018
 For simplicity, I have uploaded `cb_2018_us_state_20m.zip` to my GitHub repository. Prior to importing the the `.shp` file, running the `download` and `unzip` commands should download and unzip the necessary folder into your working directory so that you can run the same code to import the shapefile.
 
 ```{r}
-# download.file("https://github.com/jfrench/DataWrangleViz/raw/master/data/cb_2018_us_state_20m.zip", destfile = "./data/cb_2018_us_state_20m.zip", method = "auto")
-# unzip("./data/cb_2018_us_state_20m.zip", exdir = "./data/cb_2018_us_state_20m")
+# download.file("https://github.com/jfrench/DataWrangleViz/raw/master/data/ca-county-boundaries.zip", destfile = "./ca-county-boundaries.zip", method = "auto")
+# unzip("cb_2018_us_state_20m.zip", exdir = "./data/cb_2018_us_state_20m")
 us_sf <- st_read(dsn = "./data/cb_2018_us_state_20m/cb_2018_us_state_20m.shp")
 ```
 
