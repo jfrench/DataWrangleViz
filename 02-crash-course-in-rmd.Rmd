@@ -468,8 +468,10 @@ Here is the exact YAML header used at this beginning of this document:
 title: "Joshua French"
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
 output: 
-  bookdown::html_document2: default
-  bookdown::html_notebook2: default
+  bookdown::html_notebook2:
+    number_sections: true
+  bookdown::html_document2:
+    number_sections: true
 bibliography:
 - crash-rmd.bib
 - packages_crashrmd.bib
@@ -482,26 +484,15 @@ Looking over the YAML, you may notice:
 -   I automatically update the date based on when the document is
     compiled.
 -   I have have two different document output types.
+    - I indicated additional options (whether the sections are numbed) with an indented newline below the document type.
 -   I'm using two different bibliography files.
 
-You can specify additional arguments to the document output types by
-adding an indented newline after the document type. E.g., the following
-YAML code would indicate not to number the sections of the document.
-
-```{r, eval = FALSE}
-output:   
-  bookdown::html_document2:
-    number_sections: false
-```
-
-We do not go into further detail about the YAML
+It is easy to make mistakes in your YAML that will cause problems with your knitted document. Simply use the defaults until you have need for something else. Refer to the **bookdown** documentation at [https://bookdown.org/yihui/bookdown/](https://bookdown.org/yihui/bookdown/) for many additional aspects of the YAML header.
 
 ### R Markdown output types
 
 One of the incredible features of R Markdown is that you can easily
-produce multiple output types with a single click of the
-`r knitr::include_graphics("./figures/knit_button.png")` button. Some of
-the main document output types are:
+produce multiple output types with an easy click of the down arrow next to the `r knitr::include_graphics("./figures/knit_button.png")` button. Some of the main document output types are:
 
 -   `pdf_document`: Excellent for distributing a static (unchanging)
     document. Also great for submitting homework solutions to your
@@ -520,9 +511,7 @@ the main document output types are:
 -   `word_document`: If for some reason you need Microsoft Word editing
     capabilities.
 
-Adding the following code in the YAML header will produce a pdf
-document, an html notebook, an html document, and a Microsoft Word
-document, all with one click of the Knit button!
+Adding the following code in the YAML header will give you the option produce a pdf document, an html notebook, an html document, and a Microsoft Word document with a quick choice from the down arrow of the Knit button!
 
 ```{r, eval = FALSE}
 output:
@@ -531,6 +520,12 @@ output:
   html_document:
     df_print: paged
   word_document: default
+```
+
+You might see something like this:
+
+```{r, echo = FALSE, fig.cap = "A screen capture of document output types available when clicking the down arrow next to the Knit button."}
+knitr::include_graphics("./figures/knit_choices.png")
 ```
 
 Additional output document formats are available by default through the
