@@ -28,7 +28,7 @@ download.file("https://raw.githubusercontent.com/jfrench/DataWrangleViz/master/0
 
 Note that there may be small differences between this document (which is easy to update) and the videos (which are not). When there is a discrepancy, trust this document more than the video.
 
-## What is R Markdown? ([Overview video](https://youtu.be/mcTB7h9lpCg))
+## What is R Markdown? (Video: [YouTube](https://youtu.be/mcTB7h9lpCg), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=ecc1e3da-ef27-42d9-bcb4-af0301719c07))
 
 R Markdown is a tool for dynamic, reproducible creation of data-centric documents that include text, code, the results of executed code.
 
@@ -63,7 +63,7 @@ Since the YAML header is optional, we'll talk about it last.
 
 ## Formatting text in R Markdown
 
-### Commenting code ([Comments video](https://youtu.be/K-CCEx2tbHI))
+### Commenting code (Video: [YouTube](https://youtu.be/K-CCEx2tbHI),  [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=daf64b81-e313-4f45-9d05-af030171b257))
 
 Note: In R Scripts and the R Console, the `#` symbol denotes a comment. In R Markdown files (.Rmd or .rmd), a comment is created by placing `<!--` and `-->` to the left and right, respectively, of the text you want to comment.
 
@@ -79,7 +79,7 @@ The easiest way to comment text in R Markdown documents is to highlight the text
 
 Practice commenting some text in R Markdown.
 
-### Headings and sections ([Formatting video](https://youtu.be/K-CCEx2tbHI))
+### Headings and sections (Video: [YouTube](https://youtu.be/K-CCEx2tbHI),  [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=3a2bf67b-4cc0-48f3-966c-af030171bdac))
 
 Headings and sections of different levels are created with `#`.
 
@@ -147,7 +147,7 @@ But I guess this will just be an unpleasant footnote^[unpleasant footnote].
 3.  Save the file (`Ctrl/Cmd + s`) with the name "bad_jokes.Rmd".
 4.  Click the Preview button and view the results.
 
-## Numbered/ordered and unordered lists ([Lists video](https://youtu.be/ME80PeaMBF4))
+## Numbered/ordered and unordered lists (Video: [YouTube](https://youtu.be/ME80PeaMBF4),  [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=a6fadf2d-e224-40c5-9929-af030171c214))
 
 ### Numbered/ordered lists
 
@@ -204,7 +204,7 @@ Notes:
 
 Create an example of a numbered list with 4 levels and an unordered list with 3 levels.
 
-## Code chunks ([Code chunks video](https://youtu.be/_jVqqTGfmB0))
+## Code chunks (Video: [YouTube](https://youtu.be/_jVqqTGfmB0), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=9fced554-c5d1-4f35-998f-af030171c4e6))
 
 Chunks of code can be added in an R Markdown by placing the relevant code between ```` ```{r} ```` and ```` ``` ````. e.g.,
 
@@ -218,7 +218,7 @@ The `chunk_name` is optional but allows you give give chunks names labels that y
 
 Note: each label should be unique within the document. I don't recommend adding chunk labels unless you actually need them, otherwise you are likely to reuse a chunk label and make a headache for yourself!
 
-### Chunk options ([Chunk options video](https://youtu.be/Fq7H_qt2K4g))
+### Chunk options (Video: [YouTube](https://youtu.be/Fq7H_qt2K4g), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=e1789eba-64a7-4abb-a035-af030171c861))
 
 Code chunks have many options that can be used to customize the code. We will cover many important ones below. I will specify the default option in parentheses, (), after the option. So this is what will be used by default if you don't specify anything.
 
@@ -262,7 +262,7 @@ Other options: `warning`, `error`, `messages` (`TRUE`) determine whether warning
 -   `fig.width`, `fig.height`: (7). A numeric value indicating the width and height of the result figures.
 -   `fig.cap`: (`NULL`). A caption for the figure.
 
-### Your turn ([Chunk option visualization](https://youtu.be/teiwbKIfUnY))
+### Your turn (Video: [YouTube](https://youtu.be/teiwbKIfUnY),  [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=01e3d2df-dded-410b-a84c-af030171cdc3))
 
 Copy and paste the code at <https://raw.githubusercontent.com/jfrench/DataWrangleViz/master/rmd-chunks-viz.Rmd> into an R Markdown document and then Knit the file to see visual examples of the options described above.
 
@@ -301,7 +301,7 @@ The formatting can be improved with the `kable` function in the **knitr** packag
 knitr::kable(cars[1:6,], caption = "Kable table")
 ```
 
-**Markdown tables** ([Markdown tables video](https://youtu.be/Rp1EGDY3ZkQ))
+**Markdown tables** (Video: [YouTube](https://youtu.be/Rp1EGDY3ZkQ),  [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=e8cd6ee8-dae3-439d-935a-af030171d795))
 
 Tables can be directly created in Markdown using extended syntax (<https://www.markdownguide.org/extended-syntax/>). These are most useful for small tables that require very specific formatting and don't have many rows or columns.
 
@@ -346,7 +346,7 @@ then the following output will be rendered:
 
 Notice the alignment and formatting of the text based on the code above.
 
-## YAML header basics ([YAML header basics video](https://youtu.be/JgH_rIJUqZ8))
+## YAML header basics (Video: [YouTube](https://youtu.be/YlcK9Ef31KE),  [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=1bf320a4-6313-4324-95af-af03017227a5))
 
 The YAML (Yet Another Markdown Language) header controls many aspects of the R Markdown document.
 
@@ -362,7 +362,12 @@ The YAML header allows you to specify:
 
 -   `title`: The title of the document, which is displayed in font larger than the section headings or main text.
 -   `author`: The author of the document. This is displayed just below the title.
--   `date`: The date. You can use `` date: "`r format(Sys.time(), '%Y-%m-%d')`" `` to display the current date automatically.
+-   `date`: The date. You can use something like "2022-09-01" to add a static date or
+````{verbatim}
+"`r format(Sys.time(), '%Y-%m-%d')`"
+````
+to add a date that changes dynamically based on when you knit the document.
+
 -   `output`: The output type produced when knitting the document.
 -   `bibliography`: Link to bibliography files to enable citations.
 
@@ -406,9 +411,9 @@ Some additional things you can control through the YAML header:
 
 To learn more about the customizable options for a particular output type, you can look through the relevant documentation for the output type. E.g., by running `?rmarkdown::html_document` or `?bookdown::html_notebook2` in the Console.
 
-### R Markdown output types
+### R Markdown output types (Video: [YouTube](https://youtu.be/n7rVTJWy82c),  [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=762e307f-7f1b-44b3-ae3a-af03017f7070))
 
-One of the incredible features of R Markdown is that you can easily produce multiple output types with an easy click of the down arrow next to the `r knitr::include_graphics("./figures/knit_button.png")` button. Some of the main document output types are:
+One of the incredible features of R Markdown is that you can easily produce multiple output types from a single document. Simply include multiple output types in your YAML header and then choose the desired output with a click of the down arrow next to the `r knitr::include_graphics("./figures/knit_button.png")` button. Some of the main document output types are:
 
 -   `pdf_document`: Excellent for distributing a static (unchanging) document. Also great for submitting homework solutions to your instructor!
 -   `html_document`: Excellent for sharing interactive files. Can be viewed in a web browser.
@@ -490,7 +495,7 @@ destfile = "02-crash-course-in-rmd.nb.html")
 -   Find the downloaded file on your computer and open it.
 -   Toggle the "Code" button in the right hand corner of the file to download the original source code.
 
-## Citations {#sec-citations}
+## Citations (Video: [YouTube](https://youtu.be/D6uzySgINHw),  [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=ae115723-00d4-47f7-a187-af080129dcf2)) {#sec-citations} 
 
 A good data scientist will appropriately acknowledge sources of information or resources they use to produce their work. This acknowledgment is known as a citation and the act of acknowledgment is "citing" someone's work. Citations can be added to an R Markdown document through the YAML header.
 
@@ -575,7 +580,7 @@ You can use multiple `.bib` files in your document by adding the following lines
 To cite a reference from a `.bib` file:
 
 -   Use `@citekey` to cite the reference as a proper noun, e.g., Astley (1987).
--   Use `[@citekey]` to to cite the reference parenthetically, e.g., [Astley 1987].
+-   Use `[@citekey]` to cite the reference parenthetically, e.g., (Astley 1987).
 -   Multiple citations should be separated by semicolons.
 -   Add additional information about a reference with commas, e.g., `[@smith2021, Ch. 7]` might produce (Smith 2021, Ch. 7).
 
@@ -583,20 +588,28 @@ R Markdown will automatically add your references at the end of your document.
 
 We can use the code below to add references to the technical manual for **bookdown** and the book introducing **bookdown**. We use the pattern `code`: result produced.
 
--   `@bookdown2016`: @bookdown2016
+-   `@bookdown2022`: @bookdown2022
 -   `[@sp2013]`: [@sp2013]
--   `[@bookdown2016; @sp2013]`: [@bookdown2016; @sp2013]
--   `[@bookdown2016, Section 2.8]` : [@bookdown2016, Section 2.8]
+-   `[@bookdown2022; @sp2013]`: [@bookdown2022; @sp2013]
+-   `[@bookdown2022, Section 2.8]` : [@bookdown2022, Section 2.8]
 
 It is possible to change citation styles, use multiple `.bib` files in one document, have hyperlinks to your references. etc. We do not discuss those options, but refer you to <https://bookdown.org/yihui/bookdown/citations.html>.
 
-## Cross-references
+## Cross-references (Video: [Cross-references video](https://youtu.be/tVNBegYx2Oc),  [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=cf0621e0-79d0-420c-b38e-af0801711b7e))
+
+A cross-reference is a reference to another part of a document. It is common to refer to specific:
+
+- Sections of your document
+- Figures
+- Tables
+- Mathematical equations. 
 
 To use cross-references in an R Markdown document:
 
-1.  You must use one of the **bookdown** document formats (e.g., `bookdown::html_document2`, `bookdown::html_notebook2`, `bookdown::pdf_document2`, etc.)
-2.  Create a figure, table, equation, section, etc. with a unique label.
-3.  Use the syntax `\@ref(label)` to reference the object, where `label` is replaced with the appropriate unique label.
+1. You must use one of the **bookdown** document formats (e.g., `bookdown::html_document2`, `bookdown::html_notebook2`, `bookdown::pdf_document2`, etc.)
+2. Create a figure, table, equation, section, etc. with a unique label.
+3. Add a caption to your figure or table.
+4.  Use the syntax `\@ref(label)` to reference the object, where `label` is replaced with the appropriate unique label.
 
 ### Figures
 
