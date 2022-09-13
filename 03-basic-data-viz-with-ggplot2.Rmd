@@ -3,10 +3,6 @@ title: "Basic data visualization with ggplot2"
 author: "Joshua French"
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
 output:
-  bookdown::pdf_document2:
-    number_sections: FALSE  
-  bookdown::html_document2:
-    number_sections: FALSE
   bookdown::html_notebook2:
     number_sections: FALSE
 bibliography:
@@ -33,12 +29,12 @@ knitr::opts_chunk$set(
 ```{r, include=FALSE}
 # automatically create a bib database for R packages
 knitr::write_bib(c(
-  .packages(), 'ggplot2', 'patchwork', 'penguins', 'palmerpenguins',
+  .packages(), 'ggplot2', 'patchwork', 'palmerpenguins',
   'HistData'
 ), 'packages_basic_data_viz.bib')
 ```
 
-# Basic data visualization with **ggplot2** ([Introduction video](https://youtu.be/9F-4q-sI3sI))
+# Basic data visualization with **ggplot2** (Video: [YouTube](https://youtu.be/9F-4q-sI3sI), [Panopto]())
 
 In this chapter we discuss how to perform basic data visualization.
 
