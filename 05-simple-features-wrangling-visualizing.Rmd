@@ -478,7 +478,7 @@ plot(st_geometry(us_sf), col = mycol, border = myborder, xlim = c(-125, -75),
      ylim = c(22, 50))
 ```
 
-### Customize color for subset of `sf` object (Video: [YouTube](https://youtu.be/f_m-5sux8oM), [Panopto]())
+### Customize color for subset of `sf` object (Video: [YouTube](https://youtu.be/f_m-5sux8oM), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=af026e11-6be9-4819-8700-af320165f3c9))
 
 Let's look at a different approach to coloring a subset of the `sf` object differently from the rest of the `sf` object. 
 
