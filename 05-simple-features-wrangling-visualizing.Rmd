@@ -3,10 +3,7 @@ title: "Wrangling and visualizing simple features spatial data in R"
 author: "Joshua French"
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
 output:
-  html_notebook:
-      code_folding: show
-  pdf_document: default
-  html_document: default
+  html_notebook: default
 bibliography:
   - dwv.bib
   - packages_sf.bib
@@ -30,7 +27,7 @@ download.file("https://raw.githubusercontent.com/jfrench/DataWrangleViz/master/0
 The raw R Markdown code used to generate the html file can be obtained by toggling the "Code" box in the upper-right corner of the html file and selecting "Download Rmd".
 
 
-# Wrangling and visualizing simple features spatial data in R ([Simple features overview video](https://youtu.be/9BdFCm8N6vQ))
+# Wrangling and visualizing simple features spatial data in R (Video: [YouTube](https://youtu.be/9BdFCm8N6vQ), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=6752b3cf-c2d3-4144-85b5-af3201549178))
 
 Spatial data can take many forms.
 
@@ -76,7 +73,7 @@ Alternatively, a 3-dimensional point could include some other measure associated
   
 Combining X, Y, Z, and M coordinates results in a 4-dimensional point.
 
-## Packages and tools for working with simple features ([Simple features packages video](https://youtu.be/uT8mr2V3YPA))
+## Packages and tools for working with simple features (Video: [YouTube](https://youtu.be/uT8mr2V3YPA), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=f7a79e04-1a13-4bc1-a35b-af3201547997))
 
 In what follows, we will use several packages.
 
@@ -109,7 +106,7 @@ library(dplyr)
 library(ggplot2)
 ```
 
-## Simple feature geometry objects ([Simple features geometry objects video](https://youtu.be/EI5f5tWKYaY))
+## Simple feature geometry objects (Video: [YouTube](https://youtu.be/EI5f5tWKYaY), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=98c11f3f-6616-4148-a92b-af320154647b))
 The most common simple feature geometry objects used by data scientists are:
 
 geometry | function | description
@@ -199,7 +196,7 @@ There are many CRSs. A CRS is often used because it is known to have a certain d
 * [QGIS CRSs](https://docs.qgis.org/3.16/en/docs/gentle_gis_introduction/coordinate_reference_systems.html)
 * [Introduction to CRSs](https://bookdown.org/tep/gisbooklet/introduction-to-coordinate-reference-systems.html)
 
-## Constructing simple feature (`sf`) objects ([Constructing sf objects video](https://youtu.be/agHB8EeNUNk))
+## Constructing simple feature (`sf`) objects (Video: [YouTube](https://youtu.be/agHB8EeNUNk), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=4e876f84-8053-46b1-ae5e-af3201544502))
 
 An `sf` object is a `data.frame` that has a simple feature geometry list column (i.e., a column of geometry objects). So you can work with `sf` objects similar to how you would work with a `data.frame` object, though it may have different default behaviors because it has been extended to an `sf` object.
 
@@ -264,7 +261,7 @@ plot(sf3, pch = 20, pal = topo.colors)
 plot(sf3, pch = 20, pal = topo.colors, breaks = seq(min(sf3$attribute1), max(sf3$attribute1), length = 12))
 ```
 
-## Importing shapefiles as `sf` objects ([Importing shapefiles video](https://youtu.be/Ec6D12-La7w))
+## Importing shapefiles as `sf` objects (Video: [YouTube](https://youtu.be/Ec6D12-La7w), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=03acc9c5-aba3-4562-9b22-af3201543bb9))
 
 A data scientist is most likely to work with `sf` objects obtained from importing a shapefile into R. 
 
@@ -338,7 +335,7 @@ str(us_sf)
   
 The `geometry` column is the simple feature geometry list column and contains the geometry object for each observation.
 
-# Wrangling `sf` objects ([Wrangling sf objects video](https://youtu.be/bRwEzIAVcYw))
+# Wrangling `sf` objects (Video: [YouTube](https://youtu.be/bRwEzIAVcYw), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=e7b96e08-7f6b-47d8-8e0b-af320154267e))
 
 An `sf` object is a type of data frame, similar to how a tibble is a type of data frame. Both classes extend the `data.frame` class.
 
@@ -426,7 +423,7 @@ If a new row is added to the `sf` object without a corresponding geometry, then 
 
 The power of the `sf` package is the ability to easily create plots of spatial data.
 
-### Plotting `sfc` objects ([Plotting sfc objects video](https://youtu.be/OnZniYBjfRU))
+### Plotting `sfc` objects (Video: [YouTube](https://youtu.be/OnZniYBjfRU), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=0e60d06d-d3b3-4079-9b82-af32015426b1))
 
 To simply plot the geometry list column of an `sf` object, you can use:
 
@@ -481,7 +478,23 @@ plot(st_geometry(us_sf), col = mycol, border = myborder, xlim = c(-125, -75),
      ylim = c(22, 50))
 ```
 
-### Plotting attributes of an `sf` object ([Plotting sf attributes video](https://youtu.be/TV8ATPGodOg))
+### Customize color for subset of `sf` object (Video: [YouTube](https://youtu.be/f_m-5sux8oM), [Panopto]())
+
+Let's look at a different approach to coloring a subset of the `sf` object differently from the rest of the `sf` object. 
+
+```{r}
+# draw all geometries
+plot(st_geometry(us_sf), col = "grey", border = "yellow",
+     xlim = c(-125, -75), ylim = c(22, 50))
+# plot subset of all geometries with different colors
+# add = TRUE overlays new drawing on current graphic
+plot(st_geometry(us_sf)[c_states],
+     col = "orange", border = "blue",
+     add = TRUE)
+```
+
+
+### Plotting attributes of an `sf` object (Video: [YouTube](https://youtu.be/TV8ATPGodOg), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=275df07a-d4ac-473b-81ba-af3201542724))
 
 By default, use you can use the `plot` function to plot all the attributes of an `sf` object. In general, this isn't very useful.
 
@@ -544,7 +557,7 @@ plot(covid_us["death_rate_100k"],
      pal = cividis_pal)
 ```
 
-### Plotting `sf` objects with **ggplot2** ([Plotting sf objects with ggplot2](https://youtu.be/M7khlIRlr4s))
+### Plotting `sf` objects with **ggplot2** (Video: [YouTube](https://youtu.be/M7khlIRlr4s), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=94f2e1a9-19aa-4477-aeb5-af32015426f4))
 
 The **ggplot2** package includes a geometry for `sf` objects, `geom_sf`, the is typically adequate for using **ggplot2** to produce graphics for `sf` objects.
 
