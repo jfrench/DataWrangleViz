@@ -1,0 +1,549 @@
+---
+title: "Interactive R graphics with plotly"
+author: "Joshua French"
+output:
+  html_document: default
+bibliography:
+- dwv.bib
+- packages_interactive.bib
+editor_options: 
+  markdown: 
+    wrap: sentence
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE)
+library(rgl)
+knitr::knit_hooks$set(webgl = hook_webgl)
+```
+
+```{r, include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'tidyverse', 'bookdown', 'knitr', 'rmarkdown', 'ggplot2', 'dplyr', 'purrr', 'tidyr', 'readr', 'stringr', 'tibble', 'forcats', 'palmerpenguins', 'plotly', 'ggiraph', 'shiny', 'htmlwidgets', 'MASS', 'sf', 'rgl'), 'packages_interactive.bib')
+```
+
+# Best R packages for creating interactive graphics
+
+Interactive graphics are visual displays that dynamically provide information to users based on the user interacting with the graphic.
+
+The best packages for creating interactive graphics in R are:
+
+- **plotly** [@R-plotly]: provides functions to make **ggplot2** graphics interactive and a custom interface to the JavaScript library **plotly.js** inspired by the grammar of graphics. This is perhaps the best known interactive visualization library.
+- **ggiraph** [@R-ggiraph]: creates interactive **ggplot2** graphics using **htmlwidgets** [@R-htmlwidgets].
+- **rgl** [@R-rgl]: provides functions for 3D interactive graphics using OpenGL or to various standard 3D file formats 
+- **shiny** [@R-shiny]: a package for creating interactive web apps.
+
+We use **plotly** to create a surface plot of the Maunga Whau volcano data.
+
+```{r, message=FALSE, warning = FALSE, echo = FALSE}
+library(plotly, quietly = TRUE)
+plot_ly(z = ~volcano, type = "surface")
+```
+
+We use **ggiraph** to provide an example of an interactive graphic using the `starwars` data from the **dplyr** package [@R-dplyr].
+
+```{r, echo = FALSE}
+# fit the robust linear model
+library(ggplot2)
+library(ggiraph)
+data(starwars, package = "dplyr")
+rlmod <- MASS::rlm(mass ~  height, data = starwars)
+# extract the coefficients
+coeffs <- rlmod$coefficients
+# turn coefficients into a useful character string
+equation <- paste0("intercept: ", round(coeffs[[1]], 2),
+                   "\nslope: ", round(coeffs[[2]], 2))
+iscatter5 <- ggplot(data = starwars,
+                    aes(x = height, y = mass)) + 
+  geom_point_interactive(aes(data_id = name,
+                             tooltip = name)) +
+  geom_abline_interactive(intercept = coeffs[1],
+                      slope = coeffs[2],
+                      tooltip = equation,
+                      data_id = coeffs[1],
+                      color = "blue")
+girafe(ggobj = iscatter5)
+```
+
+We use **rgl** to display 3-dimensional perspective plot with contour levels of the Maunga Whau volcano.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, webgl = TRUE}
+library(rgl)
+z <- 2 * volcano        # Exaggerate the relief
+x <- 10 * (1:nrow(z))   # 10 meter spacing (S to N)
+y <- 10 * (1:ncol(z))   # 10 meter spacing (E to W)
+
+open3d()
+id <- persp3d(x, y, z, aspect = "iso",
+      axes = FALSE, box = FALSE, polygon_offset = 1)
+contourLines3d(id)     # "z" is the default function
+filledContour3d(id, polygon_offset = 1, nlevels = 10, replace = TRUE)
+```
+
+A Shiny app example related to NCAA swim teams can be found at [https://shiny.rstudio.com/gallery/ncaa-swim-team-finder.html](https://shiny.rstudio.com/gallery/ncaa-swim-team-finder.html).
+
+# Easily create interactive graphics in R (bar plot)
+
+The easiest way to create interactive graphics is to create 
+a plot using **ggplot2** and then using the `ggplotly` function
+from the **plotly** package to make it interactive.
+
+The advantage of this approach is that it is dead simple. 
+
+The disadvantage of this approach is that it may not give
+us the desired control over the aspects of the graphic that are interactive. We produce numerous interactive graphics using this approach below.
+
+As stated on the plotly website ([https://plotly.com/r/getting-started/](https://plotly.com/r/getting-started/)):
+
+> plotly is an R package for creating interactive web-based graphs via the open source JavaScript graphing library plotly.js.
+
+It can be used to add interactivity to plots created with **ggplot2** or create interactive plots on its own.
+
+First, we load the necessary packages. We load the **ggplot2** and **plotly** packages to create the graphics and load the `penguins` data set from the **palmerpenguins** package to load the data we will plot.
+
+```{r, message=FALSE, warning=FALSE}
+library(ggplot2, quietly = TRUE)
+library(plotly, quietly = TRUE)
+data(penguins, package = "palmerpenguins")
+```
+
+In the code below, we use **ggplot2** to create a basic bar plot of penguin `species`. We assign this graphic the name `ggbar`.
+
+We then use the `ggplotly` function in the **plotly** package to make the graphic interactive.
+
+The interactive graphic provides the frequency associated with each species when we hover over a bar.
+
+```{r, warning = FALSE}
+# bar plot of penguin species
+ggbar <-
+  ggplot(penguins) +
+  geom_bar(aes(x = species))
+# make bar plot interactive
+ggplotly(ggbar)
+```
+
+Next, we use the direct capabilities of the **plotly** package to create a bar plot of penguin `species`. In general, the `plot_ly` function in the **plotly** package is all we need to create basic interactive graphics. We can also add additional layers to the graphics using various `add_*` functions and customize the layout using the `layout` functions. 
+
+The main arguments to the `plot_ly` function are:
+
+- `data`: an optional data frame whose variables will be plotted. To access a variable in `data`, we must use `~` before the variable's name.
+- `type`: a character string indicating the type of plot to create, e.g., `"bar"`, `"histogram"`, `"box"`, `"violin"`, `"scatter"`, 
+- `...`: arguments passed to the plot type that specify the *attributes* of the graphic (which is similar to the aesthetics in **ggplot2**), e.g., `x`, `y`, etc.
+- `split`: Discrete values used to create multiple traces (one trace per value). This is similar to the `group` argument in **ggplot2**. A "trace" describes "a single series of data in a graph" ([https://plotly.com/r/reference/index/](https://plotly.com/r/reference/index/)).
+- `color`: values mapped to a fill color.
+- `alpha`: a number between 0 and 1 controlling the transparency of the graphic.
+
+To create a bar plot using **plotly**, we need a data frame containing the count associated with each level of the categorical variable we want to display. 
+
+We first create a data frame that summarizes the counts of each `species`. We use the `group_by`, `summarize`, and `n` functions from **dplyr** [@R-dplyr] to do this.
+
+```{r, warning = FALSE}
+# create data frame of frequency for each species
+species_counts <-
+  penguins |>
+  dplyr::group_by(species) |>
+  dplyr::summarize(frequency = dplyr::n())
+# print data frame
+print(species_counts, n = 3)
+```
+
+Once we have a data frame that describes the frequency associated with each level of the categorical variable, we can create a bar plot using **plotly**. In the `plot_ly` function, we: 
+
+- Set the `type` argument to `bar`
+- Associate the levels of the categorical variable with the `x` attribute.
+- Associate the frequency of each level with the `y` attribute.
+
+The interactive graphic provides the frequency associated with each species when we hover over a bar. 
+
+```{r, warning = FALSE}
+# create interactive bar chart
+plot_ly(species_counts,
+        x = ~species,
+        y = ~frequency,
+        type = "bar")
+```
+
+# Interactive histograms
+
+We now create interactive histograms using two approaches.
+
+In the code below, we:
+
+1. Use **ggplot2** to create a basic histogram of the `bill_length_mm` variable for the `penguins` data. We assign this graphic the name `gghist`.
+1. Use `plotly::ggplotly` to make the graphic interactive.
+
+The interactive graphic indicates the midpoint of each bin and the number of penguins falling in each bin.
+
+```{r, warning = FALSE}
+gghist <-
+  ggplot(penguins) +
+  geom_histogram(aes(x = bill_length_mm))
+ggplotly(gghist)
+```
+
+To create a similar histogram using the `plot_ly` function, we:
+
+- Set the `type` arugment to `histogram`.
+- Associate `bill_length_mm` with the `x` attribute.
+- Set the`nbinsx` argument to control the number of bins in the histogram.
+
+The interactive histogram indicates the endpoints of each bin and the number of penguins in each bin.
+
+```{r, warning = FALSE}
+plot_ly(penguins,
+        x = ~bill_length_mm,
+        type = "histogram",
+        nbinsx = 30)
+```
+
+The histogram produced by the `plot_ly` function looks a bit different from the histogram produced by **ggplot2** because the locations of the bins are different. To make them the safe, we can use the `ggplot2::layer_data` to get the "under the hood" information **ggplot2** uses to produce its plot.
+
+In the code below, we use `layer_data` to access the internal data used by **ggplot2** to create a histogram. The `xmin` variable indicates the lower bound of each histogram bin. The lower bound of the far left bin starts at 31.72724. We then use the `diff` function to determine the bin width (this computes the difference between success lower bounds). 
+
+```{r, warning = FALSE}
+# get histogram data from gghist
+datahist <- layer_data(gghist)
+# determine starting point
+head(datahist$xmin, 3)
+# determine bin width
+head(diff(datahist$xmin), 3)
+```
+
+Now that we know the start location of the left most bin and the size (width) of the bins, we can pass these arguments as `start` and `size` arguments to a named list for the `xbins` argument to `plot_ly`. This will create an interactive histogram that mimics the one produced by **ggplot2**.
+
+```{r, warning = FALSE}
+plot_ly(penguins,
+        x = ~bill_length_mm,
+        type = "histogram",
+        xbins = list(start = 31.76724,
+                     size = 0.9482759))
+```
+
+# Interactive density plot
+
+We examine how to construct interactive density plots using two approaches.
+
+In the code below, we:
+
+1. Use **ggplot2** to create a density plot of `bill_length_mm` for each `species` that uses semi-transparent color to distinguish the different `species`. We assign this plot the name `ggdens`.
+1. Use `plotly::ggplotly` to make the graphic interactive.
+
+The interactive graphic indicates the `species`, `bill_length_mm`, and density when we hover over a density curve.
+
+```{r, warning = FALSE}
+ggdens <-
+  ggplot(penguins) +
+  geom_density(aes(x = bill_length_mm, fill = species), alpha = 0.3)
+ggplotly(ggdens)
+```
+
+Surprisingly, there is no easy way to create a standard density plot natively using `plot_ly`.
+
+To work around this, we can manually create the density information using the `base::density` function and then extract the associated `x` and `y` of the density information. However, we want to do this individually for each species, so we instead use the `ggplot2::layer_data` function to get the same information from our previous **ggplot2** graphic. 
+
+We assign the name `dens_data` to the information from the `layer_data` function. `dens_data` stores the relevant density curve information in the `x` and `density` variables, while the `group` variable distinguishes the different `species`. We turn the `group` variable into a factor with the correct `species` names.
+
+```{r, warning = FALSE}
+# extract density data from ggdens
+dens_data <- layer_data(ggdens)
+# view data
+head(dens_data, n = 3)
+# convert group to factor
+dens_data$group <-
+  factor(dens_data$group,
+         labels = c("adelie", "chinstrap", "gentoo"))
+```
+
+We want to trace the density curves for each species in a scatter plot that connects the poitns for each species. Using `plot_ly`, and the `dens_data` data frame, we:
+
+- Associate the `x` variable with the `x` attribute.
+- Associate the `density` variable with the `y` attribute.
+- Associate the `group` variable with the `split` argument. This is roughly equivalent to the `group` aesthetic in **ggplot2**.
+- Specify `type = "scatter"` to produce a scatter plot.
+- Specify `mode = "line"` to connect the points using a line but not show the points (markers) themselves.
+- Combine the native R pipe, `|>` with the `layout` function to change the x-axis label.
+
+The resulting interactive density plot indicates the value of `bill_length_mm` for each species and the associated `density`. 
+
+```{r, warning = FALSE}
+plot_ly(dens_data,
+        x = ~x,
+        y = ~density,
+        split = ~group,
+        type = "scatter",
+        mode = "line") |>
+    layout(xaxis = list(title = 'bill_length_mm'))
+```
+
+# Interactive box plots
+
+We create interactive box plots using two approaches.
+
+In the code below, we:
+
+1. Use **ggplot2** to create a box plot of `bill_length_mm` for each `species`. We associate `species` with the x-variable and `bill_length_mm` with the y-variable. We assign this plot the name `ggbox`.
+1. Use `plotly::ggplotly` to make the graphic interactive.
+
+The interactive graphic indicates the 5-number summary (min, Q1, median, Q3, max) of `bill_length_mm` for each `species`. It also indicates the value of any outlier. 
+
+```{r, warning = FALSE}
+ggbox <- 
+  ggplot(penguins) +
+  geom_boxplot(aes(x = species, y = bill_length_mm))
+ggplotly(ggbox)
+```
+
+We can create a similar set of parallel box plots using **plotly**. Using the `plot_ly` function, we:
+
+- Associating `species` with the `x` attribute
+- Associate `bill_length_mm` with the `y` attribute\
+- Specify `type = "box"`. 
+
+The interactive graphic indicates the `species` and 5-number summary (min, Q1, median, Q3, max) of `bill_length_mm` for each box plot. 
+
+```{r, warning = FALSE}
+plot_ly(penguins,
+        x = ~species,
+        y = ~bill_length_mm,
+        type = "box")
+```
+
+# Interactive violin plots
+
+We use two approaches to create interactive violin plots.
+
+In the code below, we:
+
+1. Use **ggplot2** to create a violin plot of `bill_length_mm` for each `species`. We assign this plot the name `ggvio`.
+1. Use `plotly::ggplotly` to make the graphic interactive.
+
+The interactive graphic indicates the `species`, `bill_length_mm`, and the associated density for that value of `bill_length_mm` when we hover over a violin curve.
+
+```{r, warning = FALSE}
+ggvio <- 
+  ggplot(penguins) +
+  geom_violin(aes(x = species, y = bill_length_mm))
+ggplotly(ggvio)
+```
+
+To create a similar plot, using the `plot_ly` function we:
+
+- Associate `species` with the `x` attribute
+- Associate `bill_length_mm` with the `y` attributes
+- Specify `type = "violin"`.
+
+The interactive graphic indicates the `species`, `bill_length_mm`, and the associated density for that value of `bill_length_mm` when we hover over a violin curve, as well as the 5-number summary of the associated box plot.
+
+```{r, warning = FALSE}
+plot_ly(penguins,
+        x = ~species,
+        y = ~bill_length_mm,
+        type = "violin")
+```
+
+# Interactive scatter plots
+
+We create interactive scatter plots using two approaches.
+
+In the code below, we:
+
+1. Use **ggplot2** to create a scatter plot of `bill_length_mm` versus `body_mass_g` that uses different colors and shapes to distinguish the different `species`. We assign this plot the name `ggscatter`.
+1. Use `plotly::ggplotly` to make the graphic interactive.
+
+The interactive graphic indicates the `species` (twice), `body_mass_g`, and `bill_length_mm` when we hover over a density curve.
+
+```{r, warning = FALSE}
+ggscatter <-
+  ggplot(penguins) +
+  geom_point(aes(x = body_mass_g,
+                 y = bill_length_mm,
+                 color = species,
+                 shape = species))
+ggplotly(ggscatter)
+```
+
+Notice that `species` is indicated twice when we hover over a point. We can correct this behavior by using the `tooltip` argument to specify the attributes (`x`, `y`, `color`, etc.) we want to display when our mouse hovers over a point.
+
+```{r, warning = FALSE}
+# restrict attributes displayed from hover
+ggplotly(ggscatter,
+         tooltip = c("shape", "x", "y"))
+```
+
+We can create a similar interactive scatter plot using `plot_ly`: We:
+
+- Specify `type = "scatter"` and `mode = "marker"` to indicate that we want to plot points. 
+- Associate `body_mass_g` with the `x` attribute and `bill_length_m`` with the `y` attribute for the actual points.
+- Associate `species` with the `color` and `symbol` attributes to change those aspects of the plot.
+
+The resulting scatter plot indicates the `species`, `body_mass_g`, and `bill_length_mm` of each point.
+
+```{r, warning = FALSE}
+plot_ly(penguins,
+        x = ~body_mass_g,
+        y = ~bill_length_mm,
+        color = ~species,
+        symbol = ~species,
+        mode = "markers",
+        type = "scatter")
+```
+
+# Interactive scatter plots with smooths
+
+We now attempt to add some linear regression smooths to an interactive scatter plot.
+
+In the code below, we:
+
+1. Use **ggplot2** to create a scatter plot of `bill_length_mm` versus `body_mass_g` that uses different colors and shapes to distinguish the different `species`.
+2. Add a second layer to the plot the provides an `"lm"` smooth for the points of each `species`. We assign this plot the name `ggsmooth`.
+3. Use `plotly::ggplotly` to make the graphic interactive.
+
+The interactive graphic indicates the `species`, `body_mass_g`, and `bill_length_mm` of each point, points on the .
+
+```{r, warning = FALSE}
+ggsmooth <- 
+  ggplot(penguins) +
+  geom_point(aes(x = body_mass_g,
+                 y = bill_length_mm,
+                 color = species,
+                 shape = species)) +
+  geom_smooth(aes(x = body_mass_g,
+                  y = bill_length_mm,
+                  color = species),
+              method = "lm")
+ggplotly(ggsmooth)
+```
+
+Adding a smooth to a plot using **plotly** natively is a bit more difficult because you have to manually compute the smooth, extract the fitted line for each group, and then add the fitted lines as a layer to an existing scatter plot.
+
+In the code below, we fit a separate lines model for the data, which essentially fits a separate liner regression model to the points of each `species`. We then add the `fitted` values from this model as a new variable to the `penguins` data frame.
+
+```{r, warning = FALSE}
+# fit separate lines/interaction model
+lmod <- lm(bill_length_mm ~ body_mass_g + species,
+           data = penguins, na.action = na.exclude)
+# add fitted values for each group
+penguins$fitted <- fitted(lmod)
+```
+
+Now that all relevant data is in the `penguins` data frame, we: 
+- Use the same syntax as before to create a scatter plot of `bill_length_mm` versus `body_mass_g` that uses different colors and shapes for the points of each species.
+- Use the native R pipe operator to add a "trace" to the original plot using `add_lines`.
+    - We supply the `penguins` data frame to `add_lines` (make sure to specify `data = ` since that is not the first argument of the `add_lines` function).
+    - Associate `body_mass_g` with the `x` attribute
+    - Associate`fitted` with the `y` attribute.
+    - Change the color of the lines by associated `species` with the `color` attribute.
+    - Specify `inherit = FALSE`, which means we are not inheriting any of the attribute specifications in the `plot_ly` function (which are otherwise passed by default).
+  
+The interactive scatter plot allow us to see the `species`, `bill_length_mm`, and `body_mass_g` for each point and the points on the smoother line associated with each `species`.
+
+```{r, warning = FALSE}
+plot_ly(penguins,
+        x = ~body_mass_g,
+        y = ~bill_length_mm,
+        mode = 'markers',
+        color = ~species,
+        symbol = ~species,
+        type = 'scatter') |>
+  add_lines(data = penguins,
+    x = ~body_mass_g,
+    y = ~fitted,
+    color = ~species,
+    inherit = FALSE)
+```
+
+# Interactive maps
+
+Interactive maps can provide a lot of information. We will create an interactive map using **ggplot2**, **plotly**, and the **sf** package [@R-sf]. 
+
+First, we use the `st_read` function from the `sf` package to read a shapefile related to North Carolina packages that is installed by default with the `sf` package. The imported shapefile is automatically converted to an `sf` data frame. The imported object has many variables, but we point out three:
+
+- `NAME`: the name of each North Carolina county
+- `BIR74`: the number of recorded births in each county in 1974.
+- `geometry`: the `MULTIPOLYGON` associated with each North Carolina county.
+
+```{r, warning = FALSE}
+# import sf object from shapefile in sf package
+nc <- sf::st_read(system.file("shape/nc.shp", package = "sf"),
+                  quiet = TRUE)
+# display first 3 rows of nc for certain variables
+head(nc[c("NAME", "BIR74", "geometry")], n = 3)
+```
+In the code below, we:
+
+1. Use **ggplot2** to create a choropleth map of `BIR74` for each county using `geom_sf`.
+    a. We specify `fill = BIR74` so that the fill color of each county is based on the `BIR74` variable.
+    b. We also associate the `NAME` variable with the `label` aesthetic so that the name of each county is displayed when we hover over a county.
+    c. Use `scale_fill_viridis_c` to change the color palette used for the fill color.
+    d. We assign this plot the name `ggsf`.
+1. Use `plotly::ggplotly` to make the graphic interactive.
+
+The interactive graphic indicates the number of births in each county and the county name when we hover over a county.
+
+```{r, warning = FALSE}
+# plot sf object using ggplot2
+ggsf <-
+  ggplot(nc) +
+  geom_sf(aes(fill = BIR74, label = NAME)) +
+  scale_fill_viridis_c()
+# make map interactive
+ggplotly(ggsf)
+```
+
+Is there a way to provide information from multiple variable simulatneously when we hover over a county? Yes! But we have to be creative. We:
+
+- Use the `paste0` function to create a new variable, `info`, that combines multiple variables into a single character string for each county. The `\n` indicates to start a new line. We add a new line before each variable name.
+- Add the `info` variable as a variable to the `nc` data frame.
+
+```{r, warning = FALSE}
+# combine multiple variables into a character string 
+# (one per county)
+info <- paste0(
+  "\nname: ", nc$NAME,
+  "\narea: ", nc$AREA,
+  "\nbirths in 1974: ", nc$BIR74,
+  "\nSIDS cases in 1974: ", nc$SID74)
+# print first 2 values of info
+info[1:2]
+# add info the nc
+nc$info <- info
+```
+
+Now, we use `info` as the `label` aesthetic in `geom_sf` and
+specify `tooltip = "label"` so that only the `label` variable is displayed when we hover over a county.
+
+```{r, warning = FALSE}
+# create mape that fills based on BIR74 but the tooltip
+# based on info
+ggsf <-
+  ggplot(nc) +
+  geom_sf(aes(fill = BIR74, label = info)) +
+  scale_fill_viridis_c()
+# show only label tooltip
+ggplotly(ggsf, tooltip = "label")
+```
+
+We can create a similar plot using `plot_ly`. We:
+
+- Specify `type = "scatter"` and `mode = "lines"`.
+- Associate the `info` variable in `nc` with the `split` attribute to draw the separate traces for each county. We could have used `NAME`, but then only the `NAME` of each county would be displayed when we hover. This way, we get additional information.
+- Associate the `BIR74` variable in `nc` with the `color` attribute to fill each county with a color from a gradient.
+- Specify `showlegend = FALSE` so that only the color scale is displayed and no legend related to `info`. **This is a critical step**.
+- Specify `alpha = 1` so that the colors aren't muted.
+- Specify `hoverinfo = "text"` so the only the `split` information is displayed
+- Pipe this graphic into the `colorbar` function and change the title to "BIR74" (otherwise it gets displayed twice).
+
+```{r, warning = FALSE}
+plot_ly(nc,
+        color = ~BIR74,
+        split = ~info,
+        showlegend = FALSE,
+        alpha = 1,
+        type = "scatter",
+        mode = "lines",
+        hoverinfo = "text")  |>
+  colorbar(title = "BIR74")
+```
+
+# References
