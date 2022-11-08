@@ -23,7 +23,7 @@ knitr::write_bib(c(
   .packages(), 'tidyverse', 'bookdown', 'knitr', 'rmarkdown', 'ggplot2', 'dplyr', 'purrr', 'tidyr', 'readr', 'stringr', 'tibble', 'forcats', 'palmerpenguins', 'plotly', 'ggiraph', 'shiny', 'htmlwidgets', 'MASS', 'sf', 'rgl'), 'packages_interactive.bib')
 ```
 
-# Best R packages for creating interactive graphics
+# Best R packages for creating interactive graphics (Video: [YouTube](https://youtu.be/cdrUfPAK63I), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=ea6b49dc-aad0-48e6-9278-af430161ecd0))
 
 Interactive graphics are visual displays that dynamically provide information to users based on the user interacting with the graphic.
 
@@ -68,7 +68,7 @@ girafe(ggobj = iscatter5)
 
 We use **rgl** to display 3-dimensional perspective plot with contour levels of the Maunga Whau volcano.
 
-```{r, echo = FALSE, message = FALSE, warning = FALSE, webgl = TRUE}
+```{r, echo = TRUE, message = FALSE, warning = FALSE, webgl = TRUE, eval = TRUE}
 library(rgl)
 z <- 2 * volcano        # Exaggerate the relief
 x <- 10 * (1:nrow(z))   # 10 meter spacing (S to N)
@@ -83,11 +83,12 @@ filledContour3d(id, polygon_offset = 1, nlevels = 10, replace = TRUE)
 
 A Shiny app example related to NCAA swim teams can be found at [https://shiny.rstudio.com/gallery/ncaa-swim-team-finder.html](https://shiny.rstudio.com/gallery/ncaa-swim-team-finder.html).
 
-# Easily create interactive graphics in R (bar plot)
+# Two approaches with **plotly** for creating interactive graphics (bar plot) (Video: [YouTube](https://youtu.be/Pt5Whpx_COM), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=32c3fa9c-7556-49f7-b68e-af43017e7a63))
 
-The easiest way to create interactive graphics is to create 
-a plot using **ggplot2** and then using the `ggplotly` function
-from the **plotly** package to make it interactive.
+The easiest way to create interactive graphics is to:
+
+1. Create a plot using **ggplot2**.
+2. Use the `ggplotly` function from the **plotly** package to make the graphic interactive.
 
 The advantage of this approach is that it is dead simple. 
 
@@ -164,7 +165,7 @@ plot_ly(species_counts,
         type = "bar")
 ```
 
-# Interactive histograms
+# Interactive histograms (Video: [YouTube](https://youtu.be/4ic0HOws-Dg), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=2302d1d2-5d76-48e6-be47-af46011aab64))
 
 We now create interactive histograms using two approaches.
 
@@ -220,7 +221,7 @@ plot_ly(penguins,
                      size = 0.9482759))
 ```
 
-# Interactive density plot
+# Interactive density plot (Video: [YouTube](https://youtu.be/B_xaEQ5B4Tc), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=fcfeaf24-2cdf-4d62-872e-af460142c423))
 
 We examine how to construct interactive density plots using two approaches.
 
@@ -276,7 +277,7 @@ plot_ly(dens_data,
     layout(xaxis = list(title = 'bill_length_mm'))
 ```
 
-# Interactive box plots
+# Interactive box plots (Video: [YouTube](https://youtu.be/VHxxzeJyCRY), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=d7ef9599-80fa-4f45-be52-af460142cc44))
 
 We create interactive box plots using two approaches.
 
@@ -309,7 +310,7 @@ plot_ly(penguins,
         type = "box")
 ```
 
-# Interactive violin plots
+# Interactive violin plots (Video: [YouTube](https://youtu.be/AKGuWX1qUvQ), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=740663e8-e7b6-4b2d-9567-af460142d481))
 
 We use two approaches to create interactive violin plots.
 
@@ -342,13 +343,15 @@ plot_ly(penguins,
         type = "violin")
 ```
 
-# Interactive scatter plots
+# Interactive scatter plots (Videos: [YouTube](https://youtu.be/umxR8dviHvg), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=cf34d7b8-ec05-47e0-914e-af4601895931))
 
-We create interactive scatter plots using two approaches.
+We will create an interactive scatter plot of `bill_length_mm` versus `body_mass_g` for the `penguins` data that uses different colors and shapes to distinguish the different `species`. 
+
+We will investigate two simple approaches for doing this.
 
 In the code below, we:
 
-1. Use **ggplot2** to create a scatter plot of `bill_length_mm` versus `body_mass_g` that uses different colors and shapes to distinguish the different `species`. We assign this plot the name `ggscatter`.
+1. Use **ggplot2** to create the grouped scatter plot. We assign this plot the name `ggscatter`.
 1. Use `plotly::ggplotly` to make the graphic interactive.
 
 The interactive graphic indicates the `species` (twice), `body_mass_g`, and `bill_length_mm` when we hover over a density curve.
@@ -389,7 +392,7 @@ plot_ly(penguins,
         type = "scatter")
 ```
 
-# Interactive scatter plots with smooths
+# Interactive scatter plots with smooths (Video: [YouTube](https://youtu.be/dYocJTb5_Mc), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=35af8dfe-6bef-4021-b366-af46018a1711))
 
 We now attempt to add some linear regression smooths to an interactive scatter plot.
 
@@ -427,7 +430,8 @@ lmod <- lm(bill_length_mm ~ body_mass_g + species,
 penguins$fitted <- fitted(lmod)
 ```
 
-Now that all relevant data is in the `penguins` data frame, we: 
+Now that all relevant data is in the `penguins` data frame, we:
+
 - Use the same syntax as before to create a scatter plot of `bill_length_mm` versus `body_mass_g` that uses different colors and shapes for the points of each species.
 - Use the native R pipe operator to add a "trace" to the original plot using `add_lines`.
     - We supply the `penguins` data frame to `add_lines` (make sure to specify `data = ` since that is not the first argument of the `add_lines` function).
@@ -453,7 +457,7 @@ plot_ly(penguins,
     inherit = FALSE)
 ```
 
-# Interactive maps
+# Interactive maps (Video: [YouTube](https://youtu.be/qrW2y5sQFBg), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=86d6de23-fe99-4981-aa0a-af46018a7775))
 
 Interactive maps can provide a lot of information. We will create an interactive map using **ggplot2**, **plotly**, and the **sf** package [@R-sf]. 
 
