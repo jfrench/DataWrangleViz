@@ -1,7 +1,8 @@
 ---
 title: "Creating websites using Quarto and GitHub Pages"
-format: html
-embed-resources: true
+format:
+  html:
+    embed-resources: true
 ---
 
 Many data scientists have a website to market themselves. This is helpful for distinguishing yourself from competitors by showcasing who you are and what you've done.
@@ -47,7 +48,7 @@ GitHub is a great place to:
 - Put project repositories to demonstrate your coding skills and abilities.
 - Host a professional website that advertises to potential employers or clients about how wonderful you are.
 
-## What is Quarto?
+## What is Quarto? (Video: [YouTube](https://youtu.be/e9qCS8ODs4o), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=7bc5015f-627c-46f7-89bc-af55016accbe))
 
 <img src="./figures/quarto_logo.jpg" height="200" />
 
