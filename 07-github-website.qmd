@@ -363,13 +363,18 @@ Each template allows you to add the following elements:
 
 Personally, I like to use an about template on the home page of my website, not on a separate "About" page. Obviously, that is up to you. 
 
-In the example below, we will replace the contents of `index.qmd` with the code below. You will need to add three files to your project directory:
+You will need to add three files to your project directory to complete the example below. You can:
 
-- `mypic.png`
-- `dawgs.png`
-- `resume.pdf`
+- Manually download the files from my GitHub page at [https://github.com/jfrench/DataWrangleViz/tree/master/data](https://github.com/jfrench/DataWrangleViz/tree/master/data).
+- Download the files by directly clicking the file names below.
 
+Add the following three files to your project directory:
 
+- [`mypic.png`](https://raw.githubusercontent.com/jfrench/DataWrangleViz/master/data/mypic.png)
+- [`dawgs.png`](https://raw.githubusercontent.com/jfrench/DataWrangleViz/master/data/dawgs.png)
+- [`resume.pdf`](https://raw.githubusercontent.com/jfrench/DataWrangleViz/master/data/resume.pdf)
+
+In the example below, we will replace the contents of `index.qmd` with the code below. 
 ```
 ---
 title: "Assistant to the Regional Data Manager"
