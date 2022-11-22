@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.189">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Creating websites using Quarto and GitHub Pages</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="07-github-website_files/libs/clipboard/clipboard.min.js"></script>
+<script src="07-github-website_files/libs/quarto-html/quarto.js"></script>
+<script src="07-github-website_files/libs/quarto-html/popper.min.js"></script>
+<script src="07-github-website_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="07-github-website_files/libs/quarto-html/anchor.min.js"></script>
+<link href="07-github-website_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="07-github-website_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="07-github-website_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="07-github-website_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="07-github-website_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Creating websites using Quarto and GitHub Pages</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<p>Many data scientists have a website to market themselves. This is helpful for distinguishing yourself from competitors by showcasing who you are and what you’ve done.</p>
+<p>It is very easy to create a personal webpage using Quarto websites and GitHub. We will walk through the process of creating a very simple professional website that you can further customize to suit your own needs.</p>
+<section id="what-is-git" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-git">What is git?</h2>
+<p><img src="./figures/git_logo.png" height="200"></p>
+<p>Software developers need a fast, reliable way of tracking changes to their source code when working as individuals or as part of a team.</p>
+<p>The best-in-class approach to software version control is git, which was created by Linus Torvalds in 2005 to improve on the version control applications available at the time.</p>
+<p>From <a href="https://git-scm.com/">https://git-scm.com/</a>:</p>
+<blockquote class="blockquote">
+<p>Git is a free and open source distributed version control system designed to handle everything from small to very large projects with speed and efficiency.</p>
+</blockquote>
+<p>By default, git tracks files changed in a directory or respository locally, i.e., on our actual computer, which can create some potential challenges:</p>
+<ul>
+<li>git does not backup your code or changes, which could potentially be problematic.</li>
+<li>A centralized repository must be available when multiple contributors are working on the same project. There needs to be a way of easily managing each person’s contributions and keeping track of the development and stable branches of the code.</li>
+</ul>
+<p>GitHub provides one of the most population solutions for these two issues.</p>
+</section>
+<section id="what-is-github" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-github">What is GitHub?</h2>
+<p><img src="./figures/github_cat.png" height="200"><img src="./figures/github_logo.png" height="200"></p>
+<p>GitHub (<a href="https://www.github.com">https://www.github.com</a>) is an online platform for hosting git repositories. Additionally, it makes it easy to:</p>
+<ul>
+<li>Control who is able to access and change a repository</li>
+<li>Track bugs in our code</li>
+<li>Keep record of feature requests</li>
+<li>Delegate responsibilities</li>
+<li>Maintain a wiki</li>
+<li>etc.</li>
+</ul>
+<p>GitHub is a great place to:</p>
+<ul>
+<li>Backup and maintain version control of your software.</li>
+<li>Make your software public and allow others to contribute and interact with your work.</li>
+<li>Put project repositories to demonstrate your coding skills and abilities.</li>
+<li>Host a professional website that advertises to potential employers or clients about how wonderful you are.</li>
+</ul>
+</section>
+<section id="what-is-quarto" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-quarto">What is Quarto?</h2>
+<p><img src="./figures/quarto_logo.png" height="154"></p>
+<p>The Quarto website (<a href="https://quarto.org/docs/faq/">https://quarto.org/docs/faq/</a>) states:</p>
+<blockquote class="blockquote">
+<p>Quarto is an open-source scientific and technical publishing system built on Pandoc. You can weave together narrative text and code to produce elegantly formatted output as documents, web pages, blog posts, books and more.</p>
+</blockquote>
+<p>More helpfully, Quarto is the spiritual successor to R Markdown that was built from the ground up to be compatible with R, Python, Julia, and Observable JavaScript. You can use Quarto to create:</p>
+<ul>
+<li>Technical documents</li>
+<li>Books</li>
+<li>Blogs</li>
+<li>Websites.</li>
+</ul>
+<p>It is also works with Jupyter Notebooks out of the box and can be used to enhance them further.</p>
+<p>If you have successfully produced material using R Markdown, then you should feel at home producing materials using Quarto.</p>
+<p>Quarto documents can be edited in:</p>
+<ul>
+<li>R Studio (my favorite)</li>
+<li>VS Code</li>
+<li>JupyterLab</li>
+<li>Any text editor.</li>
+</ul>
+<p>R Studio provides the most feature-rich environment for creating Quarto documents.</p>
+</section>
+<section id="initializing-the-default-quarto-website" class="level2">
+<h2 class="anchored" data-anchor-id="initializing-the-default-quarto-website">Initializing the default Quarto website</h2>
+<p>The initial step to creating a Quarto website is to create a new Quarto website project. In R Studio:</p>
+<ol type="1">
+<li><p>From the File menu, click File → New Project.</p></li>
+<li><p>Select New Directory → Quarto website.</p></li>
+<li><p>Choose a Directory name.</p>
+<ul>
+<li>Your GitHub-hosted personal website will have an address like <code>https://username.github.io</code>, while a website associated with a project will have the address <code>https://username.github.io/name</code>, where <code>username</code> is your GitHub username and <code>name</code> is the name of the GitHub repository for the website.</li>
+<li>If the hosted website will be <code>https://username.github.io</code>, then choose the directory name to be <code>username.github.io</code>.</li>
+<li>If the hosted website will be <code>https://username.github.io/name/</code>, then for simplicity, choose the directory name to be <code>name</code>.</li>
+</ul></li>
+<li><p>Choose where you want the directory to be located.</p></li>
+<li><p>Knitr is a suitable option for the rendering engine.</p></li>
+<li><p>Regarding the check boxes, I’d recommend</p>
+<ul>
+<li>Checking the box next to “Create a git repository”. Since we will be hosting the website on GitHub, you want to do this. If you are hosting your website elsewhere, then you can probably uncheck this box.</li>
+<li>Uncheck the boxes next to “Use renv with this project”. <strong>renv</strong> is a package for project-local R dependency management. Unless you’re running completed R code on your webpages, then this isn’t needed</li>
+<li>Uncheck “Use visual markdown editor”. The visual markdown editor provides standard word processor like interface to your project. For me, this causes more problems than it solves, so I don’t use this. You may have a different preference.</li>
+</ul></li>
+<li><p>Click “Create Project”.</p></li>
+</ol>
+<p>See <a href="#fig-project-options">Figure&nbsp;1</a> for the recommended choices.</p>
+<div id="fig-project-options" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="./figures/create_quarto_website.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;1: Recommended options when creating a Quarto website</figcaption><p></p>
+</figure>
+</div>
+<p>After clicking “Create Project”, a new project will be created in the specified directory with the following files:</p>
+<ul>
+<li><code>_quarto.yml</code>: a YAML header that control certain aspects of the website like the main title of the site, the pages included in the site, and the theme (color scheme) of the site.</li>
+<li><code>.gitignore</code>: a file that contains files and directories that git isn’t supposed to track.</li>
+<li><code>index.qmd</code>: the file that controls the default home page for your website.</li>
+<li><code>about.qmd</code>: a file that’s supposed to add a page to your website with information about you. This is really an optional file.</li>
+<li><code>*.Rproj</code>: the R project file associated with your website. Open this to reopen your R Studio workspace.</li>
+<li><code>styles.css</code>: a file to create custom styles for use on your website.</li>
+</ul>
+<p>The available files are enough to create an initial version of your website.</p>
+<p>Click the Render button, <img style="height:2em;" src="./figures/render_button.png">, to render the default Quarto website.</p>
+<p>A complete description of available website options is available at <a href="https://quarto.org/docs/reference/projects/websites.html">https://quarto.org/docs/reference/projects/websites.html</a>.</p>
+<p>To host your Quarto website using GitHub pages, you will need to change the output directory of your project. We discuss that next.</p>
+</section>
+<section id="changing-the-output-directory-of-a-quarto-website" class="level2">
+<h2 class="anchored" data-anchor-id="changing-the-output-directory-of-a-quarto-website">Changing the output directory of a Quarto website</h2>
+<p>The output directory is where Quarto saves the files for the rendered website.</p>
+<p>To host your Quarto website using GitHub pages, it is best to change the output directory to “docs”.</p>
+<p>To change the output directory of your Quarto website:</p>
+<ul>
+<li>Go to the <code>_quarto.yml</code> file</li>
+<li>Add the line <code>output-dir: docs</code> under <code>type: website</code></li>
+</ul>
+<p>That part of your <code>_quarto.yml</code> file will look something like the code below.</p>
+<pre><code>project:
+  type: website
+  output-dir: docs</code></pre>
+<p>After making this change:</p>
+<ul>
+<li>Navigate back to <code>index.qmd</code></li>
+<li>Click the Render button, <img style="height:2em;" src="./figures/render_button.png"></li>
+</ul>
+<p>The “docs” folder will now appear in the Files pane.</p>
+<p>You are now ready to push your website to GitHub so that it can be rendered using GitHub Pages.</p>
+</section>
+<section id="what-is-github-pages" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-github-pages">What is GitHub Pages?</h2>
+<p>GitHub Pages (<a href="https://pages.github.com/">https://pages.github.com/</a>) is a feature of GitHub that allows you to host websites for you and your projects.</p>
+<p>The websites are hosted directly from your GitHub repository, meaning that you can:</p>
+<ul>
+<li>Keep a git repository of your website</li>
+<li>Push changes of your website to GitHub</li>
+<li>See the changed website almost instantly on GitHub.</li>
+</ul>
+<p>If your GitHub username is <code>username</code> and your website is contained in the <code>demosite</code> respository, then your rendered website will be <code>https://username.github.io/demosite/</code>.</p>
+<ul>
+<li>The rendered website for this tutorial is available at <a href="https://jfrench.github.io/demosite">https://jfrench.github.io/demosite</a>.</li>
+<li>The rendered website for my in-progress open education resource (OER) book on linear regression is available at <a href="https://jfrench.github.io/LinearRegression">https://jfrench.github.io/LinearRegression</a>.</li>
+</ul>
+<p>If you are creating a personal website, then it is best to host it as <code>https://username.github.io</code>.</p>
+<p>To begin this process:</p>
+<ul>
+<li>Log in to GitHub.</li>
+<li>From the main page, create a GitHub repository.
+<ul>
+<li>For your personal website, the repository name should be <code>username.github.io</code>. Obviously, replace <code>username</code> with your actual user name). <a href="#fig-create-username-github-io-repository">Figure&nbsp;2</a> displays an example of this.</li>
+<li>For a project website, use the name of the project directory. As previously mentioned, I use “demosite” for the website we create.</li>
+</ul></li>
+</ul>
+<div id="fig-create-username-github-io-repository" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="./figures/create_username_github_io_respository.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2: Creating a username.github.io respository from the GitHub homepage.</figcaption><p></p>
+</figure>
+</div>
+<p>After creating your website:</p>
+<ul>
+<li>Push the changes to the repository your want to be hosted by GitHub pages. If you’re not familiar with doing this manually, then you can literally copy the contents of your project directory to GitHub.</li>
+<li>On GitHub.com, navigate to your website’s repository.</li>
+<li>Click on the Settings button, <img style="height:2em;" src="./figures/github_settings_button.png">.</li>
+<li>On the Navigation bar, click “Pages”.</li>
+<li>If you’ve set the output directory for your website to “docs” (which you should), then toggle the “/(root)” option to “/docs” and click the “Save” button. <a href="#fig-github-pages">Figure&nbsp;3</a> demonstrates this.</li>
+</ul>
+<div id="fig-github-pages" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="./figures/github_pages.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;3: Selecting GitHub Pages Settings.</figcaption><p></p>
+</figure>
+</div>
+<p>In a few minutes, you should see the initial version of your website at <code>https://username.github.io</code> or <code>https://username.github.io/name</code> depending on the type of site you created.</p>
+</section>
+<section id="changing-the-main-title-of-a-quarto-website" class="level2">
+<h2 class="anchored" data-anchor-id="changing-the-main-title-of-a-quarto-website">Changing the main title of a Quarto website</h2>
+<p>The main title of a Quarto website is controlled through the <code>_quarto.yml</code> file.</p>
+<p>Specifically, find the section of <code>_quarto.yml</code> where it has:</p>
+<pre><code>website:
+  title: "demosite"</code></pre>
+<p>Change “demosite” (or whatever title you have) to whatever you wish. For your personal website, it makes sense to use something like:</p>
+<ul>
+<li>“First name Last name”, e.g., Langston Hughes”</li>
+<li>“First name Middle initial Last name”, e.g., Amy R. Tan”</li>
+<li>Your brand identity, e.g., “Assistant to the Regional Data Manager”</li>
+</ul>
+<p>Change the title to something you prefer and click the Render button, <img style="height:2em;" src="./figures/render_button.png">, to render a Quarto website with a custom title.</p>
+</section>
+<section id="adding-or-removing-a-page-from-a-quarto-website" class="level2">
+<h2 class="anchored" data-anchor-id="adding-or-removing-a-page-from-a-quarto-website">Adding or removing a page from a Quarto website</h2>
+<p>Pages can easily be added or removed from a Quarto website.</p>
+<p>To add a new page to your website, add a new Quarto document to your project folder:</p>
+<ul>
+<li>Click File → New File → Quarto Document …</li>
+<li>Enter the desired page Title in the Title box of the New Quarto Document window.</li>
+<li>Click the Create Empty Document button in the lower left corner of the window.</li>
+<li>Press <code>Ctrl + s</code> (Windows) or <code>Cmd + s</code> (Mac) to bring up the Save File window.</li>
+<li>Name your file and click the Save button.</li>
+</ul>
+<p><a href="#fig-new-quarto-document">Figure&nbsp;4</a> displays the New Quarto Document window you would have to create a new Quarto document with the title “Favorites”.</p>
+<div id="fig-new-quarto-document" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="./figures/new_quarto_document_favorites.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;4: Creating an empty Quarto document with the title “Favorites”.</figcaption><p></p>
+</figure>
+</div>
+<p><a href="#fig-save-quarto-dialog">Figure&nbsp;5</a> shows the Save File window you would use to create <code>favorites.qmd</code>.</p>
+<div id="fig-save-quarto-dialog" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="./figures/save_quarto_dialog.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;5: Save a Quarto document with the filename <code>favorites.qmd</code>.</figcaption><p></p>
+</figure>
+</div>
+<p>Now you can add the desired content to your new Quarto document. We will add the following text to <code>favorites.qmd</code>.</p>
+<pre><code>## Favorite dog breeds
+
+- Shetland Sheepdog
+- Golden Retriever
+- Labrador
+
+## Favorite characters from the Lord of the Rings movies
+
+- Samwise Gamgee
+- Legolas
+- Aragorn</code></pre>
+<p>To add the “Favorites” page to our website, we open the <code>_quarto.yml</code> file and navigate to the <code>navbar</code> section where <code>.qmd</code> files are listed are a dash. We add a new row with <code>- favorites.qmd</code> as in the code below.</p>
+<pre><code>  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - about.qmd
+      - favorites.qmd</code></pre>
+<p>To remove a page from your Quarto website, simply delete its line from the <code>navbar</code> section. Don’t remove the <code>index.qmd</code> row unless you want to break your website.</p>
+<p>Navigate to a <code>.qmd</code> file and click the Render button, <img style="height:2em;" src="./figures/render_button.png">, to render the Quarto website that now has added a new page.</p>
+</section>
+<section id="changing-the-color-and-style-theme-of-a-quarto-website" class="level2">
+<h2 class="anchored" data-anchor-id="changing-the-color-and-style-theme-of-a-quarto-website">Changing the color and style theme of a Quarto website</h2>
+<p>Themes can be used to change the default color and style themes of a Quarto website.</p>
+<p>Quarto provides over 20 themes “out of the box”. Some of the best are:</p>
+<p>Quarto includes 25 themes from the Bootswatch project (for example, the website uses the cosmo theme). Some of my favorite themes include:</p>
+<ul>
+<li>journal</li>
+<li>lux</li>
+<li>quartz</li>
+<li>simplex</li>
+<li>spacelab</li>
+</ul>
+<p>A complete list of themes is available at <a href="https://quarto.org/docs/output-formats/html-themes.html#overview">https://quarto.org/docs/output-formats/html-themes.html#overview</a>.</p>
+<p>To get a taste of theme customization, let’s change the theme of a Quarto website to “sandstone”. We update the <code>theme</code> option of the <code>_quarto.yml</code> file to <code>sandstone</code> using the code below.</p>
+<pre><code>format:
+  html:
+    theme: sandstone</code></pre>
+<p>Theme options can be used to customize a theme and set the default choice for the entire document. These include:</p>
+<ul>
+<li><code>mainfont</code>: the default font-family</li>
+<li><code>fontsize</code>: the default font-size</li>
+<li><code>fontcolor</code>: the default text color</li>
+<li><code>linkcolor</code>: the default color for hyperlinks</li>
+<li><code>monofont</code>: the default font-family for code</li>
+<li><code>backgroundcolor</code>: the default background color for the entire document.</li>
+</ul>
+<p>A more detailed discussion of theme customization can be found at <a href="https://quarto.org/docs/output-formats/html-themes.html">https://quarto.org/docs/output-formats/html-themes.html</a>.</p>
+<p>Quarto font sizes can be specified using many different units.</p>
+<ul>
+<li>Absolute units like pt, cm, mm, in, pc, etc. are not recommended.</li>
+<li>Relative units like em or rem are better. 1em is equivalent to the default font size for body text. So 3em is 3 times as big as the body font. rem, which stands for root em, is the font size of the root element of the document, which is consistent throughout the document.</li>
+</ul>
+<p>Quarto website colors are specified in hexadecimal format. The website <a href="https://htmlcolorcodes.com/">https://htmlcolorcodes.com/</a> is a handy tool for determining hexadecimal values to make font or background color changes.</p>
+<p>We now customize:</p>
+<ul>
+<li>The main font of the website</li>
+<li>The standard font size</li>
+<li>The standard font color</li>
+<li>The color of hyperlinks</li>
+<li>The font used for code.</li>
+</ul>
+<p>using the code below.</p>
+<pre><code>    theme: sandstone
+    mainfont: arial
+    fontsize: 1.5rem
+    fontcolor: #0013d5
+    linkcolor: #ff33f0
+    monofont: courier new</code></pre>
+<p>Navigate to a <code>.qmd</code> file and click the Render button, <img style="height:2em;" src="./figures/render_button.png">, to render the Quarto website that now has added a new page.</p>
+</section>
+<section id="using-a-quarto-website-about-template" class="level2">
+<h2 class="anchored" data-anchor-id="using-a-quarto-website-about-template">Using a Quarto website “about” template</h2>
+<p>Each page in a Quarto website is rendered from <code>qmd</code> files you place in the project directory.</p>
+<p>While Quarto is naturally great for building technical documents, on the surface, it is not great for building a snazzy website.</p>
+<p>An about template can be used to create a page with a specific default structure. These templates are designed to help website readers learn “about” you.</p>
+<ul>
+<li>Using an about template will change the page’s structure.</li>
+<li>An about template is specified in the YAML header of the <code>.qmd</code> file you want to customize.</li>
+</ul>
+<p>Currently, Quarto has 5 built in templates that are discussed in more detail at <a href="https://quarto.org/docs/websites/website-about.html#templates">https://quarto.org/docs/websites/website-about.html#templates</a>.</p>
+<p>The current templates are:</p>
+<ul>
+<li><code>jolla</code></li>
+<li><code>trestles</code></li>
+<li><code>solana</code></li>
+<li><code>marquee</code></li>
+<li><code>broadside</code></li>
+</ul>
+<p>A preview of each template is available at <a href="https://quarto.org/docs/websites/website-about.html#templates">https://quarto.org/docs/websites/website-about.html#templates</a>.</p>
+<p>Each template allows you to add the following elements:</p>
+<ul>
+<li><code>image</code>: an image you want to display on the page. This could be a picture of yourself or something else you want the page to display. You can customize the image in two ways:
+<ul>
+<li><code>image-width</code>: A valid CSS width for your image.</li>
+<li><code>image-shape</code>: The shape of the image.
+<ul>
+<li>The shape options are: <code>rectangle</code>, <code>rounded</code>, <code>round</code>.</li>
+<li>Shape options are only available for the jolla, solana, and trestles templates.</li>
+</ul></li>
+</ul></li>
+<li><code>links</code>: links you want to provide for the user to click on. These could be links to your GitHub page, email address, Twitch account etc. The links have the following options:
+<ul>
+<li><code>href</code>: a link to a file contained with the project or an external URL.</li>
+<li><code>text</code>: the text to display for the link (if not provided, the default is the document title).</li>
+<li><code>icon</code>: the name of one of the standard Bootstrap 5 icons (e.g.&nbsp;“envelope”, “github”, “twitter”, “youtube”, etc.).</li>
+<li><code>aria-label</code>: accessible label for the navigation item.</li>
+</ul></li>
+<li>Partial page content: this is text on your page that doesn’t have the same formatting as the rest of the template.
+<ul>
+<li>Specify the <code>id</code> option under <code>about</code> to indicate the keyword to start the partial page content.</li>
+<li>Include the desired partial page content between <code>:::{#id-name}</code> and <code>:::</code>, where <code>id-name</code> is the name specified for the <code>id</code> option.</li>
+</ul></li>
+</ul>
+<p>Personally, I like to use an about template on the home page of my website, not on a separate “About” page. Obviously, that is up to you.</p>
+<p>In the example below, we will replace the contents of <code>index.qmd</code> with the code below. You will need to add three files to your project directory:</p>
+<ul>
+<li><code>mypic.png</code></li>
+<li><code>dawgs.png</code></li>
+<li><code>resume.pdf</code></li>
+</ul>
+<pre><code>---
+title: "Assistant to the Regional Data Manager"
+image: mypic.png
+about:
+  id: ppc
+  template: trestles
+  image-shape: round
+  image-width: 15em
+  links:
+    - text: Email
+      icon: envelope
+      href: mailto:noreply@email.zz
+    - text: GitHub
+      icon: github
+      href: https://github.com/
+    - text: YouTube
+      icon: youtube
+      href: https://youtube.com/
+    - text: Scholar
+      icon: google
+      href: https://scholar.google.com/
+    - text: resume
+      icon: file-text
+      href: resume.pdf
+---
+
+:::{#ppc}
+I love my dogs. Here is a picture of my dogs.
+
+![My dogs are awesome](dawgs.png)
+
+If you like dogs too, then you should definitely hire me for
+a highly paid position.
+:::</code></pre>
+<p>Click the Render button, <img style="height:2em;" src="./figures/render_button.png">, to render the Quarto website.</p>
+</section>
+<section id="linking-to-a-file-on-a-quarto-website" class="level2">
+<h2 class="anchored" data-anchor-id="linking-to-a-file-on-a-quarto-website">Linking to a file on a Quarto website</h2>
+<p>Linking to a file in a Quarto website is slightly more complicated than linking to a URL.</p>
+<p>Notice that <code>resume.pdf</code> on the demosite isn’t available. It isn’t available because it is not in the docs folder used to render the website. (You can verify this by navigating to the docs older in the Files pane of R Studio). There are two options to correct this:</p>
+<ol type="1">
+<li>Manually copy <code>resume.pdf</code> to the docs folder. Don’t do this.</li>
+<li>Add the line <code>resources: resume.pdf</code> to your YAML header. This tells Quarto to copy this file to your docs folder when rendering the website. This is the best approach.</li>
+</ol>
+<p>In the code below, we wedge <code>resources: resume.pdf</code> between the <code>image</code> and <code>about</code> options.</p>
+<pre><code>image: mypic.png
+resources: resume.pdf
+about:</code></pre>
+<p>Click the Render button, <img style="height:2em;" src="./figures/render_button.png">, to render the Quarto website with a corrected file link to <code>resume.pdf</code>.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
