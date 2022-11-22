@@ -1,6 +1,7 @@
 ---
 title: "Creating websites using Quarto and GitHub Pages"
 format: html
+embed-resources: true
 ---
 
 Many data scientists have a website to market themselves. This is helpful for distinguishing yourself from competitors by showcasing who you are and what you've done.
