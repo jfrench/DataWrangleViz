@@ -99,17 +99,26 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="what-is-quarto" class="level2">
 <h2 class="anchored" data-anchor-id="what-is-quarto">What is Quarto?</h2>
-<p><img src="./figures/quarto_logo.png" height="154"></p>
+<p><img src="./figures/quarto_logo.jpg" height="200"></p>
 <p>The Quarto website (<a href="https://quarto.org/docs/faq/">https://quarto.org/docs/faq/</a>) states:</p>
 <blockquote class="blockquote">
 <p>Quarto is an open-source scientific and technical publishing system built on Pandoc. You can weave together narrative text and code to produce elegantly formatted output as documents, web pages, blog posts, books and more.</p>
 </blockquote>
-<p>More helpfully, Quarto is the spiritual successor to R Markdown that was built from the ground up to be compatible with R, Python, Julia, and Observable JavaScript. You can use Quarto to create:</p>
+<p>More helpfully, Quarto is the spiritual successor to R Markdown that was built from the ground up to be compatible with:</p>
+<ul>
+<li>R</li>
+<li>Python</li>
+<li>Julia</li>
+<li>Observable JavaScript</li>
+</ul>
+<p>Quarto’s development is sponsored by Posit (<a href="https://posit.co/">https://posit.co/</a>), which was formally known as R Studio.</p>
+<p><img src="./figures/posit_logo.svg" height="100"></p>
+<p>You can use Quarto to create:</p>
 <ul>
 <li>Technical documents</li>
 <li>Books</li>
 <li>Blogs</li>
-<li>Websites.</li>
+<li>Websites</li>
 </ul>
 <p>If you have successfully produced material using R Markdown, then you should feel at home producing materials using Quarto (and may want to shift future content production to Quarto documents).</p>
 <p>The R Markdown ecosystem was very mature when the decision to develop Quarto was made, so Quarto is designed to better integrate the various document types, options, and customization available in R Markdown. Essentially, Quarto attempts to take the strengths of R Markdown while correcting some of its weaknesses.</p>
@@ -121,6 +130,13 @@ ul.task-list li input[type="checkbox"] {
 <li>Any text editor.</li>
 </ul>
 <p>R Studio provides the most feature-rich environment for creating Quarto documents.</p>
+<p>To open a new Quarto document in R Studio:</p>
+<ol type="1">
+<li>From the File menu click File → New File → Quarto Document.</li>
+<li>Make the appropriate changes.</li>
+<li>Click the Create button.</li>
+</ol>
+<p>Click the Render button, <img style="height:2em;" src="./figures/render_button.png">, to render the default Quarto document.</p>
 </section>
 <section id="initializing-the-default-quarto-website" class="level2">
 <h2 class="anchored" data-anchor-id="initializing-the-default-quarto-website">Initializing the default Quarto website</h2>
@@ -148,7 +164,7 @@ ul.task-list li input[type="checkbox"] {
 <div id="fig-project-options" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="./figures/create_quarto_website.png" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;1: Recommended options when creating a Quarto website</figcaption><p></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;1: Recommended options when creating a Quarto website.</figcaption><p></p>
 </figure>
 </div>
 <p>After clicking “Create Project”, a new project will be created in the specified directory with the following files:</p>

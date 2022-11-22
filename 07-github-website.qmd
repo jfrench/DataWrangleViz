@@ -48,18 +48,29 @@ GitHub is a great place to:
 
 ## What is Quarto?
 
-<img src="./figures/quarto_logo.png" height="154" />
+<img src="./figures/quarto_logo.jpg" height="200" />
 
 The Quarto website ([https://quarto.org/docs/faq/](https://quarto.org/docs/faq/)) states:
 
 > Quarto is an open-source scientific and technical publishing system built on Pandoc. You can weave together narrative text and code to produce elegantly formatted output as documents, web pages, blog posts, books and more. 
 
-More helpfully, Quarto is the spiritual successor to R Markdown that was built from the ground up to be compatible with R, Python, Julia, and Observable JavaScript. You can use Quarto to create: 
+More helpfully, Quarto is the spiritual successor to R Markdown that was built from the ground up to be compatible with:
+
+- R
+- Python
+- Julia
+- Observable JavaScript
+
+Quarto's development is sponsored by Posit ([https://posit.co/](https://posit.co/)), which was formally known as R Studio.
+
+<img src="./figures/posit_logo.svg" height="100" />
+
+You can use Quarto to create: 
 
 - Technical documents
 - Books
 - Blogs
-- Websites.
+- Websites
 
 If you have successfully produced material using R Markdown, then you should feel at home producing materials using Quarto (and may want to shift future content production to Quarto documents). 
 
@@ -73,6 +84,14 @@ Quarto documents can be edited in:
 - Any text editor.
 
 R Studio provides the most feature-rich environment for creating Quarto documents.
+
+To open a new Quarto document in R Studio:
+
+1. From the File menu click File &rarr; New File &rarr; Quarto Document.
+2. Make the appropriate changes.
+3. Click the Create button.
+
+Click the Render button, <img style="height:2em;" src="./figures/render_button.png" />, to render the default Quarto document.
 
 ## Initializing the default Quarto website
 
@@ -95,7 +114,7 @@ The initial step to creating a Quarto website is to create a new Quarto website 
 
 See @fig-project-options for the recommended choices.
 
-![Recommended options when creating a Quarto website](./figures/create_quarto_website.png){#fig-project-options}
+![Recommended options when creating a Quarto website.](./figures/create_quarto_website.png){#fig-project-options}
 
 After clicking "Create Project", a new project will be created in the specified directory with the following files:
 
