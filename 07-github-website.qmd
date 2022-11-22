@@ -97,7 +97,9 @@ Click the Render button, <img style="height:2em;" src="./figures/render_button.p
 
 ## Initializing the default Quarto website
 
-The initial step to creating a Quarto website is to create a new Quarto website project. In R Studio:
+The initial step to creating a Quarto website is to create a new Quarto website project.
+
+In R Studio:
 
 1. From the File menu, click File &rarr; New Project.
 2. Select New Directory &rarr; Quarto website.
