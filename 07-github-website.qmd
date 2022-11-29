@@ -95,7 +95,7 @@ To open a new Quarto document in R Studio:
 
 Click the Render button, <img style="height:2em;" src="./figures/render_button.png" />, to render the default Quarto document.
 
-## Initializing the default Quarto website
+## Creating a starter Quarto website (Video: [YouTube](https://youtu.be/_bglTCjgcqY), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=7003fa83-cd77-45d8-9031-af5b01816dbe))
 
 The initial step to creating a Quarto website is to create a new Quarto website project.
 
@@ -137,7 +137,7 @@ A complete description of available website options is available at [https://qua
 
 To host your Quarto website using GitHub pages, you will need to change the output directory of your project. We discuss that next.
 
-## Changing the output directory of a Quarto website
+## Changing the output directory of a Quarto website (Video: [YouTube](https://youtu.be/ZkcY9YQ3iLY), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=96287ae6-4099-4e8b-91c5-af5b0181a617))
 
 The output directory is where Quarto saves the files for the rendered website.
 
@@ -165,7 +165,7 @@ The "docs" folder will now appear in the Files pane.
 
 You are now ready to push your website to GitHub so that it can be rendered using GitHub Pages.
 
-## What is GitHub Pages?
+## Publishing a Quarto website on GitHub Pages (Video: [YouTube](https://youtu.be/uimdXPZc40I), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=e30956c1-5ab6-4418-b6f4-af5b0181bf5e))
 
 GitHub Pages ([https://pages.github.com/](https://pages.github.com/)) is a feature of GitHub that allows you to host websites for you and your projects.
 
@@ -191,8 +191,6 @@ To begin this process:
 
 ![Creating a username.github.io respository from the GitHub homepage.](./figures/create_username_github_io_respository.png){#fig-create-username-github-io-repository}
 
-
-
 After creating your website:
 
 - Push the changes to the repository your want to be hosted by GitHub pages. If you're not familiar with doing this manually, then you can literally copy the contents of your project directory to GitHub. 
@@ -206,7 +204,7 @@ After creating your website:
 In a few minutes, you should see the initial version of your website at 
 `https://username.github.io` or `https://username.github.io/name` depending on the type of site you created.
 
-## Changing the main title of a Quarto website
+## Changing the main title of a Quarto website (Video: [YouTube](https://youtu.be/7aMQ2BaAp5E), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=0abd38c6-40d1-44ec-9f34-af5b0181cf3c))
 
 The main title of a Quarto website is controlled through the `_quarto.yml` file.
 
@@ -225,7 +223,7 @@ Change "demosite" (or whatever title you have) to whatever you wish. For your pe
 
 Change the title to something you prefer and click the Render button, <img style="height:2em;" src="./figures/render_button.png" />, to render a Quarto website with a custom title.
 
-## Adding or removing a page from a Quarto website
+## Adding or removing a page from a Quarto website (Video: [YouTube](https://youtu.be/EjGdjHCo_Ms), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=b1fc4da4-7571-46ba-b963-af5b0181d651))
 
 Pages can easily be added or removed from a Quarto website.
 
@@ -276,15 +274,12 @@ To remove a page from your Quarto website, simply delete its line from the `navb
 
 Navigate to a `.qmd` file and click the Render button, <img style="height:2em;" src="./figures/render_button.png" />, to render the Quarto website that now has added a new page.
 
-## Changing the color and style theme of a Quarto website
+## Changing the color and style theme of a Quarto website (Video: [YouTube](https://youtu.be/7UW4ms1JCdY), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=71b52214-366b-4e0b-bb88-af5c0164ccc7))
 
 Themes can be used to change the default color and style
 themes of a Quarto website.
 
-Quarto provides over 20 themes "out of the box". Some of the
-best are:
-
-Quarto includes 25 themes from the Bootswatch project (for example, the website uses the cosmo theme). Some of my favorite themes include:
+Quarto provides over 20 themes "out of the box" from [Bootswatch.com](https://bootswatch.com/). Some of my favorite themes include:
 
 - journal
 - lux
@@ -320,9 +315,14 @@ A more detailed discussion of theme customization can be found at
 Quarto font sizes can be specified using many different units.
 
 - Absolute units like pt, cm, mm, in, pc, etc. are not recommended.
-- Relative units like em or rem are better. 1em is equivalent to the default font size for body text. So 3em is 3 times as big as the body font. rem, which stands for root em, is the font size of the root element of the document, which is consistent throughout the document.
+- Relative units like em or rem are better.
+    - 1em is equivalent to the default font size for body text. So 3em is 3 times as big as the body font.
+    - rem, which stands for root em, is the font size of the root element of the document, which is consistent throughout the document.
 
-Quarto website colors are specified in hexadecimal format. The website [https://htmlcolorcodes.com/](https://htmlcolorcodes.com/) is a handy tool for determining hexadecimal values to make font or background color changes.
+Quarto website colors are specified in hexadecimal format.
+
+- The website [https://htmlcolorcodes.com/](https://htmlcolorcodes.com/) is a handy tool for determining hexadecimal values to make font or background color changes.
+- Place quotes around the hexadecimal values when you use them to change a color in your document.
 
 We now customize:
 
@@ -332,14 +332,14 @@ We now customize:
 - The color of hyperlinks
 - The font used for code.
 
-using the code below.
+by editing the appropriate section of `_quarto.yml`.
 
 ```
     theme: sandstone
     mainfont: arial
     fontsize: 1.5rem
-    fontcolor: #0013d5
-    linkcolor: #ff33f0
+    fontcolor: "#0013d5"
+    linkcolor: "#ff33f0"
     monofont: courier new
 ```
 
