@@ -345,13 +345,13 @@ by editing the appropriate section of `_quarto.yml`.
 
 Navigate to a `.qmd` file and click the Render button, <img style="height:2em;" src="./figures/render_button.png" />, to render the Quarto website that now has added a new page.
 
-## Using a Quarto website "about" template
-
-Each page in a Quarto website is rendered from `qmd` files you place in the project directory.
+## Using a Quarto website "about" template (Video: [YouTube](https://youtu.be/hceM0-RuPwo), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=7680d9a7-510d-48a6-b6b7-af610166bbe3))
 
 While Quarto is naturally great for building technical documents, on the surface, it is not great for building a snazzy website.
 
-An about template can be used to create a page with a specific default structure. These templates are designed to help website readers learn "about" you. 
+An about template can be used to create a page with a specific default structure. These templates are designed to look great by default and to help website visitors learn "about" you. 
+
+Each page in a Quarto website is rendered from `qmd` files you place in the project directory.
 
 - Using an about template will change the page's structure.
 - An about template is specified in the YAML header of the `.qmd` file you want to customize.
@@ -378,7 +378,7 @@ Each template allows you to add the following elements:
 - `links`: links you want to provide for the user to click on. These could be links to your GitHub page, email address, Twitch account etc. The links have the following options:
   - `href`: a link to a file contained with the project or an external URL.
   - `text`: the text 	to display for the link (if not provided, the default is the document title).
-  - `icon`: the name of one of the standard Bootstrap 5 icons (e.g. "envelope", "github", "twitter", "youtube", etc.).
+  - `icon`: the name of one of the standard Bootstrap 5 icons (e.g. "envelope", "github", "twitter", "youtube", etc.). A current list of icons is available at [https://icons.getbootstrap.com/](https://icons.getbootstrap.com/).
   - `aria-label`: accessible label for the navigation item.
 - Partial page content: this is text on your page that doesn't have the same formatting as the rest of the template.
   - Specify the `id` option under `about` to indicate the keyword to start the partial page content.
@@ -397,16 +397,34 @@ Add the following three files to your project directory:
 - [`dawgs.png`](https://raw.githubusercontent.com/jfrench/DataWrangleViz/master/data/dawgs.png)
 - [`resume.pdf`](https://raw.githubusercontent.com/jfrench/DataWrangleViz/master/data/resume.pdf)
 
-In the example below, we will replace the contents of `index.qmd` with the code below. 
+### Using the about template, adding an image and title
+
+To use an about template, we must change the YAML header of our file. We will do this for `index.qmd`, the main page of our website.
+
+We will replace the YAML header of `index.qmd` with code that will:
+
+- Use the "jolla" template
+- Use a round image ("mypic.png")
+- Add the title "J.T. Smith" on the page
+
 ```
 ---
-title: "Assistant to the Regional Data Manager"
+title: "J.T. Smith"
 image: mypic.png
 about:
-  id: ppc
-  template: trestles
+  template: jolla
   image-shape: round
   image-width: 15em
+---
+```
+
+### Adding links to an about template
+
+Next we discuss add URL and file links to our about template. 
+
+We add the following rows under the `about` section of our YAML header, which will add clickable links for an email address, a GitHub page, a YouTube page, and a file, as well as icons for each link.
+
+```
   links:
     - text: Email
       icon: envelope
@@ -417,14 +435,27 @@ about:
     - text: YouTube
       icon: youtube
       href: https://youtube.com/
-    - text: Scholar
-      icon: google
-      href: https://scholar.google.com/
     - text: resume
       icon: file-text
       href: resume.pdf
----
+```
 
+### Adding partial page content to an about template
+
+To add partial page content to our about template, we must:
+
+1. Indicate an id in the YAML header of the page.
+2. Add the partial page content below the header.
+
+We add the following id for our partial page content:
+
+```
+  id: ppc
+```
+
+Then, below our YAML header, we add some content about dogs and why someone should hire us.
+
+```
 :::{#ppc}
 I love my dogs. Here is a picture of my dogs.
 
@@ -437,7 +468,7 @@ a highly paid position.
 
 Click the Render button, <img style="height:2em;" src="./figures/render_button.png" />, to render the Quarto website.
 
-## Linking to a file on a Quarto website
+## Fixing a broken file link on a Quarto website (Video: [YouTube](https://youtu.be/WpI_aRn_ImI), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=a40d3fb2-01c7-43d5-a6c0-af610167d7fd))
 
 Linking to a file in a Quarto website is slightly more complicated than linking to a URL.
 
