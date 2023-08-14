@@ -2,17 +2,31 @@
 title: "Crash Course in R"
 author: "Joshua French"
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
-format: html 
+# format: html
+format: ipynb
+jupyter: ir
+execute:
+  output: false
+self-contained: true
+title-block-banner: true
 bibliography: packages_crashr.bib  
 ---
 
 ```{r}
-#| echo: false
+#| include: false
 # automatically create a bib database for R packages
 knitr::write_bib(c(
   .packages(), 'tidyverse', 'bookdown', 'knitr', 'rmarkdown', 'ggplot2', 'dplyr', 'purrr', 'tidyr', 'readr', 'stringr', 'tibble', 'forcats'
 ), 'packages_crashr.bib')
 ```
+
+To open this information in an interactive Colab notebook, click the Open in Colab graphic below.
+
+<a href="https://colab.research.google.com/github/jfrench/DataWrangleViz/blob/master/01-crash-course-in-r.ipynb">
+   <img src="https://colab.research.google.com/assets/colab-badge.svg">
+</a>
+
+---
 
 This document will help you learn how to productively use R [@R-base].
 
@@ -451,9 +465,12 @@ system.time(result <- rnorm(100))
 The code above times (using `system.time`) how long it takes to draw 100 values from a standard normal distribution (`rnorm(100)`) and assign it the name `result`.
 
 This code doesn't work:
-```{r, error=TRUE}
+
+```{r}
+#| error: true
 system.time(result = rnorm(100))
 ```
+
 What's the difference? In the second case, R thinks you are setting the `result` argument of the `system.time` function (which doesn't exist) to the value produced by `rnorm(100)`.
 
 A trivial examples of assignment: `v1 <- 1:5` assigns the sequence 1 through 5 the name `v1`.
@@ -955,7 +972,7 @@ a <= 4
 
 ```{r}
 #| eval: false
-`a == 10
+a == 10
 ```
 
 ```{r}
@@ -1020,7 +1037,11 @@ To use this function, I type the name of the function and supply the 3 arguments
 
 A function may or may not return something that you can store for later use.
 
-Let's create a function that returns the sample standard deviation of a vector `x`. Recall that $$SD(x) = \sqrt{\frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2}.$$
+Let's create a function that returns the sample standard deviation of a vector `x`. Recall that 
+
+$$
+SD(x) = \sqrt{\frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2}.
+$$
 The sole argument is `x`, a vector of numeric values.
 
 ```{r}
@@ -1052,7 +1073,10 @@ stdev(z)
 ### Example 
 
 Create a function that returns the density of a normal random variable with mean `mu` and standard deviation `sigma` for a vector `x`. Recall that the density function of a normal random variable is 
-$$f(x) = \frac{1}{\sigma \sqrt{2 \pi}} \exp\left(-\frac{1}{2 \sigma^2} (x - \mu)^2\right).$$
+
+$$
+f(x) = \frac{1}{\sigma \sqrt{2 \pi}} \exp\left(-\frac{1}{2 \sigma^2} (x - \mu)^2\right).
+$$
 
 The arguments should be:
 
@@ -1070,9 +1094,9 @@ The sole argument will be, `x`, a vector of numeric values.
 
 ```{r}
 ms <- function(x) {
-	m <- mean(x) # compute the sample mean of `x`
-	s <- sd(x)   # compute the sample sd of `x`
-	# return a list with elements `m` and `s`
+	m <- mean(x) # compute the sample mean of x
+	s <- sd(x)   # compute the sample sd of x
+	# return a list with elements m and s
 	return(list(m = m, s = s))
 }
 ms(z)
