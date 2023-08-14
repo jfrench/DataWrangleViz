@@ -2,11 +2,11 @@
 title: "Crash Course in R"
 author: "Joshua French"
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
-format: html
-# format: ipynb
-# jupyter: ir
-# execute:
-#   output: false
+# format: html
+format: ipynb
+jupyter: ir
+execute:
+  output: false
 self-contained: true
 title-block-banner: true
 bibliography: packages_crashr.bib  
@@ -628,7 +628,7 @@ Suppose that a random variable $X$ has the `dist` distribution:
 
 *	`p[dist](q, ...)`: returns the cdf of $X$ evaluated at `q`, i.e., $p=P(X\leq q)$.
 *	`q[dist](p, ...)`: returns the inverse cdf (or quantile function) of $X$ evaluated at $p$, i.e., $q = \inf\{x: P(X\leq x) \geq p\}$.
-* `d[dist](x, ...)`: returns the mass or density of $X$  evaluated at $x$ (depending on whether it' discrete or continuous).
+* `d[dist](x, ...)`: returns the mass or density of $X$ evaluated at $x$ (depending on whether it's discrete or continuous).
 * `r[dist](n, ...)`: returns an i.i.d. random sample of size `n` having the same distribution as $X$.
 * The `...` indicates that additional arguments describing the parameters of the distribution may be required.
 
@@ -1071,6 +1071,9 @@ z <- rnorm(20)
 Let's compute the sample standard deviation of `z` using the `sd` function and the `stdev` function.
 ```{r}
 sd(z)
+```
+
+```{r}
 stdev(z)
 ```
 
@@ -1103,6 +1106,9 @@ ms <- function(x) {
 	# return a list with elements m and s
 	return(list(m = m, s = s))
 }
+```
+
+```{r}
 ms(z)
 ```
 
