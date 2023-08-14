@@ -2,12 +2,12 @@
 title: "Crash Course in R"
 author: "Joshua French"
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
-# format: html
-format: ipynb
-jupyter: ir
-execute:
-  output: false
-self-contained: true
+format: html
+# format: ipynb
+# jupyter: ir
+# execute:
+#   output: false
+# self-contained: true
 title-block-banner: true
 bibliography: packages_crashr.bib  
 ---
@@ -325,28 +325,32 @@ Vectors and lists are considered one-dimensional objects. A list is technically 
 
 Matrices and data frames are considered two-dimensional objects. Arrays can have 1 or more dimensions.
 
-The relationship between dimensionality and data type for the basic data structures is summarized in @tbl-datastructures2, which is based on a [table](https://adv-r.had.co.nz/Data-structures.html#data-structure) in the first edition of Hadley Wickham's *Advanced R* [(https://adv-r.had.co.nz/Data-structures.html#data-structure)](https://adv-r.had.co.nz/Data-structures.html#data-structure).
+The relationship between dimensionality and data type for the basic data structures is summarized in @tbl-datastructures1, which is based on a [table](https://adv-r.had.co.nz/Data-structures.html#data-structure) in the first edition of Hadley Wickham's *Advanced R* [(https://adv-r.had.co.nz/Data-structures.html#data-structure)](https://adv-r.had.co.nz/Data-structures.html#data-structure).
 
+::: {.content-hidden when-format="ipynb"}
 ```{r}
 #| echo: false
-#| label: tbl-datastructures2
-#| tbl-cap: "Classifying main object types by dimensionaity and data type."
-library(gt)
-object_df <- tibble(dimensions = c("1", "2", "1 or more"),
-                        homogeneous = c("atomic vector", "matrix", "array"),
-                        heterogeneous = c("list", "data frame", ""))
-obj_gt_tbl <- gt::gt(object_df, rowname_col = "dimensions") |>
-  tab_stubhead(label = "# of dimensions") |>
-   tab_spanner(
-    label = "data type",
-    columns = c(homogeneous, heterogeneous)
-  ) |>
-  tab_style(
-    style = cell_borders(sides = "right", col = "lightgray", weight = px(2)),
-    locations = cells_stubhead()
-  )
-obj_gt_tbl
+#| label: tbl-datastructures1
+#| tbl-cap: "A table summarizing the relationship between dimensionality and data type homogeneity for the 5 basic data structures."
+dsdf <- data.frame(
+  dimensionality = c("1", "2", "1 or more"),
+  homogeneous = c("atomic vector", "matrix", "array"),
+  heterogeneous = c("list", "data frame", ""), 
+  check.names = FALSE)
+colnames(dsdf) <- c("number of dimensions", "homogeneous data type", "heterogeneous data types")
+knitr::kable(dsdf)
 ```
+:::
+
+::: {.content-hidden when-format="html"}
+|number of dimensions |homogeneous data type |heterogeneous data types |
+|:--------------------|:---------------------|:------------------------|
+|1                    |atomic vector         |list                     |
+|2                    |matrix                |data frame               |
+|1 or more            |array                 |                         |
+: A table summarizing the relationship between dimensionality and data type homogeneity for the 5 basic data structures. {#tbl-datastructures1}
+:::
+
 
 # Vectors ([YouTube](https://youtu.be/Gw50kIcFtFY), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=137571f1-a9bc-477e-96db-aef901171def))
 
