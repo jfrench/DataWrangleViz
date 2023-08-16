@@ -2,11 +2,11 @@
 title: "Crash Course in R"
 author: "Joshua French"
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
-# format: html
-format: ipynb
-jupyter: ir
-execute:
-  output: false
+format: html
+# format: ipynb
+# jupyter: ir
+# execute:
+#   output: false
 self-contained: true
 title-block-banner: true
 bibliography: packages_crashr.bib  
@@ -83,6 +83,12 @@ Commands are executed in R by typing them in the Console next to `>` and pressin
 
 Type `1+1` in the R Console next to `>` and press enter. What do you get?
 
+::: {.content-visible when-format="ipynb"}
+```{r}
+# write code here
+```
+:::
+
 ## Creating a new script
 If you need to successively execute multiple commands, it's better to write your commands in a "script" file and then save the file. The commands in a script file are often generically referred to as "code".
 
@@ -138,6 +144,7 @@ The **tidyverse** ([https://www.tidyverse.org](https://www.tidyverse.org), @R-ti
 * **forcats**: A package for working with categorical data [@R-forcats].
 
 Install the set of **tidyverse** R packages by executing the following command:
+
 ```{r}
 #| eval: false
 install.packages("tidyverse")
@@ -195,12 +202,24 @@ A [logarithm](https://www.dictionary.com/browse/logarithm?s=t) is, "The exponent
 
 Suppose you want to change the x-axis label of a plot in R. Do a web search to see if you can figure out how to do this.
 
+::: {.content-visible when-format="ipynb"}
+```{r}
+# write code here
+```
+:::
+
+::: {.content-visible when-format="ipynb"}
+```{r}
+# write code here
+```
+:::
+
 # Data types and structures ([YouTube](https://youtu.be/b0yrxIM2wvk), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=bc0a39f6-ee76-4854-a78d-aef901173446))
 
 ## Basic data types
 R has 6 [basic ("atomic") vector types](https://cran.r-project.org/doc/manuals/r-release/R-lang.html#Basic-types):
 
-1. character: collections of characters. E.g., `"a"`, "hello world!"
+1. character: collections of characters. E.g., `"a"`, `"hello world!`"
 2. double: decimal numbers. e.g., `1.2`, `1.0`.
 3. integer: whole numbers. In R, you must add `L` to the end of a number to specify it as an integer. E.g., `1L` is an integer but `1` is a double.
 4. logical: boolean values, `TRUE` and `FALSE`.
@@ -233,6 +252,7 @@ An object is `numeric` if it is of type `integer` or `double`. In that case, it'
 The `is.numeric` function tests whether an object can be interpreted as numbers. We can use it to determine whether an object is `numeric`. Alternatively, we can use the `mode` function to get the type or storage mode of an object.
 
 Some examples:
+
 ```{r}
 # is "hello world!" numeric?
 is.numeric("hello world!")
@@ -244,7 +264,7 @@ is.numeric(1)
 ```
 
 ```{r}
-# what is the mode of 1
+# what is the mode of 1?
 mode(1)
 ```
 
@@ -295,7 +315,8 @@ typeof(NA_complex_)
 
 A function is an object that performs a certain action or set of actions based on objects it receives from its arguments. 
 
-- A function has type `closure` and mode `function`. 
+- A function has type `closure` and mode `function`.
+- You can use the `is.function` function to determine whether an object is a function.
 
 The `mean` function computes the sample mean of a relevant object. Consider the type and mode of the `mean` function.
 
@@ -305,6 +326,10 @@ typeof(mean)
 
 ```{r}
 mode(mean)
+```
+
+```{r}
+is.function(mean)
 ```
 
 ## Data structures
@@ -403,6 +428,7 @@ Some examples:
 * `rep(1:3, each = 3)` replicates each element of the sequence 1, 2, 3 three times.
 
 ### Example 
+
 Execute the following commands in the Console to see what you get.
 
 ```{r}
@@ -450,7 +476,6 @@ Some comments:
   
 * In general, both `<-` and `=` can be used for assignment.
 * Pressing `Alt + -` on a PC or `Option + -` on a Mac will insert `<-` into the R Console and Script files.
-  * If you are creating an R Markdown file, then this shortcut will only insert `<-` if you are in an R code block.
 * `<-` and `=` are NOT synonyms, but can be used identically most of the time. It's safest to use `<-` for assignment.
 * In Section 8.2.26 of [*R Inferno*](http://www.burns-stat.com/pages/Tutor/R_inferno.pdf), Patrick Burns states, "Standard advice is to avoid using `=` when you mean `<-` even though it takes an extra keystroke. However, it is largely a matter of taste (as long as you know the differences)."
 * If you want to have your mind blown on the topic, you may read `?assignOps` or the stackoverflow thread [here](https://stackoverflow.com/questions/1741820/what-are-the-differences-between-and-assignment-operators-in-r).
@@ -523,6 +548,12 @@ f2
 ### Example 
 
 Create a vector named `grp` that has two levels: `a` and `b`, where the first 7 values are `a` and the second 4 values are `b`.
+
+::: {.content-visible when-format="ipynb"}
+```{r}
+# write code here
+```
+:::
 
 ## Extracting parts of a vector
 Subsets of the elements of a vector can be extracted by appending an index vector in square brackets `[]` to the name of the vector .
@@ -782,6 +813,12 @@ title("pmf of Binomial(n = 20, pi = .3)")
 * Construct a boxplot of counts.
 * Construct a histogram-like plot of counts using the `values` variable on the x-axis and the `counts` variable on the y-axis.
 
+::: {.content-visible when-format="ipynb"}
+```{r}
+# write code here
+```
+:::
+
 # Data Frames ([YouTube](https://youtu.be/k1yMTfK4gcQ), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=4c5a3de2-7456-4fe7-a424-aef90116f996))
 
 Data frames are two-dimensional data objects. Each column of a data frame is a vector (or variable) of possibly different data types. This is a *fundamental* data structure used by most of R's modeling functions. 
@@ -941,6 +978,7 @@ Usage: `read.table(file, header = TRUE, sep = ",")`
   * If each column of data in the file is separated by a tab, then use `sep = "\t"`.
 
 Here is an example reading a csv (comma separated file) with a header:
+
 ```{r}
 dtf <- read.table(file = "https://raw.githubusercontent.com/jfrench/DataWrangleViz/master/data/covid_dec4.csv",
                   header = TRUE,
@@ -1090,6 +1128,12 @@ The arguments should be:
 * `x`: the vector of values at which I want to determine the density.
 * `mu`, the mean of the normal distribution.
 * `sigma`, the standard deviation of the normal distribution.
+
+::: {.content-visible when-format="ipynb"}
+```{r}
+# write code here
+```
+:::
 
 ## Function returning a list of results
 
