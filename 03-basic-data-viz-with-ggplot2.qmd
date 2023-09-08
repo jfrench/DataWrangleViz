@@ -2,11 +2,11 @@
 title: "Basic data visualization with ggplot2"
 author: "Joshua French"
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
-format: html
-# format: ipynb
-# jupyter: ir
-# execute:
-#   output: false
+# format: html
+format: ipynb
+jupyter: ir
+execute:
+  output: false
 self-contained: true
 title-block-banner: true
 bibliography:
@@ -21,6 +21,40 @@ To open this information in an interactive Colab notebook, click the Open in Col
 </a>
 
 ---
+
+::: {.content-hidden when-format="html"}
+
+We start by making sure the necessary R packages are installed.
+
+```{r}
+if(!require(ggplot2, quietly = TRUE)) {
+  install.packages("faraway",
+                   repos = "https://cran.rstudio.com/")
+}
+```
+
+```{r}
+if(!require(patchwork, quietly = TRUE)) {
+  install.packages("patchwork",
+                   repos = "https://cran.rstudio.com/")
+}
+```
+
+```{r}
+if(!require(palmerpenguins, quietly = TRUE)) {
+  install.packages("palmerpenguins",
+                   repos = "https://cran.rstudio.com/")
+}
+```
+
+```{r}
+if(!require(HistData, quietly = TRUE)) {
+  install.packages("HistData",
+                   repos = "https://cran.rstudio.com/")
+}
+```
+
+:::
 
 This document is intended to help you quickly learn how to perform basic data visualization using **ggplot2**.
 
@@ -85,7 +119,6 @@ Complicated graphics may present far more information than we are able to proces
 #| warning: false
 library(palmerpenguins)
 library(ggplot2)
-library(plotly)
 heavy_plot <- 
   ggplot(penguins) +
   geom_point(aes(x = body_mass_g,
@@ -106,7 +139,7 @@ heavy_plot <-
                   linetype = sex),
               formula = y ~ x,
               method = "lm")
-ggplotly(heavy_plot)
+print(heavy_plot)
 ```
 
 ## Graphics ecosystems in R (Video: [YouTube](https://youtu.be/R12YAjSze0I), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=e0da966e-9758-4f86-8c16-af0f014e1e10))
