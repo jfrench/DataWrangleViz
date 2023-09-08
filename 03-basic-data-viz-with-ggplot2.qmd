@@ -2,11 +2,11 @@
 title: "Basic data visualization with ggplot2"
 author: "Joshua French"
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
-# format: html
-format: ipynb
-jupyter: ir
-execute:
-  output: false
+format: html
+# format: ipynb
+# jupyter: ir
+# execute:
+#   output: false
 self-contained: true
 title-block-banner: true
 bibliography:
@@ -28,7 +28,7 @@ We start by making sure the necessary R packages are installed.
 
 ```{r}
 if(!require(ggplot2, quietly = TRUE)) {
-  install.packages("faraway",
+  install.packages("ggplot2",
                    repos = "https://cran.rstudio.com/")
 }
 ```
@@ -113,12 +113,13 @@ as possible.
 
 Complicated graphics may present far more information than we are able to process, such as in the example below.
 
+::: {.content-hidden when-format="ipynb"}
+
 ```{r}
 #| echo: false
 #| message: false
 #| warning: false
-library(palmerpenguins)
-library(ggplot2)
+data(penguins, package = "palmerpenguins")
 heavy_plot <- 
   ggplot(penguins) +
   geom_point(aes(x = body_mass_g,
@@ -141,6 +142,32 @@ heavy_plot <-
               method = "lm")
 print(heavy_plot)
 ```
+:::
+
+::: {.content-hidden when-format="html"}
+```{r}
+data(penguins, package = "palmerpenguins")
+ggplot(penguins) +
+  geom_point(aes(x = body_mass_g,
+                 y = bill_length_mm,
+                 col = species,
+                 shape = island,
+                 size = flipper_length_mm)) +
+  scale_size_continuous(range = c(0.5, 2.5)) +
+  geom_smooth(data = penguins,
+              mapping = aes(x = body_mass_g,
+                            y = bill_length_mm,
+                            col = species),
+              formula = y ~ x,
+              method = "loess") + 
+  geom_smooth(data = penguins,
+              mapping = aes(x = body_mass_g,
+                            y = bill_length_mm,
+                            linetype = sex),
+              formula = y ~ x,
+              method = "lm")
+```
+::: 
 
 ## Graphics ecosystems in R (Video: [YouTube](https://youtu.be/R12YAjSze0I), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=e0da966e-9758-4f86-8c16-af0f014e1e10))
 
@@ -215,8 +242,7 @@ There are 4 main components needed to produce a graphic using **ggplot2**.
   
 In *R for Data Science*, @r4ds2017 provide the following template for creating graphics using **ggplot2**:
 
-```{r}
-#| eval: false
+```
 ggplot(data = <DATA>) + <GEOM_FUNCTION>(mapping = aes(<MAPPINGS>))
 ```
 
