@@ -2,11 +2,11 @@
 title: "Basic data visualization with ggplot2"
 author: "Joshua French"
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
-format: html
-# format: ipynb
-# jupyter: ir
-# execute:
-#   output: false
+# format: html
+format: ipynb
+jupyter: ir
+execute:
+  output: false
 self-contained: true
 title-block-banner: true
 bibliography:
@@ -179,7 +179,7 @@ There are three main graphics ecosystems in R:
 
 **base** graphics are traditional S-like graphics.
 
-* Run `?graphics-package` in the Console for more details.
+* Run ``` ?`graphics-package` ``` in the Console for more details.
 * These are the graphics you get by default when you use the `plot` function, the `hist` function, the `boxplot` function, etc.
 
 **lattice** graphics are an implementation of Trellis graphics [@BeckerClevelandShyu1996] for R.
@@ -192,7 +192,7 @@ There are three main graphics ecosystems in R:
 
 * It has gained widespread popularity because of its friendliness for visual exploration of data by data scientists.
 * It provides an elegant approach for constructing complex plots in a systematic way.
-* Run `?ggplot2-package` in the Console for more information.
+* Run ``` ?`ggplot2-package` ``` in the Console for more information.
 
 We demonstrate use of the three plotting ecosystems using the `penguins` data set from the **palmerpenguins** package [@R-palmerpenguins], which will be discussed in more detail later. The code below creates grouped scatter plots comparing bill length (mm) and body mass (g) of different penguin species using each of the ecosystems.
 
