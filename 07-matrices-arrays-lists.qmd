@@ -120,6 +120,16 @@ The `dim` function can be used to determine/confirm the number of rows or column
 dim(A)
 ```
 
+The `nrow` and `ncol` functions can be used to determine the number of rows and columns, respectively, in a `matrix` object.
+
+```{r}
+nrow(A)
+```
+
+```{r}
+ncol(A)
+```
+
 ## Subsetting a matrix
 
 We can access a subset of a `matrix` object using the `[` operator and providing vectors with the desired rows and columns separated by a comma. 
