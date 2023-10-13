@@ -36,7 +36,7 @@ knitr::write_bib(c(
 
 # Matrices and matrix algebra
 
-## Why are matrices and matrix algebra important knowledge for data scientists?
+## Why are matrices and matrix algebra important knowledge for data scientists? ([YouTube](https://youtu.be/40THrClg9Ho), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=f36ecb67-06e8-45a1-8fb8-b099015ade57))
 
 Understanding how to use matrices is foundational knowledge for any data scientist. 
 
@@ -45,7 +45,7 @@ Understanding how to use matrices is foundational knowledge for any data scienti
 
 Numeric matrices are often needed to implement complex algorithms used for data science methods related to regression, optimization, and classification.
 
-## What is a matrix? 
+## What is a matrix? ([YouTube](https://youtu.be/BrNr3cpLxQY), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=35569ba5-8909-4a0b-bb3a-b099015b52e4))
 
 A matrix is a two-dimensional object whose values have the same data type.
 
@@ -79,7 +79,7 @@ $$
 
 A vector is assumed to be a column vector unless otherwise indicated.
 
-## Creating a matrix
+## Creating a matrix ([YouTube](https://youtu.be/OsO39R0S6nY), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=bf3047ad-d8ea-4ba0-99c0-b099015b6066))
 
 A matrix can be created in R by passing a vector to the `matrix` function and specifying the number of rows and columns the matrix will have. 
 
@@ -130,7 +130,7 @@ nrow(A)
 ncol(A)
 ```
 
-## Subsetting a matrix
+## Subsetting a matrix ([YouTube](https://youtu.be/vm-biax5mmg), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=9d1da8bf-1118-4105-9eb8-b099015bc078))
 
 We can access a subset of a `matrix` object using the `[` operator and providing vectors with the desired rows and columns separated by a comma. 
 
@@ -196,7 +196,8 @@ B[2, , drop = FALSE]
 B[, 2, drop = FALSE]
 ```
 
-## Addition and subtraction
+## Matrix operations
+### Addition and subtraction ([YouTube](), [Panopto]())
 
 We can add or subtract the elements of two matrices as long as they have the same size.
 
@@ -225,7 +226,7 @@ Subtraction works in the same way, as shown below.
 A - B
 ```
 
-## Scalar multiplication
+### Scalar multiplication ([YouTube](), [Panopto]())
 
 A matrix multiplied by a scalar value $c\in\mathbb{R}$ is the matrix obtained by multiplying each element of the matrix by $c$. 
 
@@ -237,7 +238,7 @@ In the code below, we double the values in `A`.
 2 * A
 ```
 
-## Matrix multiplication
+### Matrix multiplication ([YouTube](), [Panopto]())
 
 Consider two matrices $\mathbf{A}$ and $\mathbf{B}$. The matrix product $\mathbf{AB}$ is only defined if the number of columns in $\mathbf{A}$ matches the number of rows in $\mathbf{B}$. 
 
@@ -283,7 +284,7 @@ B
 A %*% B
 ```
 
-## Elementwise multiplication
+### Elementwise multiplication ([YouTube](), [Panopto]())
 
 Consider two matrices $\mathbf{A}$ and $\mathbf{B}$ that have the same dimensions. The elementwise product, denoted $\mathbf{A} \circ \mathbf{B}$ is the product of the elements in the same position of the matrix. 
 
@@ -328,7 +329,7 @@ A * B
 ```
 
 
-## Transpose
+### Transpose ([YouTube](), [Panopto]())
 
 The **transpose** of a matrix $\mathbf{A}$, denoted $\mathbf{A}^T$, exchanges the rows and columns of the matrix. More formally, the $i,j$ element of $\mathbf{A}^T$ is the $j,i$ element of $\mathbf{A}$, i.e., $(\mathbf{A}^T)_{i,j} = \mathbf{A}_{j,i}$.
 
@@ -340,7 +341,7 @@ Let's transpose the matrix `A` that we previously created.
 t(A)
 ```
 
-## Special matrices
+## Special matrices ([YouTube](), [Panopto]())
 
 ### Square matrices
 
@@ -411,7 +412,7 @@ $$
 \end{bmatrix}.
 $$
 
-## Example: Line of best fit
+## Example: Line of best fit ([YouTube](), [Panopto]())
 
 A common application of matrix algebra is finding the "line of best fit" for the points observed in a scatter plot.
 
@@ -510,7 +511,7 @@ plot(x, y)
 abline(a = 3.58, b = 0.69)
 ```
 
-## Optimizing matrix algebra
+## Optimizing matrix algebra ([YouTube](), [Panopto]())
 
 It is straightforward to perform matrix algebra in R. However, it is more difficult to write *efficient* (faster) matrix code. We provide some basic tips below.
 
@@ -598,7 +599,7 @@ plot(t3, las = 2, cex.axis = 0.5)
 
 # Arrays
 
-## What is an array?
+## What is an array? ([YouTube](), [Panopto]())
 
 An array is a multidimensional, homogeneous (one data type) data structure.
 
@@ -612,7 +613,7 @@ A 3-dimensional array is like a loaf of bread.
 - Each slice of bread is a two-dimensional matrix/array.
 - We stack the matrix slices side-by-side to get the third dimension of our array.
 
-## Creating an array in R
+## Creating an array in R ([YouTube](), [Panopto]())
 
 We can create an array in R using the `array` function.
 
@@ -669,13 +670,13 @@ The `dim` function can be used to determine the size of an array.
 ```{r}
 dim(A)
 ```
-## Subsetting an array
+## Subsetting an array ([YouTube](), [Panopto]())
 
 We can subset an array in much the same way as a matrix. We use the `[` operator and provide vectors indicate the desired positions in each dimension that we want to extract, with each dimension being  separated by a comma. 
 
 # Lists
 
-## What is a list?
+## What is a list? ([YouTube](), [Panopto]())
 
 A list in R is a non-atomic vector.
 
@@ -691,7 +692,7 @@ We will discuss the first type of list in the context of loops and apply functio
 
 We will discuss the second type below.
 
-## Creating a list
+## Creating a list ([YouTube](), [Panopto]())
 
 A list is stored as a `list` object.
 
@@ -718,7 +719,7 @@ We combine 3 simple lists below using the `c` function.
 c(list(1, 1:2), list("a", c("a", "b")), list(TRUE, c(TRUE, FALSE)))
 ```
 
-## Subsetting a list
+## Subsetting a list ([YouTube](), [Panopto]())
 
 Subsetting a list is more similar to subsetting an atomic vector than it is to subsetting a matrix or array.
 
@@ -774,7 +775,7 @@ a$c
 ```
 
 
-## Nested Lists
+## Nested Lists ([YouTube](), [Panopto]())
 
 We can create lists of lists of lists, which created "nested" lists because the lists are nested in each other.
 
