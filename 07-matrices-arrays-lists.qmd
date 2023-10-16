@@ -3,11 +3,11 @@ title: "Matrices, Arrays, and Lists"
 author: "Joshua P. French"
 date: today
 date-format: long
-# format: html
-format: ipynb
-jupyter: ir
-execute:
-  output: false
+format: html
+# format: ipynb
+# jupyter: ir
+# execute:
+#   output: false
 self-contained: true
 title-block-banner: true
 bibliography:
@@ -284,7 +284,7 @@ B
 A %*% B
 ```
 
-### Elementwise multiplication ([YouTube](), [Panopto]())
+### Elementwise matrix multiplication ([YouTube](), [Panopto]())
 
 Consider two matrices $\mathbf{A}$ and $\mathbf{B}$ that have the same dimensions. The elementwise product, denoted $\mathbf{A} \circ \mathbf{B}$ is the product of the elements in the same position of the matrix. 
 
@@ -330,6 +330,10 @@ B <- matrix(7:12, ncol = 2)
 ```
 
 ```{r}
+B
+```
+
+```{r}
 A * B
 ```
 
@@ -340,7 +344,13 @@ The **transpose** of a matrix $\mathbf{A}$, denoted $\mathbf{A}^T$, exchanges th
 
 We can use the `t` function to obtain the transpose of a matrix.
 
-Let's transpose the matrix `A` that we previously created.
+We print the matrix `A` that we have previously defined.
+
+```{r}
+A
+```
+
+We compute the transpose of `A` using `t`.
 
 ```{r}
 t(A)
