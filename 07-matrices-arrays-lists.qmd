@@ -34,6 +34,15 @@ knitr::write_bib(c(
 ), 'packages_deeper_dive.bib')
 ```
 
+We start by making sure the necessary R packages are installed.
+
+```{r}
+if(!require(microbenchmark, quietly = TRUE)) {
+  install.packages("microbenchmark",
+                   repos = "https://cran.rstudio.com/")
+}
+```
+
 # Matrices and matrix algebra
 
 ## Why are matrices and matrix algebra important knowledge for data scientists? ([YouTube](https://youtu.be/40THrClg9Ho), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=f36ecb67-06e8-45a1-8fb8-b099015ade57))
@@ -625,6 +634,8 @@ A 3-dimensional array is like a loaf of bread.
 
 - Each slice of bread is a two-dimensional matrix/array.
 - We stack the matrix slices side-by-side to get the third dimension of our array.
+
+![[Sliced bread](https://www.pexels.com/photo/wheat-bread-slices-166021/)](./figures/sliced-bread.jpg)
 
 ## Creating an array in R ([YouTube](), [Panopto]())
 
