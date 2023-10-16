@@ -307,6 +307,11 @@ $$
 9 & 12
 \end{bmatrix}=
 \begin{bmatrix}
+1 \cdot 7 & 4 \cdot 10\\
+2 \cdot 8 & 5 \cdot 11\\
+3 \cdot 9 & 6 \cdot 12
+\end{bmatrix}=
+\begin{bmatrix}
 7 & 40\\
 16 & 55\\
 27 & 72
