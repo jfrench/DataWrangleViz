@@ -3,11 +3,11 @@ title: "Matrices, Arrays, and Lists"
 author: "Joshua P. French"
 date: today
 date-format: long
-format: html
-# format: ipynb
-# jupyter: ir
-# execute:
-#   output: false
+# format: html
+format: ipynb
+jupyter: ir
+execute:
+  output: false
 self-contained: true
 title-block-banner: true
 bibliography:
@@ -385,10 +385,7 @@ An $n\times n$ matrix $\mathbf{A}$ is invertible if there exists a matrix $\math
 
 The inverse of $\mathbf{A}$ is denoted $\mathbf{A}^{-1}$.
 
-- Inverse matrices only exist for square matrices that are symmetric and positive definite.
-
-- We do not discuss what it means for a matrix to be symmetric or positive definite because that is beyond the scope of this course. 
-- We can learn a little more about matrices at <https://jfrench.github.io/LinearRegression/overview-of-matrix-facts.html>.
+- Inverse matrices only exist for square matrices.
 
 The `solve` function can be used to compute the inverse of matrix, e.g., `solve(A)`. 
 
