@@ -3,11 +3,11 @@ title: "Matrices, Arrays, and Lists"
 author: "Joshua P. French"
 date: today
 date-format: long
-# format: html
-format: ipynb
-jupyter: ir
-execute:
-  output: false
+format: html
+# format: ipynb
+# jupyter: ir
+# execute:
+#   output: false
 self-contained: true
 title-block-banner: true
 bibliography:
@@ -473,7 +473,7 @@ y_n
 \end{bmatrix}.
 $$
 
-The values of $a$ and $b$ that minimize $RSS(a, b)$, which we will call $\hat{a}$ and $\hat{b}$ are computed through the equation 
+The values of $a$ and $b$ that minimize $RSS(a, b)$, which we will call $\hat{a}$ and $\hat{b}$, are computed through the equation 
 
 $$
 \begin{bmatrix}
@@ -515,9 +515,9 @@ xty <- t(X) %*% y
 solve(xtx, xty)
 ```
 
-Thus, our solution for $\hat{a}$ and $\hat{b}$ that minimize $RSS(a, b)$ is $\hat{a} = 3.58$ and $\hat{b} = 0.69$.
+Thus, our solution for $\hat{a}$ and $\hat{b}$ that minimizes $RSS(a, b)$ is $\hat{a} = 3.58$ and $\hat{b} = 0.69$.
 
-We use `abline` function to add the line of best fit to our scatter plot below.
+We use the `abline` function to add the line of best fit to our scatter plot.
 
 ```{r}
 plot(x, y)
