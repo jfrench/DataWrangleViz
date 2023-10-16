@@ -43,6 +43,13 @@ if(!require(microbenchmark, quietly = TRUE)) {
 }
 ```
 
+```{r}
+if(!require(abind, quietly = TRUE)) {
+  install.packages("abind",
+                   repos = "https://cran.rstudio.com/")
+}
+```
+
 # Matrices and matrix algebra
 
 ## Why are matrices and matrix algebra important knowledge for data scientists? ([YouTube](https://youtu.be/40THrClg9Ho), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=f36ecb67-06e8-45a1-8fb8-b099015ade57))
@@ -641,7 +648,7 @@ A 3-dimensional array is like a loaf of bread.
 
 ::: {.content-hidden when-format="html"}
 
-<img src="./figures/sliced-bread.jpg">
+![Sliced bread](https://images.pexels.com/photos/166021/pexels-photo-166021.jpeg)
 
 :::
 
@@ -660,7 +667,7 @@ We create a 3-dimensional array with dimension $3\times 2 \times 4$ below.
 
 ```{r}
 A <- array(1:24, dim = c(3, 2, 4))
-A
+print(A)
 ```
 
 Alternatively, we can bind matrices or arrays together using the `abind` function in the **abind** package [@R-abind].
@@ -682,7 +689,7 @@ A <- abind(
       matrix(1:4, nrow = 2),
       matrix(5:8, nrow = 2),
       along = 3)
-A
+print(A)
 ```
 
 We create a second 3-dimensional array (of size $2\times 2 \times 2$ named `B` below.
@@ -694,7 +701,8 @@ B <- array(9:16, dim = c(2, 2, 2))
 To bind `A` and `B` together, we can use the `abind` function.
 
 ```{r}
-abind(A, B)
+AB <- abind(A, B)
+print(AB)
 ```
 
 The `dim` function can be used to determine the size of an array.
