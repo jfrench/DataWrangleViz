@@ -640,7 +640,9 @@ A 3-dimensional array is like a loaf of bread.
 :::
 
 ::: {.content-hidden when-format="html"}
+
 ![Sliced bread](./figures/sliced-bread.jpg)
+
 :::
 
 ## Creating an array in R ([YouTube](), [Panopto]())
