@@ -3,11 +3,11 @@ title: "Matrices, Arrays, and Lists"
 author: "Joshua P. French"
 date: today
 date-format: long
-# format: html
-format: ipynb
-jupyter: ir
-execute:
-  output: false
+format: html
+# format: ipynb
+# jupyter: ir
+# execute:
+#   output: false
 self-contained: true
 title-block-banner: true
 bibliography:
@@ -712,7 +712,31 @@ dim(A)
 ```
 ## Subsetting an array ([YouTube](), [Panopto]())
 
-We can subset an array in much the same way as a matrix. We use the `[` operator and provide vectors indicate the desired positions in each dimension that we want to extract, with each dimension being  separated by a comma. 
+We can subset an array in much the same way as a matrix. We use the `[` operator and provide vectors indicating the desired positions in each dimension that we want to extract, with each dimension being  separated by a comma. 
+
+We provide some examples below.
+
+```{r}
+A <- array(1:24, dim = c(3, 2, 4))
+print(A)
+```
+
+Here, we subset the first element of `A`. This will run across the two elements of the second dimension of `A` and across all 4 elements of the third dimension.
+
+```{r}
+print(A[1, , ])
+```
+
+We subset the second element of the second dimension of `A`. This will run across all 3 elements of the first dimension of `A` and across all 4 elements of the 3rd dimension.
+
+```{r}
+print(A[, 2, ])
+```
+We subset the second and third elements of the third dimension of `A`, i.e., third second and third slices of the third dimension of `A`. This will run across all 3 elements of the first dimension of `A` and across both elements of the second dimension.
+
+```{r}
+print(A[, , 2:3])
+```
 
 # Lists
 
