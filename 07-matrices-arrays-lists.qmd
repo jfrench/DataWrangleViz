@@ -3,11 +3,11 @@ title: "Matrices, Arrays, and Lists"
 author: "Joshua P. French"
 date: today
 date-format: long
-format: html
-# format: ipynb
-# jupyter: ir
-# execute:
-#   output: false
+# format: html
+format: ipynb
+jupyter: ir
+execute:
+  output: false
 self-contained: true
 title-block-banner: true
 bibliography:
@@ -635,7 +635,13 @@ A 3-dimensional array is like a loaf of bread.
 - Each slice of bread is a two-dimensional matrix/array.
 - We stack the matrix slices side-by-side to get the third dimension of our array.
 
+::: {.content-hidden when-format="ipynb"}
 ![[Sliced bread](https://www.pexels.com/photo/wheat-bread-slices-166021/)](./figures/sliced-bread.jpg)
+:::
+
+::: {.content-hidden when-format="html"}
+![Sliced bread](./figures/sliced-bread.jpg)
+:::
 
 ## Creating an array in R ([YouTube](), [Panopto]())
 
