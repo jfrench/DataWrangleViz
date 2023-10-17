@@ -3,11 +3,11 @@ title: "Matrices, Arrays, and Lists"
 author: "Joshua P. French"
 date: today
 date-format: long
-format: html
-# format: ipynb
-# jupyter: ir
-# execute:
-#   output: false
+# format: html
+format: ipynb
+jupyter: ir
+execute:
+  output: false
 self-contained: true
 title-block-banner: true
 bibliography:
@@ -148,7 +148,7 @@ nrow(A)
 ncol(A)
 ```
 
-## Subsetting a matrix ([YouTube](https://youtu.be/PEt7HZt7noA), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=9d1da8bf-1118-4105-9eb8-b099015bc078))
+## Subsetting a matrix ([YouTube](https://youtu.be/PEt7HZt7noA), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=4a20bf6d-8b6d-44d9-b304-b09e00c4018a))
 
 We can access a subset of a `matrix` object using the `[` operator and providing vectors with the desired rows and columns separated by a comma. 
 
@@ -230,7 +230,7 @@ B[pos]
 ```
 
 ## Matrix operations
-### Addition and subtraction ([YouTube](), [Panopto]())
+### Addition and subtraction ([YouTube](https://youtu.be/ChiorfijWqY), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=f0afa263-b765-4054-b808-b09e0159ccb8))
 
 We can add or subtract the elements of two matrices as long as they have the same size.
 
@@ -259,7 +259,7 @@ Subtraction works in the same way, as shown below.
 A - B
 ```
 
-### Scalar multiplication ([YouTube](), [Panopto]())
+### Scalar matrix multiplication ([YouTube](https://youtu.be/gCB4EWMuF0Y), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=ec1b70ff-5a35-4c99-81b6-b09e015a8b6b))
 
 A matrix multiplied by a scalar value $c\in\mathbb{R}$ is the matrix obtained by multiplying each element of the matrix by $c$. 
 
@@ -271,7 +271,7 @@ In the code below, we double the values in `A`.
 2 * A
 ```
 
-### Matrix multiplication ([YouTube](), [Panopto]())
+### Matrix multiplication ([YouTube](https://youtu.be/QRTMoCoqai4), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=377475fa-ea2c-4b8c-8daf-b09e015b5d8e))
 
 Consider two matrices $\mathbf{A}$ and $\mathbf{B}$. The matrix product $\mathbf{AB}$ is only defined if the number of columns in $\mathbf{A}$ matches the number of rows in $\mathbf{B}$. 
 
@@ -317,7 +317,7 @@ B
 A %*% B
 ```
 
-### Elementwise matrix multiplication ([YouTube](), [Panopto]())
+### Elementwise matrix multiplication ([YouTube](https://youtu.be/DSqjWcorneI), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=25239575-20f2-4e12-a35a-b09e015c3588))
 
 Consider two matrices $\mathbf{A}$ and $\mathbf{B}$ that have the same dimensions. The elementwise product, denoted $\mathbf{A} \circ \mathbf{B}$ is the product of the elements in the same position of the matrix. 
 
@@ -371,7 +371,7 @@ A * B
 ```
 
 
-### Transpose ([YouTube](), [Panopto]())
+### Transpose ([YouTube](https://youtu.be/R_v94nP4O70), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=0fb7b469-0f72-407d-bf10-b09e015d2526))
 
 The **transpose** of a matrix $\mathbf{A}$, denoted $\mathbf{A}^T$, exchanges the rows and columns of the matrix. More formally, the $i,j$ element of $\mathbf{A}^T$ is the $j,i$ element of $\mathbf{A}$, i.e., $(\mathbf{A}^T)_{i,j} = \mathbf{A}_{j,i}$.
 
@@ -389,7 +389,7 @@ We compute the transpose of `A` using `t`.
 t(A)
 ```
 
-## Special matrices ([YouTube](), [Panopto]())
+## Special matrices ([YouTube](https://youtu.be/-05Z3BG3ZZA), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=5d546ef4-c64f-471d-b1a4-b09e015e3620))
 
 ### Square matrices
 
@@ -458,7 +458,7 @@ $$
 \end{bmatrix}.
 $$
 
-## Example: Line of best fit ([YouTube](), [Panopto]())
+## Example: Computing the line of best fit using matrix algebra ([YouTube](https://youtu.be/rSVxdqRCkuE), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=4d6cbd52-1169-49fd-b9a1-b09e015eb369))
 
 A common application of matrix algebra is finding the "line of best fit" for the points observed in a scatter plot.
 
@@ -557,7 +557,7 @@ plot(x, y)
 abline(a = 3.58, b = 0.69)
 ```
 
-## Optimizing matrix algebra ([YouTube](), [Panopto]())
+## Tips for optimizing matrix algebra operations ([YouTube](https://youtu.be/cBovzIQvw78), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=5e2bb274-0855-40ef-a60e-b09e015fec12))
 
 It is straightforward to perform matrix algebra in R. However, it is more difficult to write *efficient* (faster) matrix code. We provide some basic tips below.
 
@@ -645,7 +645,7 @@ plot(t3, las = 2, cex.axis = 0.5)
 
 # Arrays
 
-## What is an array? ([YouTube](), [Panopto]())
+## What is an array? ([YouTube](https://youtu.be/Gd5Z5TR9rQI), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=1d53c909-ca7a-4ae6-b63a-b09e0161a2d3))
 
 An array is a multidimensional, homogeneous (one data type) data structure.
 
@@ -669,7 +669,7 @@ A 3-dimensional array is like a loaf of bread.
 
 :::
 
-## Creating an array in R ([YouTube](), [Panopto]())
+## Creating an array ([YouTube](https://youtu.be/rI-S4DgESLU), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=78e4896e-a7bc-42fb-99bf-b09e0162500c))
 
 We can create an array in R using the `array` function.
 
@@ -727,7 +727,7 @@ The `dim` function can be used to determine the size of an array.
 ```{r}
 dim(A)
 ```
-## Subsetting an array ([YouTube](), [Panopto]())
+## Subsetting an array ([YouTube](https://youtu.be/tfynOZxThHA), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=dc55a667-f106-4254-a1ed-b09e0162f98f))
 
 We can subset an array in much the same way as a matrix. We use the `[` operator and provide vectors indicating the desired positions in each dimension that we want to extract, with each dimension being  separated by a comma. 
 
@@ -791,7 +791,7 @@ We can use the `-` syntax we learned with `matrix` objects to subset parts of an
 
 # Lists
 
-## What is a list? ([YouTube](), [Panopto]())
+## What is a list? ([YouTube](https://youtu.be/VGqZg0Na7kU), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=ce680bde-c6d6-480d-a331-b09e01643cb4))
 
 A list in R is a non-atomic vector.
 
@@ -807,7 +807,7 @@ We will discuss the first type of list in the context of loops and apply functio
 
 We will discuss the second type below.
 
-## Creating a list ([YouTube](), [Panopto]())
+## Creating a list ([YouTube](https://youtu.be/l5-qDCntYZg), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=b83d4606-7365-4576-9e5a-b09e017310d9))
 
 A list is stored as a `list` object.
 
@@ -834,11 +834,11 @@ We combine 3 simple lists below using the `c` function.
 c(list(1, 1:2), list("a", c("a", "b")), list(TRUE, c(TRUE, FALSE)))
 ```
 
-## Subsetting a list ([YouTube](), [Panopto]())
+## Subsetting a list ([YouTube](https://youtu.be/mc5oUxvSVZM), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=fdd25b1c-f02e-4ba2-8231-b09e0173c626))
 
 Subsetting a list is more similar to subsetting an atomic vector than it is to subsetting a matrix or array.
 
-We create a simple 4-element list with names components below.
+We create a simple 4-element list with named` components below.
 
 ```{r}
 a <- list(a = 1, b = 1:2, c = 1:3, d = 1:4)
@@ -889,8 +889,7 @@ In the code below, we extract the object in element `"c"` of `a`.
 a$c
 ```
 
-
-## Nested Lists ([YouTube](), [Panopto]())
+## Nested lists ([YouTube](https://youtu.be/wkgPuUgtPR8), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=b74d8590-6e6d-4ef7-a541-b09e017450b9))
 
 We can create lists of lists of lists, which created "nested" lists because the lists are nested in each other.
 
