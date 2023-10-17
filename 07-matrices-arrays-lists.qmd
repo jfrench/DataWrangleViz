@@ -148,7 +148,7 @@ nrow(A)
 ncol(A)
 ```
 
-## Subsetting a matrix ([YouTube](https://youtu.be/vm-biax5mmg), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=9d1da8bf-1118-4105-9eb8-b099015bc078))
+## Subsetting a matrix ([YouTube](https://youtu.be/PEt7HZt7noA), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=9d1da8bf-1118-4105-9eb8-b099015bc078))
 
 We can access a subset of a `matrix` object using the `[` operator and providing vectors with the desired rows and columns separated by a comma. 
 
@@ -730,6 +730,8 @@ dim(A)
 ## Subsetting an array ([YouTube](), [Panopto]())
 
 We can subset an array in much the same way as a matrix. We use the `[` operator and provide vectors indicating the desired positions in each dimension that we want to extract, with each dimension being  separated by a comma. 
+
+If `A` is an array with 3 dimensions, then we can select a rectangular subset of `A` using the syntax `A[v1, v2, v3]`, where `v1`, `v2`, and `v3` are `numeric` vectors indicating the desired elements in each dimension, respectively, that we want to select.
 
 We provide some examples below.
 
