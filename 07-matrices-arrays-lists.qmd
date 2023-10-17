@@ -3,11 +3,11 @@ title: "Matrices, Arrays, and Lists"
 author: "Joshua P. French"
 date: today
 date-format: long
-# format: html
-format: ipynb
-jupyter: ir
-execute:
-  output: false
+format: html
+# format: ipynb
+# jupyter: ir
+# execute:
+#   output: false
 self-contained: true
 title-block-banner: true
 bibliography:
@@ -740,7 +740,7 @@ A <- array(1:24, dim = c(3, 2, 4))
 print(A)
 ```
 
-Here, we subset the first element of `A`. This will run across the two elements of the second dimension of `A` and across all 4 elements of the third dimension.
+Here, we subset the first element of the first dimension of `A`. This will run across the two elements of the second dimension of `A` and across all 4 elements of the third dimension.
 
 ```{r}
 print(A[1, , ])
@@ -751,7 +751,8 @@ We subset the second element of the second dimension of `A`. This will run acros
 ```{r}
 print(A[, 2, ])
 ```
-We subset the second and third elements of the third dimension of `A`, i.e., third second and third slices of the third dimension of `A`. This will run across all 3 elements of the first dimension of `A` and across both elements of the second dimension.
+
+We subset the second and third elements of the third dimension of `A`, i.e., the second and third slices of the third dimension of `A`. This will run across all 3 elements of the first dimension of `A` and across both elements of the second dimension.
 
 ```{r}
 print(A[, , 2:3])
@@ -767,9 +768,13 @@ To avoid this behavior, we must set `drop` to `FALSE`.
 ```{r}
 print(A[1, 1, , drop = FALSE])
 ```
-If we want to select specific *elements* of an array (and not a rectangular subset) then we can pass an array with the same number of dimensions as the array we are subsetting with the elements that we want to select.
 
-We create an array, `v`, to subset the elements in positions $(1, 1, 1)$ and $(3, 2, 4)$ of `A`.
+If we want to select specific *elements* of an array (and not a rectangular subset) then we can pass a matrix indicating the elements we want to select.
+
+- The number of columns of the matrix needs to match the number of dimensions of the array we are subsetting.
+- Each row of the matrix indicates an element we want to select.
+
+We create an matrix, `v`, to subset the elements in positions $(1, 1, 1)$ and $(3, 2, 4)$ of `A`.
 
 ```{r}
 v <- cbind(c(1, 3), c(1, 2), c(1, 4))
