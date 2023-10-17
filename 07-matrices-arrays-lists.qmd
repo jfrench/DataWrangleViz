@@ -3,11 +3,11 @@ title: "Matrices, Arrays, and Lists"
 author: "Joshua P. French"
 date: today
 date-format: long
-format: html
-# format: ipynb
-# jupyter: ir
-# execute:
-#   output: false
+# format: html
+format: ipynb
+jupyter: ir
+execute:
+  output: false
 self-contained: true
 title-block-banner: true
 bibliography:
@@ -34,6 +34,7 @@ knitr::write_bib(c(
 ), 'packages_deeper_dive.bib')
 ```
 
+::: {.content-hidden when-format="html"}
 We start by making sure the necessary R packages are installed.
 
 ```{r}
@@ -49,6 +50,7 @@ if(!require(abind, quietly = TRUE)) {
                    repos = "https://cran.rstudio.com/")
 }
 ```
+:::
 
 # Matrices and matrix algebra
 
@@ -210,6 +212,21 @@ B[2, , drop = FALSE]
 
 ```{r}
 B[, 2, drop = FALSE]
+```
+
+If we want to extract specific elements of a `matrix` object and not a rectangular subset of the object, then we can use a `matrix` indicating the elements we want to extract inside `[`.
+
+Let's say we want to extract the elements in positions $(1, 2)$, $(3, 1)$, and $(4, 3)$. We create a matrix describing those positions. Each row of the matrix describes an element we want to extract.
+
+```{r}
+pos <- cbind(c(1, 3, 4), c(2, 1, 3))
+pos
+```
+
+We use `pos` to extract those elements from `B`.
+
+```{r}
+B[pos]
 ```
 
 ## Matrix operations
@@ -737,6 +754,33 @@ We subset the second and third elements of the third dimension of `A`, i.e., thi
 ```{r}
 print(A[, , 2:3])
 ```
+
+If we subset an array such that the subset can be thought of as a vector (e.g., a $1\times 1 \times 4$ array is like a vector with length 4), then R will automatically convert the subsetted object to a vector because the `[` operator has a hidden `drop` argument that by default coerces the result to the lowest possible dimension.
+
+```{r}
+print(A[1, 1, ])
+```
+To avoid this behavior, we must set `drop` to `FALSE`.
+
+```{r}
+print(A[1, 1, , drop = FALSE])
+```
+If we want to select specific *elements* of an array (and not a rectangular subset) then we can pass an array with the same number of dimensions as the array we are subsetting with the elements that we want to select.
+
+We create an array, `v`, to subset the elements in positions $(1, 1, 1)$ and $(3, 2, 4)$ of `A`.
+
+```{r}
+v <- cbind(c(1, 3), c(1, 2), c(1, 4))
+v
+```
+
+We now use `v` to subset these elements of `A`.
+
+```{r}
+print(A[v])
+```
+
+We can use the `-` syntax we learned with `matrix` objects to subset parts of an array that are not in certain positions, but we don't demonstrate its usage here.
 
 # Lists
 
