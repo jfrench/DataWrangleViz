@@ -3,11 +3,11 @@ title: "Control statements, iteration, and apply functions"
 author: "Joshua P. French"
 date: today
 date-format: long
-format: html
-# format: ipynb
-# jupyter: ir
-# execute:
-#   output: false
+# format: html
+format: ipynb
+jupyter: ir
+execute:
+  output: false
 self-contained: true
 title-block-banner: true
 bibliography:
@@ -65,13 +65,13 @@ if(!require(future.apply, quietly = TRUE)) {
 
 A control statement is code that controls what is executed later in the program or script. The most well-known examples are "if-else" and "switch" statements.
 
-## `if`, `elseif` and `else`
+## `if`, `else if` and `else`
 
 If-else statements in R rely on 3 functions: `if`, `elseif`, `else`. 
 
-- The `if` function can be used by itself.
+- The `if` statement can be used by itself.
 - The `else` statement must be used in conjunction with the `if` function.
-- `else if` must be used in conjunction with the `if` function and should be used with an `else` statement (otherwise there may be cases that are left out).
+- `else if` must be used in conjunction with the `if` statement and should be used with an `else` statement (otherwise there may be cases that are left out).
 
 An `if`  or `else if` statement is used to perform a sequence of commands when its argument is `TRUE`. 
 
@@ -80,7 +80,7 @@ An `else` statement is used to perform a sequence of commands when all previous 
 A set of `if`, `else if`, and `else` statements will having the following structure:
 
 ```
-if(logical statement) {
+if (logical statement) {
   # code to run if logical statement is true
 } else if (another logical statement) {
   # code to run if another logical statement is true
@@ -91,7 +91,7 @@ if(logical statement) {
 
 The curly braces, `{}`, are used to indicate the set of commands we want to execute if the logical statement is true.
 
-The `else if` and `else` functions should be one space after the `}` used to indicate the end if the previous `if` or `elseif` statement.
+The `else if` and `else` statements should be one space after the `}` used to indicate the end if the previous `if` or `elseif` statement.
 
 It is common to indent the code within a control statement by one tab to make the code easier to read.
 
@@ -146,7 +146,7 @@ We create a function, `determine_generation`, that takes the argument `year` and
 ```{r}
 determine_generation <- function(year) {
   if (year >= 1981 & year <= 1996) {
-  generation <- "millennial"
+    generation <- "millennial"
   } else if (year >= 1997 & year <= 2012) {
     generation <- "generation z"  
   } else if (year >= 2013 & year <= 2025) {
