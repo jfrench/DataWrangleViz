@@ -104,7 +104,7 @@ According to the CareGivers of America at <https://caregiversofamerica.com/2022-
 - The Baby Boomer Generation: born 1946-1964.
 - Generation X: born 1965-1980.
 - Millennials: born 1981-1996.
-- Generation Z: born 1996-2012.
+- Generation Z: born 1997-2012.
 - Gen Alpha: born 2013 – 2025.
 
 Let's say we have a vector with the birth year of an individual and we wish to identify the individual's generation based on the dates above. We can do this using a sequence of control statements. For simplicity, we only use the last four generations (Millennials, Generation Z, Gen Alpha, and Other).
@@ -182,10 +182,6 @@ Let's create a function called `sound` that takes a single character value `anim
 
 The `switch` function takes the value in `animal` and then decides what to do.
 
-- If `animal` is `"dog"`, then the `switch` function returns `"ruff"`. 
-- If `animal` is `"cat"`, then the `switch` function returns `"meow"`. 
-- The last input to the `switch` argument in the above example is what we want to return if the value of `animal` doesn't match any of the previous choices.
-
 ```{r}
 sound <- function(animal) {
   switch(animal, 
@@ -201,6 +197,10 @@ sound <- function(animal) {
          "we don't know what sound this animal makes")
 }
 ```
+
+- If `animal` is `"dog"`, then the `switch` function returns `"ruff"`. 
+- If `animal` is `"cat"`, then the `switch` function returns `"meow"`. 
+- The last input to the `switch` argument in the above example is what we want to return if the value of `animal` doesn't match any of the previous choices.
 
 Let's use this function.
 
