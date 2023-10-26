@@ -3,11 +3,11 @@ title: "Control statements, iteration, and apply functions"
 author: "Joshua P. French"
 date: today
 date-format: long
-# format: html
-format: ipynb
-jupyter: ir
-execute:
-  output: false
+format: html
+# format: ipynb
+# jupyter: ir
+# execute:
+#   output: false
 self-contained: true
 title-block-banner: true
 bibliography:
@@ -71,18 +71,18 @@ If-else statements in R rely on 3 functions: `if`, `elseif`, `else`.
 
 - The `if` function can be used by itself.
 - The `else` statement must be used in conjunction with the `if` function.
-- `elseif` must be used in conjunction with the `if` function and should be used with an `else` statement (otherwise there may be cases that are left out).
+- `else if` must be used in conjunction with the `if` function and should be used with an `else` statement (otherwise there may be cases that are left out).
 
-An `if`  or `elseif` statement is used to perform a sequence of commands when its argument is `TRUE`. 
+An `if`  or `else if` statement is used to perform a sequence of commands when its argument is `TRUE`. 
 
 An `else` statement is used to perform a sequence of commands when all previous control statement arguments are `FALSE` in a group of control statements. 
 
-A set of `if`, `elseif`, and `else` statements will having the following structure:
+A set of `if`, `else if`, and `else` statements will having the following structure:
 
 ```
 if(logical statement) {
   # code to run if logical statement is true
-} elseif (another logical statement) {
+} else if (another logical statement) {
   # code to run if another logical statement is true
 } else {
   # code to run if none of the other logical statements were true
@@ -91,7 +91,7 @@ if(logical statement) {
 
 The curly braces, `{}`, are used to indicate the set of commands we want to execute if the logical statement is true.
 
-The `elseif` and `else` functions should be one space after the `}` used to indicate the end if the previous `if` or `elseif` statement.
+The `else if` and `else` functions should be one space after the `}` used to indicate the end if the previous `if` or `elseif` statement.
 
 It is common to indent the code within a control statement by one tab to make the code easier to read.
 
