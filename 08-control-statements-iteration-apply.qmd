@@ -3,11 +3,11 @@ title: "Control statements, iteration, and apply functions"
 author: "Joshua P. French"
 date: today
 date-format: long
-format: html
-# format: ipynb
-# jupyter: ir
-# execute:
-#   output: false
+# format: html
+format: ipynb
+jupyter: ir
+execute:
+  output: false
 self-contained: true
 title-block-banner: true
 bibliography:
@@ -216,6 +216,10 @@ sound("goose")
 ```
 
 # Iteration
+
+Iteration is when our program repeatedly running a block of code until a terminating condition is satisfied. 
+
+- We "iteratively" run the code block until some condition is satisfied.
 
 `for` and `while` loops are the two *main* types of iteration in R
 
