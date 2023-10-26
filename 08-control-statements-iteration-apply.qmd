@@ -3,11 +3,11 @@ title: "Control statements, iteration, and apply functions"
 author: "Joshua P. French"
 date: today
 date-format: long
-# format: html
-format: ipynb
-jupyter: ir
-execute:
-  output: false
+format: html
+# format: ipynb
+# jupyter: ir
+# execute:
+#   output: false
 self-contained: true
 title-block-banner: true
 bibliography:
@@ -174,7 +174,6 @@ The `switch` function takes the following arguments:
 
 - `EXPR`: a single value that evaluates to a number or character string. 
 - ... A list of what to do based on the value of `EXPR`.
-
 
 ### Animal example
 
