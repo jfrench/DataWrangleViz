@@ -290,7 +290,8 @@ Here's an example of what a q-q plot might look like if the observed data are a 
 
 ```{r}
 #| echo: false
-#| execute: true
+#| eval: true
+#| output: true
 set.seed(1)
 qqnorm(rnorm(100), main = "data match theoretical distribution")
 abline(0, 1)
@@ -300,7 +301,8 @@ Here's an example of what a q-q plot might look like if the observed data are a 
 
 ```{r}
 #| echo: false
-#| execute: true
+#| eval: true
+#| output: true
 set.seed(2)
 qqnorm(rexp(100), main = "data don't match theoretical distribution")
 abline(0, 1)
