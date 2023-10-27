@@ -217,13 +217,11 @@ sound("goose")
 
 # Iteration
 
-Iteration is when our program repeatedly running a block of code until a terminating condition is satisfied. 
+Iteration in programming is when we repeatedly (i.e., iteratively) run the same code block until some condition is satisfied.
 
-- We "iteratively" run the code block until some condition is satisfied.
+The two *main* iteration approaches in R are `for` and `while` loops.
 
-`for` and `while` loops are the two *main* types of iteration in R
-
-There is also a `repeat` iterator that repeatedly runs the same set of code until the `break` function is used.
+There is also a `repeat` loop that repeatedly runs the same set of code until the `break` function is used.
 
 - The `break` function is used to "break out" of the current iteration of the inner-most loop.
 - The `next` function is used stop the current iteration and advance the looping index.
@@ -287,6 +285,27 @@ A q-q plot is a way to compare the quantiles observed for a data set with the th
 
 - We plot the pairs of quantiles in a scatter plot.
 - If the points of the q-q plot fall close to a straight line, then it is plausible that the observed data are a sample from the theoretical distribution.
+
+Here's an example of what a q-q plot might look like if the observed data are a random sample from the theoretical distribution being considered.
+
+```{r}
+#| echo: false
+#| execute: true
+set.seed(1)
+qqnorm(rnorm(100), main = "data match theoretical distribution")
+abline(0, 1)
+```
+
+Here's an example of what a q-q plot might look like if the observed data are a random sample from a distribution very different from the theoretical distribution being considered.
+
+```{r}
+#| echo: false
+#| execute: true
+set.seed(2)
+qqnorm(rexp(100), main = "data don't match theoretical distribution")
+abline(0, 1)
+```
+
 
 Q-q plots are often used to evaluate whether data seems to have come from a normally-distributed population. However, each random sample from the population will vary. How much variability can we expect in our q-q plot if the data are a random sample from a normally-distributed population?
 
