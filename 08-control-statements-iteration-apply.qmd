@@ -585,7 +585,7 @@ The bisection method is implemented in the following way:
 
 1. Find two points, $a$ and $b$, such that $a < b$ and $f(a)f(b) < 0$.
 2. Compute the average of $a$ and $b$, $m = (a + b)/2$
-3. Determine if $f(m) \neq 0$ (or in practice, whether $| f(m) | > \epsilon$). If our condition is satisfied, perform the following steps:
+3. Determine if $f(m) \neq 0$ (or in practice, whether $\vert f(m) \vert > \epsilon$). If our condition is satisfied, perform the following steps:
     a. If $f(m)f(a) < 0$, then a root exists between $a$ and $m$. Set $b = m$ and return to step 2. 
     b. Otherwise, a root exists between $m$ and $b$. Set $a = m$ and return to step 2.
 
@@ -628,7 +628,7 @@ bisect <- function(lower, upper, fun, eps = 0.0001) {
       lower <- m
     }
     # determine a new candidate for m
-    m <- c(lower + upper)/2
+    m <- (lower + upper)/2
   }
   return(m)
 }
