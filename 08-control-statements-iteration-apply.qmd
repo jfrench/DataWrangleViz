@@ -3,11 +3,11 @@ title: "Control statements, iteration, and apply functions"
 author: "Joshua P. French"
 date: today
 date-format: long
-# format: html
-format: ipynb
-jupyter: ir
-execute:
-  output: false
+format: html
+# format: ipynb
+# jupyter: ir
+# execute:
+#   output: false
 self-contained: true
 title-block-banner: true
 bibliography:
@@ -505,12 +505,13 @@ We can compare this to the output of the `dist` function to confirm that we have
 as.matrix(dist(coords))
 ```
 
-
 ## `while` loops
 
 A `while` loop is a loop that repeats a set of actions while a condition is `TRUE`. The loop stops running when the provided condition is `FALSE`.
 
-A `while` loop can be used to do the same thing as a `for` loop but is better suited for situations for which we don't know how many times we need to iterate. An common use of a `while` loop is to iteratively improve an approximation one iteration at a time until the change in the approximation is smaller than some standard of precision.
+A `while` loop can be used to do the same thing as a `for` loop but is better suited for situations for which we don't know how many times we need to iterate.
+
+A common use of a `while` loop is to iteratively improve an approximation one iteration at a time until the change in the approximation is smaller than some standard of precision.
 
 The basic syntax of a `while` loop is shown in the psuedo code below.
 
@@ -535,7 +536,6 @@ Here's what happens in a `while` loop:
 3. We repeat steps 1 and 2 until our condition is `FALSE`.
 4. We exit the loop.
 
-
 We provide a trivial example of a `while` loop that prints the current value of an iterator, `i`.
 
 - We initially set `i` to `1`.
@@ -551,7 +551,9 @@ while (i < 4) {
 }
 ```
 
-`while` loops tend to be more dangerous than `for` loops because it is easy create an "infinite loop" `that never stops running. What this means is that our condition is always satisfied, so the loop keeps running indefinitely or until an error occurs (like running out of memory).
+`while` loops tend to be more dangerous than `for` loops because it is easy create an "infinite loop" `that never stops running. 
+
+An infinite loop occurs when our `while` condition is always satisfied, so the loop keeps running indefinitely or until an error occurs (like running out of memory).
 
 If we want to crash our computer, we can run the following code:
 
