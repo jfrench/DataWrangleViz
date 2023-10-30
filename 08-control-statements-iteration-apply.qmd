@@ -526,6 +526,8 @@ We have the following components of the `while` loop:
 - The loop starts with `while`, which indicates that we want to implement a `while` loop.
 - Inside the parentheses after `while`, we have a `condition`.
 - If `condition` is `TRUE`, we run the code in between the curly braces.
+- We then return to the `condition`. If `condition` is still `TRUE`, then we run the code in between the curly praces again.
+- We keep repeating the previous step until `condition` is `FALSE`.
 
 We can read a `while` loop in the following way: While our condition is `TRUE`, run the following code.
 
@@ -569,11 +571,13 @@ If we are stuck in an infinite loop, then:
 
 - Pressing `Ctrl + c` (PC) or `Cmd + c` (Mac) may stop a loop.
 - Sometimes, a "STOP" button is available in the Console. Clicking this button will attempt to stop a loop.
-- In R Studio, we can click "Session" in the Menu and that click "Interrupt R" to stop the code being executed.
+- In R Studio, we can click "Session" in the Menu and then click "Interrupt R" to stop the code being executed.
 
 ### Bisection example
 
-The bisection method can be used to find the "zeros" or "roots" of a continuous function, i.e., where the function equals 0, as long as we start at two values of the function that have opposite signs.
+The bisection method is a method for finding the "zeros" or "roots" of a continuous function, i.e., where the function equals 0.
+
+The bisection method requires that we start the algorithm at two values such that the function has opposite signs for those values.
 
 Suppose we have a continuous function, $f(x)$.
 
@@ -581,7 +585,7 @@ The bisection method is implemented in the following way:
 
 1. Find two points, $a$ and $b$, such that $a < b$ and $f(a)f(b) < 0$.
 2. Compute the average of $a$ and $b$, $m = (a + b)/2$
-3. Determine if $f(m) \neq 0$ (or in practice, whether $|f(m)| > \epsilon$). If our condition is satisfied, perform the following steps:
+3. Determine if $f(m) \neq 0$ (or in practice, whether $| f(m) | > \epsilon$). If our condition is satisfied, perform the following steps:
     a. If $f(m)f(a) < 0$, then a root exists between $a$ and $m$. Set $b = m$ and return to step 2. 
     b. Otherwise, a root exists between $m$ and $b$. Set $a = m$ and return to step 2.
 
