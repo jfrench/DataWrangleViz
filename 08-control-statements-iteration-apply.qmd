@@ -8,6 +8,7 @@ format: ipynb
 jupyter: ir
 execute:
   output: false
+wrap: 'none'
 self-contained: true
 title-block-banner: true
 bibliography:
