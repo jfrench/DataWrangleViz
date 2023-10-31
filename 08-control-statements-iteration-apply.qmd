@@ -761,7 +761,7 @@ The `*apply` functions are a set of vectorized functions that can be applied dif
 #| label: tbl-apply
 #| tbl-cap: "A summary of the various `*apply` functions available in R."
 #| echo: false
-adf <- data.frame(name = c("apply", "lapply", "sapply", "vapply", "tapply", "mapply"), 
+adf <- data.frame(name = c("`apply`", "`lapply`", "`sapply`", "`vapply`", "`tapply`", "`mapply`"), 
                   description = c("Applies a function to the margins of a data frame, matrix, or array.", "Applies a function to each element of a list.", "A version of `lapply` that attempts to simplify the results to a vector, matrix, or array.", "A safer version of `sapply` that returns a pre-specified type of return value.", "Applies a function to a vector or data frame based on the levels of a categorical variable", "A multivariate version of `sapply`."))
 knitr::kable(adf)
 ```
@@ -770,12 +770,12 @@ knitr::kable(adf)
 ::: {.content-hidden when-format="html"}
 |name   |description                                                                                |
 |:------|:------------------------------------------------------------------------------------------|
-|apply  |Applies a function to the margins of a data frame, matrix, or array.                       |
-|lapply |Applies a function to each element of a list.                                              |
-|sapply |A version of `lapply` that attempts to simplify the results to a vector, matrix, or array. |
-|vapply |A safer version of `sapply` that returns a pre-specified type of return value.             |
-|tapply |Applies a function to a vector or data frame based on the levels of a categorical variable |
-|mapply |A multivariate version of `sapply`.   
+|`apply`  |Applies a function to the margins of a data frame, matrix, or array.                       |
+|`lapply` |Applies a function to each element of a list.                                              |
+|`sapply` |A version of `lapply` that attempts to simplify the results to a vector, matrix, or array. |
+|`vapply` |A safer version of `sapply` that returns a pre-specified type of return value.             |
+|`tapply` |Applies a function to a vector or data frame based on the levels of a categorical variable |
+|`mapply` |A multivariate version of `sapply`.   
 : A summary of the various `*apply` functions available in R. {#tbl-apply}
 :::
 
@@ -791,7 +791,7 @@ The primary arguments of the `apply` function are:
 - `...`: additional arguments that need to be passed to `FUN`.
 - `simplify`: a logical value indicating whether results should be simplified, if possible. The default is `TRUE`. 
 
-We provide several example using the `apply` function below.
+We provide several examples using the `apply` function below.
 
 Consider the matrix `mat` below.
 
@@ -828,7 +828,7 @@ We create a 3-dimensional array with dimension $3\times 2 \times 4$ below.
 
 ```{r}
 A <- array(1:24, dim = c(3, 2, 4))
-A
+print(A)
 ```
 
 Let's compute means for each row of `A`.
