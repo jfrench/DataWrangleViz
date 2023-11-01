@@ -1,7 +1,8 @@
 ---
 title: "Crash Course in R"
 author: "Joshua French"
-date: "`r format(Sys.time(), '%Y-%m-%d')`"
+date: today
+date-format: long
 # format: html
 format: ipynb
 jupyter: ir

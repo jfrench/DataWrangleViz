@@ -66,7 +66,7 @@ if(!require(future.apply, quietly = TRUE)) {
 
 A control statement is code that controls what is executed later in the program or script. The most well-known examples are "if-else" and "switch" statements.
 
-## `if`, `else if` and `else`
+## `if`, `else if` and `else` ([YouTube](https://youtu.be/mHaYfe-bXME), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=f7efc57b-07f1-4f7c-8d4a-b0ad01017003))
 
 If-else statements in R rely on 3 functions: `if`, `elseif`, `else`. 
 
@@ -167,7 +167,7 @@ determine_generation(1985)
 
 The above example is trivial and unrealistic. E.g., our control statements won't work with a vector of inputs. Additionally, it doesn't handle cases like non-integer values very well (what generation is 1981.5?). However, it paints a picture of what can be done using control statements.
 
-## The `switch` function
+## The `switch` function ([YouTube](https://youtu.be/ay5dwOMNlZ0), [Panopto]())
 
 The `switch` function is a compact way of evaluating a set of `if`, `elseif`, and `else` statements when we need to change our action depending on a single value argument that can only take a small number of values.
 
@@ -216,7 +216,7 @@ sound("duck")
 sound("goose")
 ```
 
-# Iteration
+# Iteration ([YouTube](https://youtu.be/xX6z0xqkBBc), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=97161e03-c736-4dde-a53a-b0ad0103fc2e))
 
 Iteration in programming is when we repeatedly (i.e., iteratively) run the same code block until some condition is satisfied.
 
@@ -231,7 +231,7 @@ I have never once used the `repeat`, `break`, or `next` functions in over 20 yea
 
 ## `for` loops
 
-### Basic `for` loops
+### Basic `for` loops ([YouTube](https://youtu.be/7RV5Aayi2xc), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=94a21d98-fd8d-44bc-861f-b0ad0104afba))
 
 `for` loops are useful if we know in advance the set of values that we want to iterate over. E.g., we may want to perform an action for integer values running from 1 to 100.
 
@@ -278,7 +278,7 @@ for (animal in c("dog", "cat", "coyote")) {
   message("The ", animal, " makes the sound ", current_sound, ".")
 }
 ```
-### Q-q plot example
+### Q-q plot example ([YouTube](https://youtu.be/0sfB22OUMMM), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=a4fb684c-349d-4e11-8ff9-b0ad01054150))
 
 Let's create a more realistic `for` loop example involving quantile-quantile plots (q-q plots).
 
@@ -340,7 +340,7 @@ for (i in 1:4) {
 par(mfrow = c(1, 1))
 ```
 
-### KNN example
+### KNN example ([YouTube](https://youtu.be/oDn1NBKB_Ss), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=1b26f627-78b5-47ae-9bbd-b0ad0106357a))
 
 We now use a `for` loop to determine the K nearest neighbors of a set of locations. For each location, we determine the K locations that are nearest to the current location. These K locations are the nearest neighbors of the current location.
 
@@ -440,7 +440,7 @@ The nearest neigbhors of the second location are locations 11, 25, and 18.
 
 The nearest neighbors of the third location are locations 21, 12, and 15.
 
-### Nested `for` loops
+### Nested `for` loops ([YouTube](https://youtu.be/AvO74v6_0tc), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=6eeb144f-d690-402d-bea5-b0ad0106c0f9))
 
 A nested `for` loop is one that uses one or more `for` loops inside of another `for` loop. Here is some pseudo code to illustrate a nested `for` loop.
 
@@ -506,7 +506,7 @@ We can compare this to the output of the `dist` function to confirm that we have
 as.matrix(dist(coords))
 ```
 
-## `while` loops
+## `while` loops ([YouTube](https://youtu.be/U-IEqpNgIrU), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=0a4fa32f-d2a8-424e-8145-b0ad0107ad54))
 
 A `while` loop is a loop that repeats a set of actions while a condition is `TRUE`. The loop stops running when the provided condition is `FALSE`.
 
@@ -574,7 +574,7 @@ If we are stuck in an infinite loop, then:
 - Sometimes, a "STOP" button is available in the Console. Clicking this button will attempt to stop a loop.
 - In R Studio, we can click "Session" in the Menu and then click "Interrupt R" to stop the code being executed.
 
-### Bisection example
+### Bisection example ([YouTube](https://youtu.be/my39zmDzUe4), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=37981baa-776b-4e1b-bb28-b0ad01087114))
 
 The bisection method is a method for finding the "zeros" or "roots" of a continuous function, i.e., where the function equals 0.
 
@@ -676,7 +676,7 @@ What happens if we choose bad starting values?
 bisect(lower = -4, upper = 5, fun = f)
 ```
 
-## Loops versus vectorization
+## Loops versus vectorization ([YouTube](https://youtu.be/dOFT2gqvrUw), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=922d74ac-554a-49bf-b7f6-b0ad01095e0e))
 
 Loops in R are notoriously slow.
 
@@ -747,7 +747,7 @@ While the exact timing results will depend on the computer the timings are perfo
 
 These results may seem trivial, but for large data sets where these operations are performed thousands or millions of times, vectorized operations can be many orders of magnitude faster than loops.
 
-# The vectorized *apply functions
+# The vectorized *apply functions ([YouTube](https://youtu.be/nl-ktoJriH8), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=92d3b13f-35c1-4829-bd79-b0ad010b20ed))
 
 The `*apply` functions are a set of vectorized functions that can be applied different object types. The "`*`" in `*apply` is a "wildcard" character, meaning that it can be any set of characters. 
 
@@ -779,7 +779,7 @@ knitr::kable(adf)
 : A summary of the various `*apply` functions available in R. {#tbl-apply}
 :::
 
-### The `apply` function
+### The `apply` function ([YouTube](https://youtu.be/iWq_EsrXhjQ), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=98faa071-9645-4c1c-afe8-b0ad010c0e64))
 
 The `apply` function applies a function to a margin (dimension) of a data frame, matrix, or array.
 
@@ -852,7 +852,7 @@ Let's compute the sums across the third dimension of `A`.
 apply(A, 3, sum)
 ```
 
-`21` comes from adding all the values in the first element of the third dimension of `A`. More specifically, it is equivalent to running the following comman.
+`21` comes from adding all the values in the first element of the third dimension of `A`. More specifically, it is equivalent to running the following command.
 
 ```{r}
 sum(A[,,1])
@@ -872,7 +872,7 @@ The command above returns the values obtained by averaging all of the values in 
 mean(A[1, 1, ])
 ```
 
-## The `lapply`, `sapply`, and `vapply` functions.
+## The `lapply`, `sapply`, and `vapply` functions ([YouTube](https://youtu.be/4RjlOShPeU0), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=53c2f52e-8419-4846-83f7-b0ad010c9c25))
 
 The `lapply` function applies a function to each element of an atomic vector or list. It is very convenient for performing analyses in simulation studies. The `lapply` function always returns a list.
 
@@ -900,7 +900,7 @@ lapply(simple_list, mean)
 The `sapply` function attempts to coerce the results of `lapply` to a `vector`, `matrix`, or `array` (whichever is simplest) using the `simplify2array` function. Technically, the `sapply` function has two additional arguments compared to `lapply`:
 
 - `simplify`: a logical value indicating whether the `sapply` should attempt to simplify the result using `simplify2array`. The default is `TRUE`.
-- `USE.NAMES`: a logical value indicator whether names should be associated with the results. The default is `TRUE`.
+- `USE.NAMES`: a logical value indicating whether names should be associated with the results. The default is `TRUE`.
 
 We repeat the previous example using `sapply`.
 
@@ -991,7 +991,7 @@ vapply(l2, max, FUN.VALUE = double(1))
 
 We should not use `sapply` or `vapply` inside any function to avoid problems with the output change data types. Instead, use the `lapply` function to keep the output consistent.
 
-### Bootstrap confidence interval example
+### Bootstrap confidence interval example ([YouTube](https://youtu.be/IBuJSRu9Quw), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=88db6193-d823-4c75-a00b-b0ad010d3fb3))
 
 A confidence interval procedure produces plausible values for a target parameter with an associated confidence level.
 
@@ -1063,7 +1063,7 @@ bootstrap_ci(x)
 
 Our 95% bootstrap confidence interval for the population mean is [2.44, 4.98]. The sample was a random sample from a normal distribution with mean 3 and standard deviation 2, so our interval (in this case) did contain the true value.
 
-## The `tapply` function
+## The `tapply` function ([YouTube](https://youtu.be/CLLK9a8d_jA), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=1058278d-dbb8-4edd-b2ef-b0ad010de1b8))
 
 The `tapply` function is used to apply a function to all the values associated with a certain level of a `factor` variable. It is useful for summarizing information for different groups of data.
 
@@ -1097,7 +1097,7 @@ We can use the `tapply` function to compute a more complex summary of each group
 tapply(X = chickwts$weight, INDEX = chickwts$feed, FUN = summary)
 ```
 
-### Frequency table example
+### Frequency table example ([YouTube](https://youtu.be/X6kNWXR1hTY), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=c778d1da-1509-481f-8f3d-b0ad010e6cb5))
 
 We can use the `tapply` function to construct a frequency table for a `numeric` variable based on a set of bins that break the variable into different intervals. Plotting a frequency table produces a histogram.
 
@@ -1155,7 +1155,7 @@ count
 
 There were 55 eruptions that lasted between 1.5 and 2 minutes. There were 37 eruptions that lasted between 2 and 2.5 minutes, etc.
 
-## The `mapply` function
+## The `mapply` function ([YouTube](https://youtu.be/kAMAVfNvi8s), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=d0288e67-c616-4b43-9397-b0ad010f8d49))
 
 The `mapply` function is intended to be a multivariate version of `sapply`. More specifically, it will vectorize over multiple arguments instead of a single one. The main arguments of the `mapply` function are:
 
@@ -1163,7 +1163,7 @@ The `mapply` function is intended to be a multivariate version of `sapply`. More
 - `...`: the arguments to be vectorized over.
 - `MoreArgs`: a `list` with named elements that supply additional arguments need for `FUN`.
 
-There are also `SIMPLIFY` and `USE.NAMES` arguments that we do not discuss. Run `mapply` in the Console for more details.
+There are also `SIMPLIFY` and `USE.NAMES` arguments that we do not discuss. Run `?mapply` in the Console for more details.
 
 The `mapply` function is more complicated than the other `*apply` functions. I have rarely used it because there are often simpler ways to solve the problem that do not require the complexity of `mapply`. 
 
@@ -1208,7 +1208,7 @@ mapply(FUN = paste, partner1, partner2, list(sep = " and "), FALSE)
 
 What is actually happening is that `" and "` and `"FALSE"` are being passed into `paste` with the values from `partner1` and `partner2`, which then pastes the four individual character strings into a single string.
 
-## `*apply` functions, parallel computing, and progress bars
+## Parallel computing, progress bars, `*apply` functions ([YouTube](https://youtu.be/2LXW8d-lOEM), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=92a4020b-f79c-456d-a91c-b0ad0110622e))
 
 We can sometimes speed up the computations performed by an `*apply` function using parallel processing (processing multiple tasks *in parallel* instead of one-at-a-time).
 
@@ -1245,8 +1245,8 @@ system.time(lapply(1:6, sleep_iterator))
 The **parallel** package [@R-base] provides parallelized equivalents of several `*apply` functions. 
 
 - `parApply` is a parallelized version of `apply`.
-- `parLapply` is a parallized version of `lapply`.
-- `parSapply` is a parallized version of `sapply`.
+- `parLapply` is a parallelized version of `lapply`.
+- `parSapply` is a parallelized version of `sapply`.
 
 Run `?parallel::clusterApply` to see additional details about these and related parallelized functions.
 
@@ -1291,7 +1291,7 @@ library(future.apply)
 
 To perform a parallelized operation using **future.apply**, we must use the `plan` function to describe how we want the parallel processing to be performed.
 
-The code below sets up a plan to run 2 processes in parallel using a `"multisession"` approach. Run `future::plan` in the Console for more details.
+The code below sets up a plan to run 2 processes in parallel using a `"multisession"` approach. Run `?future::plan` in the Console for more details.
 
 ```{r}
 plan(multisession, workers = 2)

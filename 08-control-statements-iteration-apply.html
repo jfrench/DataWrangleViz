@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Joshua P. French">
-<meta name="dcterms.date" content="2023-10-31">
+<meta name="dcterms.date" content="2023-11-01">
 
 <title>Control statements, iteration, and apply functions</title>
 <style>
@@ -3168,7 +3168,7 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">October 31, 2023</p>
+        <p class="date">November 1, 2023</p>
       </div>
     </div>
     
@@ -3209,8 +3209,8 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 <section id="control-statements" class="level1">
 <h1>Control statements</h1>
 <p>A control statement is code that controls what is executed later in the program or script. The most well-known examples are “if-else” and “switch” statements.</p>
-<section id="if-else-if-and-else" class="level2">
-<h2 class="anchored" data-anchor-id="if-else-if-and-else"><code>if</code>, <code>else if</code> and <code>else</code></h2>
+<section id="if-else-if-and-else-youtube-panopto" class="level2">
+<h2 class="anchored" data-anchor-id="if-else-if-and-else-youtube-panopto"><code>if</code>, <code>else if</code> and <code>else</code> (<a href="https://youtu.be/mHaYfe-bXME">YouTube</a>, <a href="https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=f7efc57b-07f1-4f7c-8d4a-b0ad01017003">Panopto</a>)</h2>
 <p>If-else statements in R rely on 3 functions: <code>if</code>, <code>elseif</code>, <code>else</code>.</p>
 <ul>
 <li>The <code>if</code> statement can be used by itself.</li>
@@ -3294,8 +3294,8 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 <p>The above example is trivial and unrealistic. E.g., our control statements won’t work with a vector of inputs. Additionally, it doesn’t handle cases like non-integer values very well (what generation is 1981.5?). However, it paints a picture of what can be done using control statements.</p>
 </section>
 </section>
-<section id="the-switch-function" class="level2">
-<h2 class="anchored" data-anchor-id="the-switch-function">The <code>switch</code> function</h2>
+<section id="the-switch-function-youtube-panopto" class="level2">
+<h2 class="anchored" data-anchor-id="the-switch-function-youtube-panopto">The <code>switch</code> function (<a href="https://youtu.be/ay5dwOMNlZ0">YouTube</a>, <a href>Panopto</a>)</h2>
 <p>The <code>switch</code> function is a compact way of evaluating a set of <code>if</code>, <code>elseif</code>, and <code>else</code> statements when we need to change our action depending on a single value argument that can only take a small number of values.</p>
 <p>The <code>switch</code> function takes the following arguments:</p>
 <ul>
@@ -3348,8 +3348,8 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 </section>
 </section>
 </section>
-<section id="iteration" class="level1">
-<h1>Iteration</h1>
+<section id="iteration-youtube-panopto" class="level1">
+<h1>Iteration (<a href="https://youtu.be/xX6z0xqkBBc">YouTube</a>, <a href="https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=97161e03-c736-4dde-a53a-b0ad0103fc2e">Panopto</a>)</h1>
 <p>Iteration in programming is when we repeatedly (i.e., iteratively) run the same code block until some condition is satisfied.</p>
 <p>The two <em>main</em> iteration approaches in R are <code>for</code> and <code>while</code> loops.</p>
 <p>There is also a <code>repeat</code> loop that repeatedly runs the same set of code until the <code>break</code> function is used.</p>
@@ -3360,8 +3360,8 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 <p>I have never once used the <code>repeat</code>, <code>break</code>, or <code>next</code> functions in over 20 years of R programming. While I’m sure they have their uses, they are not commonly used nor needed, so we will not be covering them.</p>
 <section id="for-loops" class="level2">
 <h2 class="anchored" data-anchor-id="for-loops"><code>for</code> loops</h2>
-<section id="basic-for-loops" class="level3">
-<h3 class="anchored" data-anchor-id="basic-for-loops">Basic <code>for</code> loops</h3>
+<section id="basic-for-loops-youtube-panopto" class="level3">
+<h3 class="anchored" data-anchor-id="basic-for-loops-youtube-panopto">Basic <code>for</code> loops (<a href="https://youtu.be/7RV5Aayi2xc">YouTube</a>, <a href="https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=94a21d98-fd8d-44bc-861f-b0ad0104afba">Panopto</a>)</h3>
 <p><code>for</code> loops are useful if we know in advance the set of values that we want to iterate over. E.g., we may want to perform an action for integer values running from 1 to 100.</p>
 <p>The basic syntax of a <code>for</code> loop is shown in the psuedo code below.</p>
 <pre><code>for (i in vector_of_values) {
@@ -3417,8 +3417,8 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 </div>
 </div>
 </section>
-<section id="q-q-plot-example" class="level3">
-<h3 class="anchored" data-anchor-id="q-q-plot-example">Q-q plot example</h3>
+<section id="q-q-plot-example-youtube-panopto" class="level3">
+<h3 class="anchored" data-anchor-id="q-q-plot-example-youtube-panopto">Q-q plot example (<a href="https://youtu.be/0sfB22OUMMM">YouTube</a>, <a href="https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=a4fb684c-349d-4e11-8ff9-b0ad01054150">Panopto</a>)</h3>
 <p>Let’s create a more realistic <code>for</code> loop example involving quantile-quantile plots (q-q plots).</p>
 <p>A q-q plot is a way to compare the quantiles observed for a data set with the theoretical quantiles we expect if the data comes from a certain distribution.</p>
 <ul>
@@ -3471,8 +3471,8 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="knn-example" class="level3">
-<h3 class="anchored" data-anchor-id="knn-example">KNN example</h3>
+<section id="knn-example-youtube-panopto" class="level3">
+<h3 class="anchored" data-anchor-id="knn-example-youtube-panopto">KNN example (<a href="https://youtu.be/oDn1NBKB_Ss">YouTube</a>, <a href="https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=1b26f627-78b5-47ae-9bbd-b0ad0106357a">Panopto</a>)</h3>
 <p>We now use a <code>for</code> loop to determine the K nearest neighbors of a set of locations. For each location, we determine the K locations that are nearest to the current location. These K locations are the nearest neighbors of the current location.</p>
 <p>We start be generating a random set of 25 coordinates where the x- and y-values can take any value between 0 and 1. In the code below, we:</p>
 <ul>
@@ -3566,8 +3566,8 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 <p>The nearest neigbhors of the second location are locations 11, 25, and 18.</p>
 <p>The nearest neighbors of the third location are locations 21, 12, and 15.</p>
 </section>
-<section id="nested-for-loops" class="level3">
-<h3 class="anchored" data-anchor-id="nested-for-loops">Nested <code>for</code> loops</h3>
+<section id="nested-for-loops-youtube-panopto" class="level3">
+<h3 class="anchored" data-anchor-id="nested-for-loops-youtube-panopto">Nested <code>for</code> loops (<a href="https://youtu.be/AvO74v6_0tc">YouTube</a>, <a href="https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=6eeb144f-d690-402d-bea5-b0ad0106c0f9">Panopto</a>)</h3>
 <p>A nested <code>for</code> loop is one that uses one or more <code>for</code> loops inside of another <code>for</code> loop. Here is some pseudo code to illustrate a nested <code>for</code> loop.</p>
 <pre><code>for (i in i_vector) {
   # some code
@@ -3639,8 +3639,8 @@ d_{i,j} = \sqrt{(x_i - x_j)^2 + (y_i - y_j)^2}.
 </div>
 </section>
 </section>
-<section id="while-loops" class="level2">
-<h2 class="anchored" data-anchor-id="while-loops"><code>while</code> loops</h2>
+<section id="while-loops-youtube-panopto" class="level2">
+<h2 class="anchored" data-anchor-id="while-loops-youtube-panopto"><code>while</code> loops (<a href="https://youtu.be/U-IEqpNgIrU">YouTube</a>, <a href="https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=0a4fa32f-d2a8-424e-8145-b0ad0107ad54">Panopto</a>)</h2>
 <p>A <code>while</code> loop is a loop that repeats a set of actions while a condition is <code>TRUE</code>. The loop stops running when the provided condition is <code>FALSE</code>.</p>
 <p>A <code>while</code> loop can be used to do the same thing as a <code>for</code> loop but is better suited for situations for which we don’t know how many times we need to iterate.</p>
 <p>A common use of a <code>while</code> loop is to iteratively improve an approximation one iteration at a time until the change in the approximation is smaller than some standard of precision.</p>
@@ -3701,8 +3701,8 @@ while (i &gt; 0) {
 <li>Sometimes, a “STOP” button is available in the Console. Clicking this button will attempt to stop a loop.</li>
 <li>In R Studio, we can click “Session” in the Menu and then click “Interrupt R” to stop the code being executed.</li>
 </ul>
-<section id="bisection-example" class="level3">
-<h3 class="anchored" data-anchor-id="bisection-example">Bisection example</h3>
+<section id="bisection-example-youtube-panopto" class="level3">
+<h3 class="anchored" data-anchor-id="bisection-example-youtube-panopto">Bisection example (<a href="https://youtu.be/my39zmDzUe4">YouTube</a>, <a href="https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=37981baa-776b-4e1b-bb28-b0ad01087114">Panopto</a>)</h3>
 <p>The bisection method is a method for finding the “zeros” or “roots” of a continuous function, i.e., where the function equals 0.</p>
 <p>The bisection method requires that we start the algorithm at two values such that the function has opposite signs for those values.</p>
 <p>Suppose we have a continuous function, <span class="math inline">\(f(x)\)</span>.</p>
@@ -3805,8 +3805,8 @@ You need to glow up those values so  that fun(lower) * fun(upper) &lt; 0.</code>
 </div>
 </section>
 </section>
-<section id="loops-versus-vectorization" class="level2">
-<h2 class="anchored" data-anchor-id="loops-versus-vectorization">Loops versus vectorization</h2>
+<section id="loops-versus-vectorization-youtube-panopto" class="level2">
+<h2 class="anchored" data-anchor-id="loops-versus-vectorization-youtube-panopto">Loops versus vectorization (<a href="https://youtu.be/dOFT2gqvrUw">YouTube</a>, <a href="https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=922d74ac-554a-49bf-b7f6-b0ad01095e0e">Panopto</a>)</h2>
 <p>Loops in R are notoriously slow.</p>
 <p>When possible, we should prefer <em>vectorized operations</em> over loops.</p>
 <p>A <strong>vectorized</strong> operation uses a fast, pre-compiled function to apply an operation to all elements of a vector, matrix, list, etc., without using a loop.</p>
@@ -3868,15 +3868,15 @@ You need to glow up those values so  that fun(lower) * fun(upper) &lt; 0.</code>
 <span id="cb73-7"><a href="#cb73-7" aria-hidden="true" tabindex="-1"></a><span class="co"># plot timing results</span></span>
 <span id="cb73-8"><a href="#cb73-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cumsum_timings)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABUAAAAPACAMAAADDuCPrAAAAzFBMVEUAAAAAADoAAGYAOjoAOmYAOpAAZpAAZrY6AAA6OgA6Ojo6OmY6ZmY6ZpA6ZrY6kNtmAABmOgBmOjpmZjpmZmZmZpBmkJBmkLZmtrZmtttmtv+QOgCQZgCQZjqQZmaQkJCQkLaQtraQttuQtv+Q29uQ2/+2ZgC2Zjq2kDq2kGa2kLa2tpC2tra2ttu227a229u22/+2///T09PbkDrbkGbbtmbbtpDbtrbb27bb29vb2//b/9vb////tmb/25D/27b/29v//7b//9v////y2qbPAAAACXBIWXMAAB2HAAAdhwGP5fFlAAAgAElEQVR4nO3d/2Pb1JrgYQXaaei9UGAz24UOO3PZIUyXsC2bS6Fs00L8//9PK/m7bDc5en1sneM8zw+QOLFiJPuDbMmvmwkAIc3YNwCgVgIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBZQe0Acgmf6Ky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Ae3OY2qLefGPq85PszPpB53FJKBARlUFdPLr+cYhobNvhi1AQIF86gro5PblekLPng+dyCSgQD6VBbR1+/vVy4uLi+dXrwLz7AQUyKe+gO5FQIF8BBQgSEABggQUIEhAAYIEFCDowQUUIJ/sjcq9wJzGXtnAacneqNwLZARe63jYbP/RWPOnwAPoYbP9R2PNnwIPoIfN9h+NNX8KPIAeNtt/NNb8KfAAeths/9FY86fAA+hhs/1HY82fAg+gh832H401fwo8gB4223801vwp8AB62Gz/0Vjzp8AD6GGz/UdjzZ8CD6CHzfYfjTV/CjyAHjbbfzTW/CnwAHrYbP/RWPOnwAPoYbP9R2PNnwIPoIfN9h+NNX8KPIAeNtt/NNb8KfAAeths/9FY86fAA+hhs/1HY82fAg+gh832H401DxAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAn7fZF88kve1z/unmyY5Hf7rFEymDL5iGgJ23PgL4/33HtnRdSF1s2EwE9afsF9CO7JNfN43fxm0QBbNlcBPSk7RfQjzye/vqyeRa/SRTAls1FQE/aXgF9f/6R18Su93thlbHZstkI6EnbK6CXH3tCZ0elcrZsNgJ6CLe/ftY0Z5+/nn3zojn7YXZ5+3/+7p7b3k0fv5v+zqPvu194ed40n36zvO7Tpv32+R+RK2/dkGVAb9983S72b98vHzj9C9qFP5l8aC85++KPyfLvTR9MN818Ge3C5odu7ajkMNq9xJbNR0AP4P1XzdTZ9HnS7nv3/3sx+51nkw/z336y+JVm8ZPBV96yDOji95pHs8fr5gVdQOd/evH3rudfLR9dy8fb8hHIHsa7l9iy+Qhofu2dd256P9197/63xa/854vFb3/bu+7s+0FX3rYI6NpiZ4+UzQvahf/LYlmzPzjdh1n84e6i7irfLv8LHa7d03j3Els2IwHN77K9z34z28fr/v++897d7vm9an/ly8U+4Jvz2S9fz34w+dDe57tfHXTlbYuAdjfp+bvZM7knkx0XTHdpumX9uviNtX2Ry+ltmf1zccniVhE03r3Els1IQLNr77vLfbjui9337tk9tn3utPqq++JysS8w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" class="img-fluid" width="672"></p>
+<p><img src="data:image/png;base64,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" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>While the exact timing results will depend on the computer the timings are performed on, the plot above will clearly show that the vectorized <code>cumsum</code> function is substantially faster than the <code>cumsum_loop</code> function.</p>
 <p>These results may seem trivial, but for large data sets where these operations are performed thousands or millions of times, vectorized operations can be many orders of magnitude faster than loops.</p>
 </section>
 </section>
-<section id="the-vectorized-apply-functions" class="level1">
-<h1>The vectorized *apply functions</h1>
+<section id="the-vectorized-apply-functions-youtube-panopto" class="level1">
+<h1>The vectorized *apply functions (<a href="https://youtu.be/nl-ktoJriH8">YouTube</a>, <a href="https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=92d3b13f-35c1-4829-bd79-b0ad010b20ed">Panopto</a>)</h1>
 <p>The <code>*apply</code> functions are a set of vectorized functions that can be applied different object types. The “<code>*</code>” in <code>*apply</code> is a “wildcard” character, meaning that it can be any set of characters.</p>
 <p><code>*apply</code> functions will typically perform operations much faster than equivalent operations implemented using loops. <code>*apply</code> functions also make code simpler and more elegant.</p>
 <p><a href="#tbl-apply">Table 1</a> summarizes the various <code>*apply</code> functions available by default in R.</p>
@@ -3925,8 +3925,8 @@ You need to glow up those values so  that fun(lower) * fun(upper) &lt; 0.</code>
 </div>
 </div>
 </div>
-<section id="the-apply-function" class="level3">
-<h3 class="anchored" data-anchor-id="the-apply-function">The <code>apply</code> function</h3>
+<section id="the-apply-function-youtube-panopto" class="level3">
+<h3 class="anchored" data-anchor-id="the-apply-function-youtube-panopto">The <code>apply</code> function (<a href="https://youtu.be/iWq_EsrXhjQ">YouTube</a>, <a href="https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=98faa071-9645-4c1c-afe8-b0ad010c0e64">Panopto</a>)</h3>
 <p>The <code>apply</code> function applies a function to a margin (dimension) of a data frame, matrix, or array.</p>
 <p>The primary arguments of the <code>apply</code> function are:</p>
 <ul>
@@ -4030,7 +4030,7 @@ You need to glow up those values so  that fun(lower) * fun(upper) &lt; 0.</code>
 <pre><code>[1]  21  57  93 129</code></pre>
 </div>
 </div>
-<p><code>21</code> comes from adding all the values in the first element of the third dimension of <code>A</code>. More specifically, it is equivalent to running the following comman.</p>
+<p><code>21</code> comes from adding all the values in the first element of the third dimension of <code>A</code>. More specifically, it is equivalent to running the following command.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(A[,,<span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -4056,8 +4056,8 @@ You need to glow up those values so  that fun(lower) * fun(upper) &lt; 0.</code>
 </div>
 </div>
 </section>
-<section id="the-lapply-sapply-and-vapply-functions." class="level2">
-<h2 class="anchored" data-anchor-id="the-lapply-sapply-and-vapply-functions.">The <code>lapply</code>, <code>sapply</code>, and <code>vapply</code> functions.</h2>
+<section id="the-lapply-sapply-and-vapply-functions-youtube-panopto" class="level2">
+<h2 class="anchored" data-anchor-id="the-lapply-sapply-and-vapply-functions-youtube-panopto">The <code>lapply</code>, <code>sapply</code>, and <code>vapply</code> functions (<a href="https://youtu.be/4RjlOShPeU0">YouTube</a>, <a href="https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=53c2f52e-8419-4846-83f7-b0ad010c9c25">Panopto</a>)</h2>
 <p>The <code>lapply</code> function applies a function to each element of an atomic vector or list. It is very convenient for performing analyses in simulation studies. The <code>lapply</code> function always returns a list.</p>
 <p>The arguments of the <code>lapply</code> function are:</p>
 <ul>
@@ -4092,7 +4092,7 @@ You need to glow up those values so  that fun(lower) * fun(upper) &lt; 0.</code>
 <p>The <code>sapply</code> function attempts to coerce the results of <code>lapply</code> to a <code>vector</code>, <code>matrix</code>, or <code>array</code> (whichever is simplest) using the <code>simplify2array</code> function. Technically, the <code>sapply</code> function has two additional arguments compared to <code>lapply</code>:</p>
 <ul>
 <li><code>simplify</code>: a logical value indicating whether the <code>sapply</code> should attempt to simplify the result using <code>simplify2array</code>. The default is <code>TRUE</code>.</li>
-<li><code>USE.NAMES</code>: a logical value indicator whether names should be associated with the results. The default is <code>TRUE</code>.</li>
+<li><code>USE.NAMES</code>: a logical value indicating whether names should be associated with the results. The default is <code>TRUE</code>.</li>
 </ul>
 <p>We repeat the previous example using <code>sapply</code>.</p>
 <div class="cell">
@@ -4213,8 +4213,8 @@ You need to glow up those values so  that fun(lower) * fun(upper) &lt; 0.</code>
 </div>
 </div>
 <p>We should not use <code>sapply</code> or <code>vapply</code> inside any function to avoid problems with the output change data types. Instead, use the <code>lapply</code> function to keep the output consistent.</p>
-<section id="bootstrap-confidence-interval-example" class="level3">
-<h3 class="anchored" data-anchor-id="bootstrap-confidence-interval-example">Bootstrap confidence interval example</h3>
+<section id="bootstrap-confidence-interval-example-youtube-panopto" class="level3">
+<h3 class="anchored" data-anchor-id="bootstrap-confidence-interval-example-youtube-panopto">Bootstrap confidence interval example (<a href="https://youtu.be/IBuJSRu9Quw">YouTube</a>, <a href="https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=88db6193-d823-4c75-a00b-b0ad010d3fb3">Panopto</a>)</h3>
 <p>A confidence interval procedure produces plausible values for a target parameter with an associated confidence level.</p>
 <ul>
 <li>If we repeatedly obtain samples from a population, a confidence interval procedure will produce intervals containing the target parameter with probability equal to the confidence level.</li>
@@ -4279,8 +4279,8 @@ You need to glow up those values so  that fun(lower) * fun(upper) &lt; 0.</code>
 <p>Our 95% bootstrap confidence interval for the population mean is [2.44, 4.98]. The sample was a random sample from a normal distribution with mean 3 and standard deviation 2, so our interval (in this case) did contain the true value.</p>
 </section>
 </section>
-<section id="the-tapply-function" class="level2">
-<h2 class="anchored" data-anchor-id="the-tapply-function">The <code>tapply</code> function</h2>
+<section id="the-tapply-function-youtube-panopto" class="level2">
+<h2 class="anchored" data-anchor-id="the-tapply-function-youtube-panopto">The <code>tapply</code> function (<a href="https://youtu.be/CLLK9a8d_jA">YouTube</a>, <a href="https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=1058278d-dbb8-4edd-b2ef-b0ad010de1b8">Panopto</a>)</h2>
 <p>The <code>tapply</code> function is used to apply a function to all the values associated with a certain level of a <code>factor</code> variable. It is useful for summarizing information for different groups of data.</p>
 <p>The <code>tapply</code> function takes the following arguments:</p>
 <ul>
@@ -4335,8 +4335,8 @@ $sunflower
   226.0   312.8   328.0   328.9   340.2   423.0 </code></pre>
 </div>
 </div>
-<section id="frequency-table-example" class="level3">
-<h3 class="anchored" data-anchor-id="frequency-table-example">Frequency table example</h3>
+<section id="frequency-table-example-youtube-panopto" class="level3">
+<h3 class="anchored" data-anchor-id="frequency-table-example-youtube-panopto">Frequency table example (<a href="https://youtu.be/X6kNWXR1hTY">YouTube</a>, <a href="https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=c778d1da-1509-481f-8f3d-b0ad010e6cb5">Panopto</a>)</h3>
 <p>We can use the <code>tapply</code> function to construct a frequency table for a <code>numeric</code> variable based on a set of bins that break the variable into different intervals. Plotting a frequency table produces a histogram.</p>
 <p>The <code>faithful</code> data set in the <strong>datasets</strong> package summarizes the duration and waiting time between eruptions for the Old Faithful geyser in Yellowstone National Park. The data are a data frame with 272 observations of the variables:</p>
 <ul>
@@ -4391,15 +4391,15 @@ Levels: (1.5,2] (2,2.5] (2.5,3] (3,3.5] (3.5,4] (4,4.5] (4.5,5] (5,5.5]</code></
 <p>There were 55 eruptions that lasted between 1.5 and 2 minutes. There were 37 eruptions that lasted between 2 and 2.5 minutes, etc.</p>
 </section>
 </section>
-<section id="the-mapply-function" class="level2">
-<h2 class="anchored" data-anchor-id="the-mapply-function">The <code>mapply</code> function</h2>
+<section id="the-mapply-function-youtube-panopto" class="level2">
+<h2 class="anchored" data-anchor-id="the-mapply-function-youtube-panopto">The <code>mapply</code> function (<a href="https://youtu.be/kAMAVfNvi8s">YouTube</a>, <a href="https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=d0288e67-c616-4b43-9397-b0ad010f8d49">Panopto</a>)</h2>
 <p>The <code>mapply</code> function is intended to be a multivariate version of <code>sapply</code>. More specifically, it will vectorize over multiple arguments instead of a single one. The main arguments of the <code>mapply</code> function are:</p>
 <ul>
 <li><code>FUN</code>: the function that will be applied to the arguments being vectorized over.</li>
 <li><code>...</code>: the arguments to be vectorized over.</li>
 <li><code>MoreArgs</code>: a <code>list</code> with named elements that supply additional arguments need for <code>FUN</code>.</li>
 </ul>
-<p>There are also <code>SIMPLIFY</code> and <code>USE.NAMES</code> arguments that we do not discuss. Run <code>mapply</code> in the Console for more details.</p>
+<p>There are also <code>SIMPLIFY</code> and <code>USE.NAMES</code> arguments that we do not discuss. Run <code>?mapply</code> in the Console for more details.</p>
 <p>The <code>mapply</code> function is more complicated than the other <code>*apply</code> functions. I have rarely used it because there are often simpler ways to solve the problem that do not require the complexity of <code>mapply</code>.</p>
 <p>We will walk through a trivial example that uses <code>mapply</code>.</p>
 <p>Suppose we have two vectors of the same size. The first vector contains the initials of several individuals. The second vector contains the initials of their romantic partner.</p>
@@ -4443,8 +4443,8 @@ Levels: (1.5,2] (2,2.5] (2.5,3] (3,3.5] (3.5,4] (4,4.5] (4.5,5] (5,5.5]</code></
 </div>
 <p>What is actually happening is that <code>&quot; and &quot;</code> and <code>&quot;FALSE&quot;</code> are being passed into <code>paste</code> with the values from <code>partner1</code> and <code>partner2</code>, which then pastes the four individual character strings into a single string.</p>
 </section>
-<section id="apply-functions-parallel-computing-and-progress-bars" class="level2">
-<h2 class="anchored" data-anchor-id="apply-functions-parallel-computing-and-progress-bars"><code>*apply</code> functions, parallel computing, and progress bars</h2>
+<section id="parallel-computing-progress-bars-apply-functions-youtube-panopto" class="level2">
+<h2 class="anchored" data-anchor-id="parallel-computing-progress-bars-apply-functions-youtube-panopto">Parallel computing, progress bars, <code>*apply</code> functions (<a href="https://youtu.be/2LXW8d-lOEM">YouTube</a>, <a href="https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=92a4020b-f79c-456d-a91c-b0ad0110622e">Panopto</a>)</h2>
 <p>We can sometimes speed up the computations performed by an <code>*apply</code> function using parallel processing (processing multiple tasks <em>in parallel</em> instead of one-at-a-time).</p>
 <p>Parallel processing is particularly helpful with using <code>lapply</code>, <code>sapply</code>, or <code>vapply</code> to perform complex analysis on a sequence of simulated data sets. The analysis can be performed on each simulated data set separately, which means the operation can be parallelized.</p>
 <p>We provide small examples to illustrate the advantages of parallel computing when using <code>*apply</code> functions.</p>
@@ -4477,8 +4477,8 @@ Levels: (1.5,2] (2,2.5] (2.5,3] (3,3.5] (3.5,4] (4,4.5] (4.5,5] (5,5.5]</code></
 <p>The <strong>parallel</strong> package <span class="citation" data-cites="R-base">(<a href="#ref-R-base" role="doc-biblioref">R Core Team 2023</a>)</span> provides parallelized equivalents of several <code>*apply</code> functions.</p>
 <ul>
 <li><code>parApply</code> is a parallelized version of <code>apply</code>.</li>
-<li><code>parLapply</code> is a parallized version of <code>lapply</code>.</li>
-<li><code>parSapply</code> is a parallized version of <code>sapply</code>.</li>
+<li><code>parLapply</code> is a parallelized version of <code>lapply</code>.</li>
+<li><code>parSapply</code> is a parallelized version of <code>sapply</code>.</li>
 </ul>
 <p>Run <code>?parallel::clusterApply</code> to see additional details about these and related parallelized functions.</p>
 <p>We load the <strong>parallel</strong> package.</p>
@@ -4503,7 +4503,7 @@ Levels: (1.5,2] (2,2.5] (2.5,3] (3,3.5] (3.5,4] (4,4.5] (4.5,5] (5,5.5]</code></
 <div class="sourceCode cell-code" id="cb150"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb150-1"><a href="#cb150-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">parLapply</span>(cl, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, sleep_iterator))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   user  system elapsed 
-   0.00    0.00    3.05 </code></pre>
+   0.00    0.00    3.03 </code></pre>
 </div>
 </div>
 <p>Since we are running <code>sleep_iterator</code> in parallel using 2 processes, it only takes about 3 seconds to complete our computations instead of the original 6 seconds!</p>
@@ -4513,7 +4513,7 @@ Levels: (1.5,2] (2,2.5] (2.5,3] (3,3.5] (3.5,4] (4,4.5] (4.5,5] (5,5.5]</code></
 <div class="sourceCode cell-code" id="cb152"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb152-1"><a href="#cb152-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(future.apply)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>To perform a parallelized operation using <strong>future.apply</strong>, we must use the <code>plan</code> function to describe how we want the parallel processing to be performed.</p>
-<p>The code below sets up a plan to run 2 processes in parallel using a <code>&quot;multisession&quot;</code> approach. Run <code>future::plan</code> in the Console for more details.</p>
+<p>The code below sets up a plan to run 2 processes in parallel using a <code>&quot;multisession&quot;</code> approach. Run <code>?future::plan</code> in the Console for more details.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb153"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb153-1"><a href="#cb153-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multisession, <span class="at">workers =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -4522,7 +4522,7 @@ Levels: (1.5,2] (2,2.5] (2.5,3] (3,3.5] (3.5,4] (4,4.5] (4.5,5] (5,5.5]</code></
 <div class="sourceCode cell-code" id="cb154"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb154-1"><a href="#cb154-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">future_lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">FUN =</span> sleep_iterator))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   user  system elapsed 
-   0.05    0.00    3.23 </code></pre>
+   0.05    0.00    3.22 </code></pre>
 </div>
 </div>
 <p>When an <code>*apply</code> function takes a long time to return its results, it can be nice to have a progress bar to assess how long the computations will take.</p>
@@ -4541,7 +4541,7 @@ Levels: (1.5,2] (2,2.5] (2.5,3] (3,3.5] (3.5,4] (4,4.5] (4.5,5] (5,5.5]</code></
 <div class="sourceCode cell-code" id="cb157"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb157-1"><a href="#cb157-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">pblapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">FUN =</span> sleep_iterator, <span class="at">cl =</span> cl))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   user  system elapsed 
-   0.00    0.00    3.08 </code></pre>
+   0.00    0.00    3.05 </code></pre>
 </div>
 </div>
 </section>
