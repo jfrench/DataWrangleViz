@@ -676,7 +676,7 @@ What happens if we choose bad starting values?
 bisect(lower = -4, upper = 5, fun = f)
 ```
 
-## Loops versus vectorization ([YouTube](https://youtu.be/dOFT2gqvrUw), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=922d74ac-554a-49bf-b7f6-b0ad01095e0e))
+## Loops versus vectorization ([YouTube](https://youtu.be/0AlZW5ZGvvg), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=4bf55aac-da5d-4824-92f2-b0af01266aec))
 
 Loops in R are notoriously slow.
 
