@@ -24,7 +24,7 @@ To open this information in an interactive Colab notebook, click the Open in Col
 
 ---
 
-![](./figures/lightning_mcqueen.jpg)
+<img src="figures/lightning_mcqueen.jpg">
 
 ## Tips for optimizing matrix algebra operations ([YouTube](https://youtu.be/cBovzIQvw78), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=5e2bb274-0855-40ef-a60e-b09e015fec12))
 
