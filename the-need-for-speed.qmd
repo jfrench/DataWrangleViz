@@ -14,6 +14,7 @@ bibliography:
 - packages_matrices_arrays_lists.bib
 - dwv.bib
 - packages_control_iteration_apply.bib
+engine: knitr
 ---
 
 To open this information in an interactive Colab notebook, click the Open in Colab graphic below.
@@ -102,7 +103,7 @@ B <- matrix(rnorm(100), nrow = 2)
 C <- rnorm(50)
 ```
 
-Computing $\mathbf{A}(\mathbf{BC})$ is much faster than computing $(\mathbf{AB})\mathbf{C}$ because $\mathbf{BC}$ first produces $2\times 1$ matrix while $\mathbf{AB}$ produces a much larger $500 \times 50$ matrix.
+Computing $\mathbf{A}(\mathbf{BC})$ is much faster than computing $(\mathbf{AB})\mathbf{C}$ because $\mathbf{BC}$ first produces a $2\times 1$ matrix while $\mathbf{AB}$ produces a much larger $500 \times 50$ matrix.
 
 We confirm this by timing these operations using the `microbenchmark` function and plotting the results.
 
@@ -120,7 +121,7 @@ When possible, we should prefer *vectorized operations* over loops.
 
 A **vectorized** operation uses a fast, pre-compiled function to apply an operation to all elements of a vector, matrix, list, etc., without using a loop.
 
-Here is a trivial example demonstrating the the speed and power of vectorization over loops. 
+Here is a trivial example demonstrating the speed and power of vectorization over loops. 
 
 Let's say we want to compute the cumulative sum of a set of numeric values. The cumulative sum of a vector of numeric values is the sum of each value and all the previous values in the vector. The cumulative sum of the vector $[1, 2, 4]$ is $[1, 3, 7]$.
 

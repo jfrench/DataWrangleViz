@@ -1,0 +1,1337 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "---\n",
+        "title: \"The Need for Speed\"\n",
+        "author: \"Joshua P. French\"\n",
+        "date: today\n",
+        "date-format: long\n",
+        "# format: html\n",
+        "format: ipynb\n",
+        "jupyter: ir\n",
+        "execute:\n",
+        "  output: false\n",
+        "self-contained: true\n",
+        "title-block-banner: true\n",
+        "bibliography:\n",
+        "- packages_matrices_arrays_lists.bib\n",
+        "- dwv.bib\n",
+        "- packages_control_iteration_apply.bib\n",
+        "---\n",
+        "\n",
+        "\n",
+        "To open this information in an interactive Colab notebook, click the Open in Colab graphic below.\n",
+        "\n",
+        "<a href=\"https://colab.research.google.com/github/jfrench/DataWrangleViz/blob/master/the-need-for-speed.ipynb\">\n",
+        "   <img src=\"https://colab.research.google.com/assets/colab-badge.svg\">\n",
+        "</a>\n",
+        "\n",
+        "---\n",
+        "\n",
+        "<img src=\"figures/lightning_mcqueen.jpg\">\n",
+        "\n",
+        "## Tips for optimizing matrix algebra operations ([YouTube](https://youtu.be/cBovzIQvw78), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=5e2bb274-0855-40ef-a60e-b09e015fec12))\n",
+        "\n",
+        "It is straightforward to perform matrix algebra in R. However, it is more difficult to write *efficient* (faster) matrix code. We provide some basic tips below.\n",
+        "\n",
+        "### `crossprod` and `tcrossprod`\n",
+        "\n",
+        "The `crossprod` and `tcrossprod` functions are faster approaches to performing matrix multiplication when one of the matrices must first be transposed.\n",
+        "\n",
+        "If we have matrices `A` and `B` of compatible dimensions, then:\n",
+        "\n",
+        "- `t(A) %*% B` is equivalent to `crossprod(A, B)`.\n",
+        "- `A %*% t(B)` is equivalent to `tcrossprod(A, B)`.\n",
+        "\n",
+        "`crossprod` and `tcrossprod` are faster than their equivalent approaches because the equivalent approaches compute the transpose of matrix in memory before performing the multiplication. The `crossprod` and `tcrossprod` functions modify their multiplication algorithms so that the transpose matrix doesn't have to be created prior to multiplication.\n",
+        "\n",
+        "To illustrate this difference, we create `A`, a $50\\times 2$ matrix of values and `B`, a $50 \\times 2$ matrix of values by drawing the appropriate number of values from a standard normal distribution. We use the `set.seed` function to make the example reproducible.\n"
+      ],
+      "id": "3ff24472"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "set.seed(314)\n",
+        "A <- matrix(rnorm(100), ncol = 2)\n",
+        "B <- matrix(rnorm(100), ncol = 2)"
+      ],
+      "id": "9aca0114",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "First, we use the `all.equal` function to confirm that the standard and optimized approaches produce the same results. `all.equal` confirms that the supplied objects are equal to each other.\n"
+      ],
+      "id": "eab75f7b"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "all.equal(t(A) %*% B, crossprod(A, B))"
+      ],
+      "id": "1e0eb660",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "all.equal(A %*% t(B), tcrossprod(A, B))"
+      ],
+      "id": "4ce56883",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "We will use the `microbenchmark` function from the **microbenchmark** package [@R-microbenchmark] to time the optimized and standard approaches to computing $\\mathbf{A}^T \\mathbf{B}$ and $\\mathbf{A} \\mathbf{B}^T$.\n",
+        "\n",
+        "We start by loading the **microbenchmark** package.\n"
+      ],
+      "id": "71f67412"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "library(microbenchmark)"
+      ],
+      "id": "95ea5377",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "We now compute $\\mathbf{A}^T \\mathbf{B}$ using the standard approach and using `crossprod` within the `microbenchmark` function. The `microbenchmark` function will perform each computation 100 times by default to determine the typical speed. We then use the `plot` function to plot the results.\n"
+      ],
+      "id": "54f78167"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "t1 <- microbenchmark::microbenchmark(t(A) %*% B, crossprod(A, B))\n",
+        "plot(t1)"
+      ],
+      "id": "3dc5b1a7",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "While the results shown in the above plot will depend on the speed of the computer used to perform the calculation, the boxplot shown for `crossprod(A, B)` should be lower then `t(A) %*% B`, which means the `crossprod` approach is faster than the standard approach.\n",
+        "\n",
+        "We perform a simialr analysis for computing $\\mathbf{A}\\mathbf{B}^T$.\n"
+      ],
+      "id": "23ea9c41"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "t2 <- microbenchmark(A %*% t(B), tcrossprod(A, B))\n",
+        "plot(t2)"
+      ],
+      "id": "742b2fac",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Once again, the plot of our timing results should show that `tcrossprod(A, B)` can be computed faster than `A %*% t(B)`. \n",
+        "\n",
+        "### Order of matrix multiplication\n",
+        "\n",
+        "Matrix multiplication is associative, meaning that if we have compatible matrices $\\mathbf{A}$, $\\mathbf{B}$ and $\\mathbf{C}$, then $$(\\mathbf{A B})\\mathbf{C} = \\mathbf{A} (\\mathbf{B C}).$$\n",
+        "\n",
+        "The order of matrix multiplication can greatly impact how long it takes to perform the operations.\n",
+        "\n",
+        "**Prioritize performing operations that produce smaller matrices first.** Smaller can mean the total number of rows/columns or long/thin matrices, depending on the context.\n",
+        "\n",
+        "We create three matrices below filled with random values: `A` is a matrix of size $500\\times 2$, `B` is a matrix of size $2 \\times 50$, `C` is a $50\\times 1$ column vector.\n"
+      ],
+      "id": "ff89e592"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "set.seed(1999)\n",
+        "A <- matrix(rnorm(1000), ncol = 2)\n",
+        "B <- matrix(rnorm(100), nrow = 2)\n",
+        "C <- rnorm(50)"
+      ],
+      "id": "58a68c5d",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Computing $\\mathbf{A}(\\mathbf{BC})$ is much faster than computing $(\\mathbf{AB})\\mathbf{C}$ because $\\mathbf{BC}$ first produces a $2\\times 1$ matrix while $\\mathbf{AB}$ produces a much larger $500 \\times 50$ matrix.\n",
+        "\n",
+        "We confirm this by timing these operations using the `microbenchmark` function and plotting the results.\n"
+      ],
+      "id": "00ab428e"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "t3 <- microbenchmark((A %*% B) %*% C,\n",
+        "                     A %*% (B %*% C))\n",
+        "plot(t3, las = 2, cex.axis = 0.5)"
+      ],
+      "id": "0480e229",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Loops versus vectorization ([YouTube](https://youtu.be/0AlZW5ZGvvg), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=4bf55aac-da5d-4824-92f2-b0af01266aec))\n",
+        "\n",
+        "Loops in R are notoriously slow.\n",
+        "\n",
+        "When possible, we should prefer *vectorized operations* over loops. \n",
+        "\n",
+        "A **vectorized** operation uses a fast, pre-compiled function to apply an operation to all elements of a vector, matrix, list, etc., without using a loop.\n",
+        "\n",
+        "Here is a trivial example demonstrating the speed and power of vectorization over loops. \n",
+        "\n",
+        "Let's say we want to compute the cumulative sum of a set of numeric values. The cumulative sum of a vector of numeric values is the sum of each value and all the previous values in the vector. The cumulative sum of the vector $[1, 2, 4]$ is $[1, 3, 7]$.\n",
+        "\n",
+        "We create a function, `cumsum_loop`, to compute the cumulative sum of a numeric vector. We describe our approach:\n",
+        "\n",
+        "- The function takes, `x`, which we assume is a numeric vector.\n",
+        "- We create a vector, `results`, to store our cumulative sums.\n",
+        "- We create a `for` loop to iterate `i` over every element of `x`. For each value of `i`, we:\n",
+        "    - Check if we are considering the first element of `x`. If we are, then `results[i]` is simply the value in the first position of `x`.\n",
+        "    - If we are not considering the first element of `x`, then the cumulative sum of the first `i` elements of `x` is the value in the $i$th position of `x`, `x[i]`, plus the previous value of the cumulative sum, `results[i - 1]`.\n",
+        "- After we iterating over all positions of `x`, we return the `results` vector.\n"
+      ],
+      "id": "ea89ed80"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "cumsum_loop <- function(x) {\n",
+        "  # create vector of results\n",
+        "  results <- numeric(length(x))\n",
+        "  for (i in 1:length(x)) {\n",
+        "    if (i == 1) {\n",
+        "      results[i] <- x[i]\n",
+        "    } else {\n",
+        "      results[i] <- results[i - 1] + x[i]\n",
+        "    }\n",
+        "  }\n",
+        "  return(results)\n",
+        "}"
+      ],
+      "id": "8ee84d78",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Let's try this function on the vector $[1, 2, 4]$.\n"
+      ],
+      "id": "cef6125a"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "cumsum_loop(c(1, 2, 4))"
+      ],
+      "id": "d1473c86",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "What is wrong with this function? Nothing, really. Except that it's slow compared to the equivalent vectorized version of this calculation.\n",
+        "\n",
+        "The `cumsum` function is a vectorized version of a cumulative sum that relies on fast, pre-compiled code. We can see that it gives the same results as the function we created.\n"
+      ],
+      "id": "7e86c540"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "cumsum(c(1, 2, 4))"
+      ],
+      "id": "4400dc10",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "We use the `microbenchmark` function in the **microbenchmark** package [@R-microbenchmark] to compare the timings of `cumsum_loop` and `cumsum`. The `microbenchmark` function will run the provided functions 100 times, by default.\n",
+        "\n",
+        "- We sample 1000 values from a standard normal distribution., \n",
+        "- We use `microbenchmark` to time how long it takes to compute the cumulative sum of the sampled values using both cumulative sum functions. We repeat this timing 100 times for each function.\n",
+        "- We plot the results for comparison.\n"
+      ],
+      "id": "b51de6c6"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# attach microbenchmark\n",
+        "library(microbenchmark) \n",
+        "# draw 1000 values from a N(0, 1) distribution\n",
+        "x <- rnorm(1000)\n",
+        "# compute the cumulative sum 100 times using both approaches\n",
+        "cumsum_timings <- microbenchmark(cumsum_loop(x), cumsum(x))\n",
+        "# plot timing results\n",
+        "plot(cumsum_timings)"
+      ],
+      "id": "429caba3",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "While the exact timing results will depend on the computer the timings are performed on, the plot above will clearly show that the vectorized `cumsum` function is substantially faster than the `cumsum_loop` function.\n",
+        "\n",
+        "These results may seem trivial, but for large data sets where these operations are performed thousands or millions of times, vectorized operations can be many orders of magnitude faster than loops.\n",
+        "\n",
+        "# The vectorized *apply functions ([YouTube](https://youtu.be/nl-ktoJriH8), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=92d3b13f-35c1-4829-bd79-b0ad010b20ed))\n",
+        "\n",
+        "The `*apply` functions are a set of vectorized functions that can be applied different object types. The \"`*`\" in `*apply` is a \"wildcard\" character, meaning that it can be any set of characters. \n",
+        "\n",
+        "\n",
+        "`*apply` functions will typically perform operations much faster than equivalent operations implemented using loops. `*apply` functions also make code simpler and more elegant.\n",
+        "\n",
+        "@tbl-apply summarizes the various `*apply` functions available by default in R.\n",
+        "\n",
+        "::: {.content-hidden when-format=\"ipynb\"}"
+      ],
+      "id": "db377f65"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| label: tbl-apply\n",
+        "#| tbl-cap: A summary of the various `*apply` functions available in R.\n",
+        "#| echo: false\n",
+        "adf <- data.frame(name = c(\"`apply`\", \"`lapply`\", \"`sapply`\", \"`vapply`\", \"`tapply`\", \"`mapply`\"), \n",
+        "                  description = c(\"Applies a function to the margins of a data frame, matrix, or array.\", \"Applies a function to each element of a list.\", \"A version of `lapply` that attempts to simplify the results to a vector, matrix, or array.\", \"A safer version of `sapply` that returns a pre-specified type of return value.\", \"Applies a function to a vector or data frame based on the levels of a categorical variable\", \"A multivariate version of `sapply`.\"))\n",
+        "knitr::kable(adf)"
+      ],
+      "id": "tbl-apply",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        ":::\n",
+        "\n",
+        "::: {.content-hidden when-format=\"html\"}\n",
+        "|name   |description                                                                                |\n",
+        "|:------|:------------------------------------------------------------------------------------------|\n",
+        "|`apply`  |Applies a function to the margins of a data frame, matrix, or array.                       |\n",
+        "|`lapply` |Applies a function to each element of a list.                                              |\n",
+        "|`sapply` |A version of `lapply` that attempts to simplify the results to a vector, matrix, or array. |\n",
+        "|`vapply` |A safer version of `sapply` that returns a pre-specified type of return value.             |\n",
+        "|`tapply` |Applies a function to a vector or data frame based on the levels of a categorical variable |\n",
+        "|`mapply` |A multivariate version of `sapply`.   \n",
+        ": A summary of the various `*apply` functions available in R. {#tbl-apply}\n",
+        ":::\n",
+        "\n",
+        "## The `apply` function ([YouTube](https://youtu.be/iWq_EsrXhjQ), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=98faa071-9645-4c1c-afe8-b0ad010c0e64))\n",
+        "\n",
+        "The `apply` function applies a function to a margin (dimension) of a data frame, matrix, or array.\n",
+        "\n",
+        "The primary arguments of the `apply` function are:\n",
+        "\n",
+        "- `X`: A data frame, `matrix`, or `array`.\n",
+        "- `MARGIN`: a vector indicating the dimension to apply the function to. `1` indicates rows, `2` indicates columns, `3` indicates the third dimension of an array, `1:2` indicates row and columns, etc.\n",
+        "- `FUN`: the function to be applied to the margins of `X`.\n",
+        "- `...`: additional arguments that need to be passed to `FUN`.\n",
+        "- `simplify`: a logical value indicating whether results should be simplified, if possible. The default is `TRUE`. \n",
+        "\n",
+        "We provide several examples using the `apply` function below.\n",
+        "\n",
+        "Consider the matrix `mat` below.\n"
+      ],
+      "id": "0a33f5d3"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "mat <- cbind(1:5, 6:10)\n",
+        "mat"
+      ],
+      "id": "3bec70f3",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "We can compute the mean value for each row of `mat` by running the command below.\n"
+      ],
+      "id": "fa7aa37a"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "apply(X = mat, MARGIN = 1, FUN = mean)"
+      ],
+      "id": "f69cade0",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "We can compute the mean value for each column of `mat` by running the command below.\n"
+      ],
+      "id": "51e53bf3"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "apply(mat, 2, mean)"
+      ],
+      "id": "1a2164bc",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Note that the `rowMeans` and `colMeans` functions would have produced the same results, with simpler code. However, the examples above are simple examples to illustrate usage of the `apply` function.\n",
+        "\n",
+        "What if we want to apply a function that has arguments we need to specify? E.g., let's say we want to compute the 0.8 quantile of a set of values in a numeric vector `x`. We could run the command `quantile(x, prob = 0.8)`. How can we use a function like this with the `apply` function?\n",
+        "\n",
+        "The code below uses `apply` to compute the 0.8 quantile for each column of `mat`.\n"
+      ],
+      "id": "a9e0ee8d"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "apply(mat, 2, quantile, prob = 0.8)"
+      ],
+      "id": "fd0b1458",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Lastly, we consider a basic application of the `apply` function a 3-dimensional array.\n",
+        "\n",
+        "We create a 3-dimensional array with dimension $3\\times 2 \\times 4$ below.\n"
+      ],
+      "id": "0e6276ee"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "A <- array(1:24, dim = c(3, 2, 4))\n",
+        "print(A)"
+      ],
+      "id": "601f2aea",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Let's compute means for each row of `A`.\n"
+      ],
+      "id": "3c50d45d"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "apply(A, 1, mean)"
+      ],
+      "id": "41ed72c5",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "`11.5` comes from averaging all the values in the 1st row of `A` across all columns and the third dimension: `(1 + 4 + 7 + 10 + 13 + 16 + 19 + 22)/8 = 11.5`. More simply, it is equivalent to running the following command.\n"
+      ],
+      "id": "bf93b355"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "mean(A[1,,])"
+      ],
+      "id": "58e67742",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "`12.5` and `13.5` come from averaging all the values in the second and third rows of `A`, respectively. \n",
+        "\n",
+        "\n",
+        "Let's compute the sums across the third dimension of `A`.\n"
+      ],
+      "id": "1753b5d7"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "apply(A, 3, sum)"
+      ],
+      "id": "69c66bd1",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "`21` comes from adding all the values in the first element of the third dimension of `A`. More specifically, it is equivalent to running the following command.\n"
+      ],
+      "id": "2ab52496"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "sum(A[,,1])"
+      ],
+      "id": "9a451826",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Let's compute the means across the row and columns of `A`.\n"
+      ],
+      "id": "fec0b1b8"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "apply(A, 1:2, mean)"
+      ],
+      "id": "2346e5d6",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "The command above returns the values obtained by averaging all of the values in a particular row and column of `A` across the third dimension of `A`. \n",
+        "\n",
+        "`10` comes from averaging the values in `A[1, 1, 1]`, `A[1, 1, 2]`, `A[1, 1, 3]`, `A[1, 1, 4]`, i.e., `(1 + 7 + 13 + 19)/4 = 10`. Alternatively, it is equivalent to running the following command.\n"
+      ],
+      "id": "f92d545b"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "mean(A[1, 1, ])"
+      ],
+      "id": "4a5705c9",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## The `lapply`, `sapply`, and `vapply` functions ([YouTube](https://youtu.be/4RjlOShPeU0), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=53c2f52e-8419-4846-83f7-b0ad010c9c25))\n",
+        "\n",
+        "The `lapply` function applies a function to each element of an atomic vector or list. It is very convenient for performing analyses in simulation studies. The `lapply` function always returns a list.\n",
+        "\n",
+        "The arguments of the `lapply` function are:\n",
+        "\n",
+        "- `X`: An atomic vector or list.\n",
+        "- `FUN`: the function to be applied to each element of `X`.\n",
+        "- `...`: additional arguments that need to be passed to `FUN`.\n",
+        "\n",
+        "We start with a simple example that computes the sample mean of a `list` containing numeric vectors.\n",
+        "\n",
+        "We first define the our `list`.\n"
+      ],
+      "id": "54c7a58e"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "simple_list <- list(1:10, 11:20)\n",
+        "simple_list"
+      ],
+      "id": "93e36e8b",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "We then use `lapply` to compute the sample mean of each element of `sample_list`.\n"
+      ],
+      "id": "a669403c"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "lapply(simple_list, mean)"
+      ],
+      "id": "1d92c712",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "The `sapply` function attempts to coerce the results of `lapply` to a `vector`, `matrix`, or `array` (whichever is simplest) using the `simplify2array` function. Technically, the `sapply` function has two additional arguments compared to `lapply`:\n",
+        "\n",
+        "- `simplify`: a logical value indicating whether the `sapply` should attempt to simplify the result using `simplify2array`. The default is `TRUE`.\n",
+        "- `USE.NAMES`: a logical value indicating whether names should be associated with the results. The default is `TRUE`.\n",
+        "\n",
+        "We repeat the previous example using `sapply`.\n"
+      ],
+      "id": "ff17c6d1"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "sapply(simple_list, mean)"
+      ],
+      "id": "15b08972",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Instead of returning a `list` object with elements `5.5` and `15.5`, we get a vector with the same elements.\n",
+        "\n",
+        "The `sapply` function *seems* like it is the more convenient version of `lapply`, but this is a trap. The `sapply` function can produce unexpected results because it is not required to return an object of a specific type. The result may change depending on the input.\n",
+        "\n",
+        "Let's create a second list, `simple_list2`, with two elements: the first element is a vector of 3 numeric values and the second element is a vector of 4 numeric values.\n"
+      ],
+      "id": "ebbc1d99"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "simple_list2 <- list(1:3, 4:7)\n",
+        "simple_list2"
+      ],
+      "id": "c1a8acd1",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "We create a function, `add2`, that takes a `numeric` vector `x` and adds 2 to all the elements in `x`.\n"
+      ],
+      "id": "4f634b3e"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "add2 <- function(x) {\n",
+        "  x + 2\n",
+        "}"
+      ],
+      "id": "5a458b81",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "We confirm that `add2` works as intended.\n"
+      ],
+      "id": "6fa982fe"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "add2(2:3)"
+      ],
+      "id": "ef89e91a",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "If we use `sapply` to apply `add2` to each element of `simple_list`, the result is returned as a `matrix` because the results can be simplified by `simplify2array`.\n"
+      ],
+      "id": "06234d28"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "sapply(simple_list, add2)"
+      ],
+      "id": "2069bbd7",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "If we apply `add2` to each element of `simple_list2`, the result is returned as a `list` because the results cannot be simplified by `simplify2array`.\n"
+      ],
+      "id": "66b9b0e1"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "sapply(simple_list2, add2)"
+      ],
+      "id": "d46098dd",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "We don't always know that data type the `sapply` function will return, which is dangerous if we use those results in any future calculations.\n",
+        "\n",
+        "The `vapply` function attempts to be a safer version of `sapply` by requiring the user to indicate the data type expected from each application of `FUN`. However, `vapply` also attempts to simplify the output using `simplify2array`, so it can also create issues in later code.\n",
+        "\n",
+        "The `vapply` function essentially adds one additional argument to `sapply`.\n",
+        "\n",
+        "- `FUN.VALUE`: a template for the value returned by `FUN`.\n",
+        "\n",
+        "\n",
+        "If `FUN` doesn't have the same structure as `FUN.VALUE`, then `vapply` returns an error.\n",
+        "\n",
+        "Let's create a trivial example. We create two lists, `l1` and `l2`.\n",
+        "  \n",
+        "  - `l1` has two elements containing `integer` vectors.\n",
+        "  - `l2` has two elements containing `double` vectors.\n"
+      ],
+      "id": "fad79334"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "l1 <- list(seq.int(1, 4), seq.int(4, 7))\n",
+        "l1"
+      ],
+      "id": "7c61acd3",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "l2 <- list(seq(1.5, 4.5, by = 1), seq(4.5, 7.5, by = 1))\n",
+        "l2"
+      ],
+      "id": "5a0c4941",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "We apply the `max` function to `l1` using `vapply`. We specify `FUN.VALUE = integer(1)` to indicate that each time we apply the `max` function to an element of `l1`, we expect to get an `integer` vector of length 1.\n"
+      ],
+      "id": "1783b418"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "vapply(l1, max, FUN.VALUE = integer(1))"
+      ],
+      "id": "a8bc8ea1",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "We get an error if we do the same thing for `l2` because the `max` function will return an atomic vector of type `double` of length 1. The error produced by `vapply` indicates that it was expecting to get an `integer` type by got a `double` type instead.\n"
+      ],
+      "id": "8d4c5575"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| error: true\n",
+        "vapply(l2, max, FUN.VALUE = integer(1))"
+      ],
+      "id": "445ceb17",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "We can correct the problem by changing `FUN.VALUE` to `double(1)`.\n"
+      ],
+      "id": "5aa19c54"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "vapply(l2, max, FUN.VALUE = double(1))"
+      ],
+      "id": "65e6685b",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "We should not use `sapply` or `vapply` inside any function to avoid problems with the output change data types. Instead, use the `lapply` function to keep the output consistent.\n",
+        "\n",
+        "### Bootstrap confidence interval example ([YouTube](https://youtu.be/IBuJSRu9Quw), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=88db6193-d823-4c75-a00b-b0ad010d3fb3))\n",
+        "\n",
+        "A confidence interval procedure produces plausible values for a target parameter with an associated confidence level.\n",
+        "\n",
+        "- If we repeatedly obtain samples from a population, a confidence interval procedure will produce intervals containing the target parameter with probability equal to the confidence level.\n",
+        "\n",
+        "Confidence intervals are typically constructed on the assumption that we know the population distribution from which the sample came.\n",
+        "\n",
+        "A bootstrap confidence interval procedure can be used to construct confidence intervals when the population distribution is unknown.\n",
+        "\n",
+        "More generally, the bootstrap method allows us to approximate the sampling distribution of a statistic by using the observed data to produce simulated data sets.\n",
+        "\n",
+        "Suppose we have a sample of $n$ data values, $x_1, x_2, \\ldots, x_n$. Suppose we want to estimate the mean, $\\mu$, of the population from which the sample came. A natural estimator of $\\mu$ is the sample mean, $\\bar{x}$.\n",
+        "\n",
+        "The procedure for producing a bootstrap confidence interval for $\\mu$ with confidence level $1-\\alpha$ is:\n",
+        "\n",
+        "1. Sample with replacement a data set of size $n$ from the observed data values. This is a bootstrap sample.\n",
+        "2. Compute $\\bar{x}$ for the random sample.\n",
+        "3. Perform steps 1 and 2 $B$ times, where $B$ is a number like 1000 or 10000.\n",
+        "4. Compute the $\\alpha/2$ and $1-\\alpha/2$ quantiles of the sample means obtained from the bootstrap samples.\n",
+        "\n",
+        "Suppose we have observed the following sample:\n",
+        "\n",
+        "3.318, 4.940, 5.516, 2.958, 6.098, 6.858, -0.539, 2.544, 4.091, 1.884\n",
+        "\n",
+        "\n",
+        "Let's construct a 95% bootstrap confidence interval for the population mean, $\\mu$, using the sample data. \n",
+        "We will build a function to construct our bootstrap confidence interval that is based on `lapply`. Our function will take three arguments:\n",
+        "\n",
+        "- `x`: A vector of numeric values.\n",
+        "- `conf.level`: The confidence level desired for the interval. The default value will be `0.95`.\n",
+        "- `B`: The number of bootstrap samples from which to build the confidence interval. The default value will be `1000`.\n",
+        "\n",
+        "The function will perform the following actions:\n",
+        "\n",
+        "- Determine `alpha` from `confidence.level`.\n",
+        "- The `lapply` function is applied to each element of the atomic vector `1:B`.\n",
+        "- We supply an *anonymous* function to the `FUN` argument of `lapply`. An anonymous function is a temporary function we create to perform an action but for which we don't want to go to the trouble of storing in memory for long-term use. In our case, the anonymous function takes the argument `i`, which comes from the elements of `1:B`. \n",
+        "- Inside our anonymous function, we sample `n` values with replacement from `x` using the `sample` function, making sure to set the `replace` argument of `sample` to `TRUE`. This produces a bootstrap sample.\n",
+        "- We compute the sample mean of our bootstrap sample and return that value from our anonymous function.\n",
+        "- We store the $B$ sample means produced by the `lapply` function in the `bstats` object.\n",
+        "- We use the `unlist` function to convert the list of sample means in `bstats` to a `numeric` vector.\n",
+        "- We use the `quantile` function to return the `alpha/2` and `1-alpha/2` quantiles from our vector of sample means.\n"
+      ],
+      "id": "03ffe3a7"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "bootstrap_ci <- function(x, conf.level = 0.95, B = 1000) {\n",
+        "  # determine alpha\n",
+        "  alpha <- 1 - conf.level\n",
+        "  # compute sample mean of B bootstrap samples\n",
+        "  bstats <- lapply(1:B, FUN = function(i) {\n",
+        "    # draw bootstrap sample\n",
+        "    boot_sample <- sample(x, size = length(x), replace = TRUE)\n",
+        "    # compute sample mean of bootstrap sample\n",
+        "    mean(boot_sample)\n",
+        "  })\n",
+        "  # convert list to vector\n",
+        "  bstats <- unlist(bstats)\n",
+        "  # compute desired quantiles for bootstrap ci\n",
+        "  quantile(bstats, prob = c(alpha/2, 1-alpha/2))\n",
+        "}"
+      ],
+      "id": "cd52061f",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "We now apply our function to the observed sample of data.\n"
+      ],
+      "id": "89350490"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "set.seed(43)\n",
+        "x <- c(3.318, 4.940, 5.516, 2.958, 6.098, 6.858, -0.539, 2.544, 4.091, 1.884)\n",
+        "bootstrap_ci(x)"
+      ],
+      "id": "0055e8c6",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Our 95% bootstrap confidence interval for the population mean is [2.44, 4.98]. The sample was a random sample from a normal distribution with mean 3 and standard deviation 2, so our interval (in this case) did contain the true value.\n",
+        "\n",
+        "## The `tapply` function ([YouTube](https://youtu.be/CLLK9a8d_jA), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=1058278d-dbb8-4edd-b2ef-b0ad010de1b8))\n",
+        "\n",
+        "The `tapply` function is used to apply a function to all the values associated with a certain level of a `factor` variable. It is useful for summarizing information for different groups of data.\n",
+        "\n",
+        "The `tapply` function takes the following arguments:\n",
+        "\n",
+        "- `X`: an object for which a `split` method exists. Usually, this is a `vector` or `data.frame` object.\n",
+        "- `INDEX`: a `factor` variable with the same length as `X`. This will be used to \"split\" `X` into different groups.\n",
+        "- `FUN`: The function to be applied to each group of `X` after the `split` function is used.\n",
+        "- `...`: additional arguments that will be passed to `FUN`.\n",
+        "- `default`: an argument we can probably ignore. Run `?tapply` in the Console for more details about this argument.\n",
+        "- `simplify`: a logical value indicating whether the result should be simplified to a scalar array. The default is `TRUE`. Otherwise, a `list` is always returned.\n",
+        "\n",
+        "We will use the `tapply` function to summarize chicken growth across different feed types.\n",
+        "\n",
+        "The `chickwts` data set in the **datasets** package is a data frame with 71 observations of 2 variables. The data provide the results of an experiment to measure and compare the effectiveness of various feed supplements on the growth rate of chickens. The following variables are included in the data frame:\n",
+        "\n",
+        "- `weight`: the chick's weight (g).\n",
+        "- `feed`: a `factor` indicating the feed type.\n",
+        "\n",
+        "We use `tapply` to compute the average chicken weight of the chicken's receiving each feed type.\n"
+      ],
+      "id": "f630dba4"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "tapply(X = chickwts$weight, INDEX = chickwts$feed, FUN = mean)"
+      ],
+      "id": "fdeb7471",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "The average weight of the chickens eating the `casein` feed type was 323.6 g. The average weight of the chickens eating the `soybean` feed type was 246.4 g.\n",
+        "\n",
+        "We can use the `tapply` function to compute a more complex summary of each group's weights using the `summary` function.\n"
+      ],
+      "id": "01bf189b"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "tapply(X = chickwts$weight, INDEX = chickwts$feed, FUN = summary)"
+      ],
+      "id": "aa617f83",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Parallel computing, progress bars, `*apply` functions ([YouTube](https://youtu.be/2LXW8d-lOEM), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=92a4020b-f79c-456d-a91c-b0ad0110622e))\n",
+        "\n",
+        "We can sometimes speed up the computations performed by an `*apply` function using parallel processing (processing multiple tasks *in parallel* instead of one-at-a-time).\n",
+        "\n",
+        "Parallel processing is particularly helpful with using `lapply`, `sapply`, or `vapply` to perform complex analysis on a sequence of simulated data sets. The analysis can be performed on each simulated data set separately, which means the operation can be parallelized.\n",
+        "\n",
+        "We provide small examples to illustrate the advantages of parallel computing when using `*apply` functions. \n",
+        "\n",
+        "We start by creating a simple function, `sleep_iterator`.\n",
+        "\n",
+        "- The function takes the argument `i`, which is not used in the function, so that it is compatible with the `lapply` function.\n",
+        "- Inside the function, we use `Sys.sleep(1)` to pause for one second.\n",
+        "- We have the function return `NULL`. \n",
+        "\n",
+        "We define `sleep_iterator` below.\n"
+      ],
+      "id": "998f8cb9"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "sleep_iterator <- function(i) {\n",
+        "  Sys.sleep(1) # sleep for 1 second\n",
+        "  return(NULL) # return NULL\n",
+        "}"
+      ],
+      "id": "6ad553d1",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Next, we use the `lapply` function to run `sleep_iterator` 6 times.\n",
+        "\n",
+        "- `lapply` will run `sleep_iterator` for `i = 1`, `2`, `...`, `6`.\n",
+        "- We time the operations performed by `lapply` using `system.time`. \n",
+        "\n",
+        "Unsurprisingly, applying  `sleep_iterator` six times results in an elapsed time of about 6 seconds since we pause for 1 second for each of the six values of `i`.\n"
+      ],
+      "id": "e5aac627"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "system.time(lapply(1:6, sleep_iterator))"
+      ],
+      "id": "7298a76c",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "The **parallel** package [@R-base] provides parallelized equivalents of several `*apply` functions. \n",
+        "\n",
+        "- `parApply` is a parallelized version of `apply`.\n",
+        "- `parLapply` is a parallelized version of `lapply`.\n",
+        "- `parSapply` is a parallelized version of `sapply`.\n",
+        "\n",
+        "Run `?parallel::clusterApply` to see additional details about these and related parallelized functions.\n",
+        "\n",
+        "We load the **parallel** package.\n"
+      ],
+      "id": "2c6c63ae"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "library(parallel)"
+      ],
+      "id": "fae7a387",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "The available options and behavior for performing parallel processing depends on our computer's operating system. In general, it is easier to perform parallel computing on Macs and Linux computers. Windows computers cannot run forked processes through R. \n",
+        "\n",
+        "We want to use `parLapply` to run `sleep_iterator` 6 times using parallel processing. \n",
+        "\n",
+        "The primary arguments of `parLapply` are:\n",
+        "\n",
+        "- `cl`: a cluster object returned by the `makeCluster` function that defines how the processes will be run in parallel.\n",
+        "- `X`: the atomic vector or list to be iterated over.\n",
+        "- `fun`: the function to be applied to each element of `X`.\n",
+        "- `...`: additional arguments to be passed to `fun`. \n",
+        "\n",
+        "We use `makeCluster` to setup a parallel processing approach that runs 2 processes in parallel. The code is supposed to be general enough that it will work on Windows, Mac, or Linux computers.\n"
+      ],
+      "id": "069e62d0"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "cl <- makeCluster(getOption(\"cl.cores\", 2))"
+      ],
+      "id": "e1c89a19",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "We once again use `system.time` to time how long it takes to run `sleep_iterator` 6 times. \n"
+      ],
+      "id": "89048330"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "system.time(parLapply(cl, 1:6, sleep_iterator))"
+      ],
+      "id": "c14fb811",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Since we are running `sleep_iterator` in parallel using 2 processes, it only takes about 3 seconds to complete our computations instead of the original 6 seconds!\n",
+        "\n",
+        "The **future.apply** package [@R-future.apply] provides parallelized implementations of several `*apply` functions. The advantage of the **future.apply** package is that code can be created that generalizes from being \"evaluated on the local machine, in parallel a set of local machines, or distributed on a mix of local and remote machines\" [@R-future, @RJ-2021-048].\n",
+        "\n",
+        "We start by loading the **future.apply** package.\n"
+      ],
+      "id": "7004412d"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "library(future.apply)"
+      ],
+      "id": "11a6d98a",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "To perform a parallelized operation using **future.apply**, we must use the `plan` function to describe how we want the parallel processing to be performed.\n",
+        "\n",
+        "The code below sets up a plan to run 2 processes in parallel using a `\"multisession\"` approach. Run `?future::plan` in the Console for more details.\n"
+      ],
+      "id": "09448e0a"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "plan(multisession, workers = 2)"
+      ],
+      "id": "4d08689d",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Finally, we use the `future_lapply` function to run the `sleep_iterator` function 6 times. The function works identically to the `lapply` function, but uses the parallelization plan to speed up the computations. Similar to before, it only takes about 3 seconds to run the `sleep_iterator` function 6 times because we are running two processes in parallel.\n"
+      ],
+      "id": "ffd45efc"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "system.time(future_lapply(1:6, FUN = sleep_iterator))"
+      ],
+      "id": "ac8e7634",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "When an `*apply` function takes a long time to return its results, it can be nice to have a progress bar to assess how long the computations will take.\n",
+        "\n",
+        "The **pbapply** package [@R-pbapply] creates equivalents of many `*apply` functions that add progress bars showing the time remaining to complete the computation.\n",
+        "\n",
+        "- Many of these functions are equipped to use parallel processing through the **parallel** package. We must set the `cl` argument with a `makeCluster` object to use this functionality.\n",
+        "- Run `?pbapply::pbapply` in the Console for a complete list of available functions.\n",
+        "\n",
+        "We start by loading the **pbapply** package.\n"
+      ],
+      "id": "0465e9f5"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "library(pbapply)"
+      ],
+      "id": "728781bc",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "The `pblapply` function is an equivalent of `lapply` that includes a progress bar. We can provide a cluster object from the `makeCluster` function to perform the computations in parallel. \n",
+        "\n",
+        "We use `pblapply` to run `sleep_iterator` 6 times. We use the previously created cluster object, `cl`, which runs 2 processes in parallel. Similar to before, our code runs in about 3 seconds while also showing a progress bar. (We need to run this code interactively to see this progress bar.)\n"
+      ],
+      "id": "99256737"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "system.time(pblapply(1:6, FUN = sleep_iterator, cl = cl))"
+      ],
+      "id": "ac2bbd3a",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Let's a non-trivial example of parallel computing where we compare the execution time of `bootstrap_ci` to a parallelized version (`bootstrap_ci_cl`).\n"
+      ],
+      "id": "9037b9fc"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "bootstrap_ci_cl <- function(x, conf.level = 0.95, B = 1000, cl = NULL) {\n",
+        "  # determine alpha\n",
+        "  alpha <- 1 - conf.level\n",
+        "  # compute sample mean of B bootstrap samples\n",
+        "  bstats <- pbapply::pblapply(1:B, FUN = function(i, xvec) {\n",
+        "    # draw bootstrap sample\n",
+        "    boot_sample <- sample(x, size = length(x), replace = TRUE)\n",
+        "    # compute sample mean of bootstrap sample\n",
+        "    mean(boot_sample)\n",
+        "  }, xvec = x, cl = cl)\n",
+        "  # convert list to vector\n",
+        "  bstats <- unlist(bstats)\n",
+        "  # compute desired quantiles for bootstrap ci\n",
+        "  quantile(bstats, prob = c(alpha/2, 1-alpha/2))\n",
+        "}"
+      ],
+      "id": "2e2a2a83",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "We run the function without parallelization.\n"
+      ],
+      "id": "66d00b4d"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "system.time(bootstrap_ci_cl(x, B = 100000, cl = NULL))"
+      ],
+      "id": "65dbdc5b",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "We run the function with parallelization.\n"
+      ],
+      "id": "ebbf647a"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "system.time(bootstrap_ci_cl(x, B = 100000, cl = cl))"
+      ],
+      "id": "7e809707",
+      "execution_count": null,
+      "outputs": []
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "name": "ir",
+      "language": "R",
+      "display_name": "R",
+      "path": "C:\\Users\\frencjos\\AppData\\Roaming\\jupyter\\kernels\\ir"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}
