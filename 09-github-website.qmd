@@ -4,15 +4,15 @@ author: "Joshua P. French"
 date: today
 date-format: long
 engine: knitr
-# format: html
-jupyter:
-  kernelspec:
-    display_name: R
-    language: R
-    name: ir
-format: ipynb
-execute:
-  output: false
+format: html
+# jupyter:
+#   kernelspec:
+#     display_name: R
+#     language: R
+#     name: ir
+# format: ipynb
+# execute:
+#   output: false
 self-contained: true
 title-block-banner: true
 wrap: 'none'
@@ -280,7 +280,7 @@ Now you can add the desired content to your new Quarto document. We will add the
 - Aragorn
 ```
 
-To add the "Favorites" page to our website, we open the `_quarto.yml` file and navigate to the `navbar` section where `.qmd` files are listed are a dash. We add a new row with `- favorites.qmd` as in the code below.
+To add the "Favorites" page to our website, we open the `_quarto.yml` file and navigate to the `navbar` section where `.qmd` files are listed after a dash. We add a new row with `- favorites.qmd` as in the code below.
 
 ```
   navbar:
