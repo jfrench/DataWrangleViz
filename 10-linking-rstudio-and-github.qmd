@@ -284,6 +284,38 @@ After you close the Commit window, click Push in the Git tab of the Environment 
 
 The changes should be pushed to your GitHub repository, which you can see if you go to that repository on your GitHub page.
 
+## RStudio version control for an existing project
+
+Say we want to use version control for an existing project that isn't already linked to git respository.
+
+Create a new repository on GitHub.com to store the project.
+
+- Usually, the repository name is the same as your project name, but it doesn't have to be.
+- In our example, the project and repository will be named "test2".
+
+To connect RStudio with Github:
+
+- Open a terminal window.
+- To initialize git for this project, run `git init`.
+- To stage all project files, run `git add --all`.
+- To make our first commit, run `git commit -m "initial commit".
+- To declare the branch ("main" is the default), run `git branch -M main`.
+- To add the remote repository, run `git remote add origin https://github.com/username/reponame.git`.
+    - Replace `username` and `reponame` with the correct text.
+- To push your commit, run `git push -u origin main`.
+
+In order the commands are:
+
+```
+git init
+git add --all
+git commit -m "initial commit"
+git branch -M main
+git remote add origin https://github.com/username/reponame.git
+git push -u origin main
+```
+If you close and reopen the project in RStudio, then we should see the Git tab in the Environment pane.
+
 ## Final thoughts
 
 This is a small tutorial for using RStudio for version control with git and GitHub.
