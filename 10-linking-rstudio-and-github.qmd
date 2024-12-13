@@ -1,0 +1,291 @@
+---
+title: "Version Control with RStudio and GitHub"
+author: "Joshua P. French"
+date: today
+date-format: long
+engine: knitr
+# format: html
+jupyter:
+  kernelspec:
+    display_name: R
+    language: R
+    name: ir
+format: ipynb
+execute:
+  output: false
+self-contained: true
+title-block-banner: true
+wrap: 'none'
+---
+
+To open this information in an interactive Colab notebook, click or scan the QR code below. 
+
+<a href="https://colab.research.google.com/github/jfrench/github_dwv/blob/master/notebooks/10-linking-rstudio-and-github.ipynb">
+   <img src="https://raw.githubusercontent.com/jfrench/LinearRegression/d44d4e0fe06b7526dc59adfa7667eec8328ce703/images/qr-r-foundations.svg">
+</a>
+
+---
+
+Data scientists should have an intentional process for tracking changes in their code over time. 
+
+- This process is known **version control**.
+
+In ancient times, like the early 2000s, we simply renamed our files manually:
+
+- `mycode.R`
+- `mycode_v2.R`
+- `mycode_final.R`
+- `mycode_reallyfinalv2.R`
+
+In modern times, version control is automatic in my contexts.
+
+- Microsoft Word stores versions of a file each time it is saved. We can restore old version if we make a mistake.
+- Dropbox automatically saves versions of files each time they are changed. Users can restore old versions of files within a certain time period (30 days to 1 year depending on a user's subscription level).
+
+The industry standard for version control of computer code and software is git. 
+We will learn how to use git from within R Studio while using GitHub to host our code and version control data.
+
+## What is git?
+
+<img src="./figures/git_logo.png" width="100%" />
+
+Software developers need a fast, reliable way of tracking changes to their source code when working as individuals or as part of a team. 
+
+The best-in-class approach to software version control is git, which was created by Linus Torvalds in 2005 to improve on the version control applications available at the time.
+
+From [https://git-scm.com/](https://git-scm.com/):
+
+> Git is a free and open source distributed version control system designed to handle everything from small to very large projects with speed and efficiency. 
+
+By default, git tracks files changed in a directory or repository locally, i.e., on our actual computer, which can create some potential challenges:
+
+- git does not backup our code or changes, which would be problematic if our computer becomes compromised..
+- A centralized repository must be available when multiple contributors are working on the same project. There needs to be a way of easily managing each person's contributions and keeping track of the development and stable branches of the code.
+
+GitHub is the most popular solution for these two issues.
+
+## What is GitHub?
+
+<img src="./figures/github_cat.png" height="200" /><img src="./figures/github_logo.png" height="200" />
+
+GitHub ([https://www.github.com](https://www.github.com)) is an online platform for hosting git repositories.
+
+GitHub makes it easy to:
+
+- Control who is able to access and change a repository.
+- Track bugs in our code.
+- Keep record of feature requests.
+- Delegate responsibilities.
+- Maintain a wiki.
+- etc.
+
+GitHub is a great place to:
+
+- Backup and maintain version control of our software.
+- Make our software public and allow others to contribute and interact with our work. 
+- Demonstrate our coding skills and abilities by creating publicly available project repositories.
+- Host a professional website for potential employers or clients.
+
+## Linking RStudio and GitHub
+
+We can use RStudio to manage a local git repository and push the changes to GitHub.com.
+
+We outline the setup process below.
+
+We assume that both R ([https://cran.r-project.org/](https://cran.r-project.org/)) and RStudio ([https://posit.co/downloads](https://posit.co/downloads)) are installed.
+
+### Create a GitHub account
+
+First, we create a GitHub account.
+
+- Navigate to [https://github.com](https://github.com)
+- Click Sign Up.
+
+<img src="./figures/github_home_signup.png" width="100%" />
+
+- Choose an email address to associate with your GitHub account.
+    - Educational users with a `.edu` email addresses can upgrade for free to a GitHub Pro account.
+- Choose a strong password.
+- Select a username.
+    - Think long term about this username. It may be an account that follows you for much of your professional life!
+    - Good choices are related to your name.
+        - E.g., if my name is John Q Smith, some good options might be `jsmith`, `jqsmith`, `john-smith`, `john-q-smith`, etc.
+    - Bad choices are not professional or unique.
+        - E.g., `jsmith198451`, `i-love-cereal`, `PartyKing`.
+- Continue the registration process.
+
+<img src="./figures/github_signup_screen.png" width="100%" />
+
+### Install git
+
+Next, we install a version of git to our computer.
+
+Download and install the appropriate version of git from  [https://git-scm.com/downloads](https://git-scm.com/downloads).
+
+<img src="./figures/git_download.png" width="100%" />
+
+In general, it is best to install git using all the default settings.
+
+### Verifying communication between git and RStudio
+
+We need to make sure that RStudio is aware of the location of the git program on our computer.
+
+- Navigate to Global Options (under Tools for Windows machines and currently under Edit &rarr; Preferences for a Mac).
+- Click Git/SVN.
+
+<img src="./figures/git_svn.png" width="100%" />
+
+Ensure that RStudio has automatically discovered the file path of the git executable.
+
+- If this is not the case, then you will manually have to figure this out.
+- You may need to do some web sleuthing to figure out how to do this.
+
+<img src="./figures/git_location.png" width="100%" />
+
+To verify that RStudio has the correct path to git:
+
+- Click `Alt + Shift + R` on a Windows computer or `Cmd + Shift + R` on a Mac to open a new terminal window.
+- Type `git --version` in the Terminal window and press enter.
+- If RStudio is looking in the correct location for git, then the current install version of git will be printed in the Terminal window.
+
+<img src="./figures/git_version_output.png" width="100%" />
+
+### Authorizing RStudio to access GitHub
+
+Next, we make sure that RStudio can talk with GitHub. 
+
+We must specify our username and email address using `git config` via the terminal.
+
+```
+git config --global user.name 'myusername'
+git config --global user.email 'myemail@email.edu'
+```
+
+<img src="./figures/git_config.png" width="100%" />
+
+To link RStudio with GitHub, we need to set our GitHub credentials in RStudio.
+
+Install the **gitcreds** package.
+
+- Run `install.packages("gitcreds")` in the R Console.
+- Run `library(gitcreds)` in the R Console to attach the **gitcreds** package.
+
+We need to create a Personal Access Token to link RStudio with GitHub.
+
+- Click on your Profile photo.
+- Click Settings.
+
+<img src="./figures/github_settings.png" width="100%" />
+
+- Click Developer settings. 
+
+<img src="./figures/developer_settings.png" width="100%" />
+
+- Under Personal Access Tokens, click Tokens (classic).
+
+<img src="./figures/personal_access_tokens.png" width="100%" />
+
+- Write a Note (perhaps which computer the access is being granted to).
+- Select when the token will expire (shorter is more secure).
+- Select the access we want to grant, if being cautious. **Make sure to select repo access!**
+- Click Generate token at the bottom of the page.
+
+<img src="./figures/personal_access_tokens_2.png" width="100%" />
+
+- Copy the token.
+
+<img src="./figures/personal_access_tokens_3.png" width="100%" />
+
+- Run `gitcreds_set()` in the R Console.
+- Paste the token you copied into the Console and hit Enter.
+
+RStudio/git should be linked with GitHub!
+
+## RStudio version control for a new project
+
+There are different ways to manage the version control workflow from within R.
+
+We present the most basic workflow, which is when we want to enable version control for a new project.
+
+First, create a new repository on GitHub. 
+
+- On your GitHub homepage, click New.
+
+<img src="./figures/new_repository.png" width="100%" />
+
+- Name your new repository, make it public, click Create Repository.
+
+<img src="./figures/new_repository_2.png" width="100%" />
+
+- Copy the url at the top of the repository.
+
+<img src="./figures/new_repository_https.png" width="100%" />
+
+Next, create a New Project using version control.
+
+- Click File &rarr; New Project.
+- Click Version Control.
+
+<img src="./figures/version_control.png" width="100%" />
+
+- Click Git.
+
+<img src="./figures/version_control_git.png" width="100%" />
+
+- Paste the url, click Create New Project.
+
+<img src="./figures/clone_git_repository.png" width="100%" />
+
+If everything is connected correctly, the newly cloned workspace should include a Git tab in the Environment pane.
+
+<img src="./figures/git_tab_pane.png" width="100%" />
+
+### Basic workflow
+
+The basic workflow when using RStudio to do version control is:
+
+- Add/edit files in the current workspace.
+- Add the appropriate files to the staging area.
+- Commit the changes to the local git repository and provide a short description of the changes made.
+- Push the changes from the local repository to a remote repository (GitHub).
+
+We provide a simple example.
+
+### Change some code
+
+- Open a new R Script (`Ctrl + Shift + N` on a Windows computer or `Cmd + Shift + N` on a Mac).
+- Add a single command to the first line of the file: print("Hello, world!").
+- Save the file as `test.R`.
+
+<img src="./figures/test_r_file.png" width="100%" />
+
+### Stage the changes
+
+In the Git tab of the Environment pane: 
+
+- Check the box next to "test.R". 
+- Click the Commit button.
+
+<img src="./figures/stage.png" width="100%" />
+
+### Commit the changes to the local repository
+
+- Review changes.
+- Add a Commit message.
+- Click Commit.
+
+<img src="./figures/commit.png" width="100%" />
+
+### Push the changes to the remote repository
+
+After you close the Commit window, click Push in the Git tab of the Environment pane. 
+
+<img src="./figures/push.png" width="100%" />
+
+The changes should be pushed to your GitHub repository, which you can see if you go to that repository on your GitHub page.
+
+## Final thoughts
+
+This is a small tutorial for using RStudio for version control with git and GitHub.
+
+If you run into problems, [https://happygitwithr.com/](https://happygitwithr.com/) is an in-depth resource that will likely help you to solve your problem.
