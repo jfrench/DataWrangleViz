@@ -20,8 +20,8 @@ wrap: 'none'
 
 To open this information in an interactive Colab notebook, click or scan the QR code below. 
 
-<a href="https://colab.research.google.com/github/jfrench/github_dwv/blob/master/notebooks/10-linking-rstudio-and-github.ipynb">
-   <img src="https://raw.githubusercontent.com/jfrench/LinearRegression/d44d4e0fe06b7526dc59adfa7667eec8328ce703/images/qr-r-foundations.svg">
+<a href="https://colab.research.google.com/github/jfrench/DataWrangleViz/blob/master/10-linking-rstudio-and-github.ipynb">
+   <img src="https://raw.githubusercontent.com/jfrench/DataWrangleViz/64f16034325c26455a9348ceaed1324ce31ab742/qr_codes/qr-version-control.svg">
 </a>
 
 ---

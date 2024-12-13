@@ -3,14 +3,27 @@ title: "Creating websites using Quarto and GitHub Pages"
 author: "Joshua P. French"
 date: today
 date-format: long
-format: html
-# format: ipynb
-# jupyter: ir
-# execute:
-#   output: false
-wrap: 'none'
+engine: knitr
+# format: html
+jupyter:
+  kernelspec:
+    display_name: R
+    language: R
+    name: ir
+format: ipynb
+execute:
+  output: false
 self-contained: true
 title-block-banner: true
+wrap: 'none'
+---
+
+To open this information in an interactive Colab notebook, click or scan the QR code below. 
+
+<a href="https://colab.research.google.com/github/jfrench/DataWrangleViz/blob/master/09-github-website.ipynb">
+   <img src="https://raw.githubusercontent.com/jfrench/DataWrangleViz/64f16034325c26455a9348ceaed1324ce31ab742/qr_codes/qr-github-website.svg">
+</a>
+
 ---
 
 Many data scientists have a website to market themselves. This is helpful for distinguishing yourself from competitors by showcasing who you are and what you've done.
