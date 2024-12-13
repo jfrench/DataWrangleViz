@@ -4,15 +4,15 @@ author: "Joshua P. French"
 date: today
 date-format: long
 engine: knitr
-# format: html
-jupyter:
-  kernelspec:
-    display_name: R
-    language: R
-    name: ir
-format: ipynb
-execute:
-  output: false
+format: html
+# jupyter:
+#   kernelspec:
+#     display_name: R
+#     language: R
+#     name: ir
+# format: ipynb
+# execute:
+#   output: false
 self-contained: true
 title-block-banner: true
 wrap: 'none'
@@ -21,7 +21,7 @@ wrap: 'none'
 To open this information in an interactive Colab notebook, click or scan the QR code below. 
 
 <a href="https://colab.research.google.com/github/jfrench/DataWrangleViz/blob/master/version-control-with-rstudio-and-github.ipynb">
-   <img src="https://raw.githubusercontent.com/jfrench/DataWrangleViz/64f16034325c26455a9348ceaed1324ce31ab742/qr_codes/qr-version-control.svg">
+   <img src="https://raw.githubusercontent.com/jfrench/DataWrangleViz/45c56799d13403fdab34f8bbd406293b4e0e2f62/qr_codes/qr-version-control-with-rstudio-and-github.svg">
 </a>
 
 ---
