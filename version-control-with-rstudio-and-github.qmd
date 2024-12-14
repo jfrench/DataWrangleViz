@@ -4,15 +4,15 @@ author: "Joshua P. French"
 date: today
 date-format: long
 engine: knitr
-format: html
-# jupyter:
-#   kernelspec:
-#     display_name: R
-#     language: R
-#     name: ir
-# format: ipynb
-# execute:
-#   output: false
+# format: html
+jupyter:
+  kernelspec:
+    display_name: R
+    language: R
+    name: ir
+format: ipynb
+execute:
+  output: false
 self-contained: true
 title-block-banner: true
 wrap: 'none'
@@ -118,7 +118,10 @@ First, we create a GitHub account.
 
 ### Install git
 
-Next, we install a version of git to our computer.
+Next, we install a version of git on our computer.
+
+- It might be wise to verify whether git is already installed on your computer. 
+- Skip to the "Verifying communication between git and RStudio" section below to do this before following the instructions below.
 
 Download and install the appropriate version of git from  [https://git-scm.com/downloads](https://git-scm.com/downloads).
 
@@ -131,20 +134,29 @@ In general, it is best to install git using all the default settings.
 We need to make sure that RStudio is aware of the location of the git program on our computer.
 
 - Navigate to Global Options (under Tools for Windows machines and currently under Edit &rarr; Preferences for a Mac).
+
+<img src="./figures/global_options.png" width="100%" />
+
 - Click Git/SVN.
 
 <img src="./figures/git_svn.png" width="100%" />
 
-Ensure that RStudio has automatically discovered the file path of the git executable.
-
-- If this is not the case, then you will manually have to figure this out.
-- You may need to do some web sleuthing to figure out how to do this.
+- Note whether RStudio has automatically discovered the file path of the git executable in the "Git executable" field.
 
 <img src="./figures/git_location.png" width="100%" />
 
+
+- If the Git executable field is empty or wrong, then you will need to figure out the issue. You can try:
+
+    - Reinstalling git.
+    - Use a different approach for installing git.
+    - Manually locating the git installation on your compute and using that file path directory.
+    - Use web searches to see other solutions that have worked for people.
+
+
 To verify that RStudio has the correct path to git:
 
-- Click `Alt + Shift + R` on a Windows computer or `Option + Shift + R` on a Mac to open a new terminal window.
+- Open a new Terminal window by pressing `Alt + Shift + R` on a Windows computer or `Option + Shift + R` on a Mac.
 - Type `git --version` in the Terminal window and press enter.
 - If RStudio is looking in the correct location for git, then the current install version of git will be printed in the Terminal window.
 
@@ -154,7 +166,9 @@ To verify that RStudio has the correct path to git:
 
 Next, we make sure that RStudio can talk with GitHub. 
 
-We must specify our username and email address using `git config` via the terminal.
+We must configure our username and email address using  `git config` in the Terminal window.
+
+We need to run the following commands in the Terminal window (replacing `myusername` and `myemail@email.edu` with your specific username and email address):
 
 ```
 git config --global user.name 'myusername'
@@ -173,9 +187,12 @@ Install the **gitcreds** package.
 We need to create a Personal Access Token to link RStudio with GitHub.
 
 - Click on your Profile photo.
+
+<img src="./figures/github_profile_photo.png" width="100%" />
+
 - Click Settings.
 
-<img src="./figures/github_settings.png" width="100%" />
+<img src="./figures/github_settings.png" width="50%" />
 
 - Click Developer settings. 
 
@@ -201,37 +218,31 @@ We need to create a Personal Access Token to link RStudio with GitHub.
 
 RStudio/git should be linked with GitHub!
 
-## RStudio version control when cloning an existing GitHub repository
+## Using version control for an R Studio Project
 
 There are different ways to manage the version control workflow from within R.
 
 We present the most basic workflow, which is to enable version control for a new project cloned from an existing GitHub repository.
 
-### Starting from a "blank" GitHub repository
+We will do this by creating a new, empty repository, but you can do the same thing with an existing repository as long as you have the url for the repository you want to clone.
 
-Create a new repository on GitHub by clicking New on on your GitHub homepage.
-
-- We will create a new repository named "mytest". 
+- Create a new repository on GitHub by clicking New on on your GitHub homepage.
 
 <img src="./figures/new_repository.png" width="100%" />
 
-- Name your new repository, make it public, click Create Repository.
-
+- Name your new repository, make it public, click Create Repository. We will create a new repository named "mytest". 
 <img src="./figures/new_repository_2.png" width="100%" />
 
-- Copy the url at the top of the repository.
+- Copy the url for the repository.
 
 <img src="./figures/new_repository_https.png" width="100%" />
-
-### Starting from an established GitHub repository
-
-Navigate to an existing GitHub repository and copy the url at the top of the repository, just like the last step of the previous section.
-
-### Start a version controlled New Project
 
 Next, create a New Project using version control.
 
 - Click File &rarr; New Project.
+
+<img src="./figures/file_new_project.png" width="100%" />
+
 - Click Version Control.
 
 <img src="./figures/version_control.png" width="100%" />
@@ -240,15 +251,13 @@ Next, create a New Project using version control.
 
 <img src="./figures/version_control_git.png" width="100%" />
 
-- Paste the url, click Create Project.
+- Paste the url in the "Repository URL" field, click Create Project.
 
 <img src="./figures/clone_git_repository.png" width="100%" />
 
 If everything is connected correctly, the newly cloned project should include a Git tab in the Environment pane.
 
 <img src="./figures/git_tab_pane.png" width="100%" />
-
-### Basic workflow
 
 The basic workflow when using RStudio to do version control is:
 
@@ -309,13 +318,17 @@ We first discuss creating a new RStudio project with a new directory.
 
 - Create a New Project by first clicking File &rarr; New Project.
 
+<img src="./figures/file_new_project.png" width="100%" />
+
+- Select New Project.
+
 <img src="./figures/new_project_wizard.png" width="100%" />
 
 - Select New Directory.
 
 <img src="./figures/new_project_dialog.png" width="100%" />
 
-- Name the new directory ("test2" in our case),  uncheck the "Create a git repository" box (we will do this manually), and click Create Project.
+- Name the new directory using the Directory name field ("test2" in our case),  uncheck the "Create a git repository" box (we will do this manually), and click Create Project.
  
 <img src="./figures/new_project_wizard_test2.png" width="100%" />
 
@@ -344,13 +357,13 @@ First, create a new repository on GitHub.com to store the project.
 - Usually, the repository name is the same as your project name, but it doesn't have to be.
 - In our example, the project name and GitHub repository name are both "test2".
 
-Next, open a terminal window in RStudio and run the following commands:
+Next, open a Terminal window in RStudio and run the following commands:
 
 - Run `git init` to initialize git for this project.
     - You only need to do this if no git repository is already initialized.
     - If you check "Create a git repository" when creating a New Project then you can skip this step.
 - Run `git add --all` to stage all project files.
-- Run `git commit -m "initial commit" to make our first commit.
+- Run `git commit -m "initial commit"` to make our first commit.
 - Run `git branch -M main` to declare the branch ("main" is the default).
 - Run `git remote add origin https://github.com/username/reponame.git` to link the remote repository to the local repository.
     - Replace `username` and `reponame` with the correct text.
@@ -375,4 +388,4 @@ If you close and reopen the project in RStudio, then we should see the Git tab i
 
 This is a small tutorial for using RStudio for version control with git and GitHub.
 
-If you run into problems, [https://happygitwithr.com/](https://happygitwithr.com/) is an in-depth resource that will likely help you to solve your problem.
+If you run into problems, [https://happygitwithr.com/](https://happygitwithr.com/) is a a more in-depth resource for solving your problems.
