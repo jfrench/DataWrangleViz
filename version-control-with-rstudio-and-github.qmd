@@ -363,16 +363,21 @@ Next, open a Terminal window in RStudio and run the following commands:
     - You only need to do this if no git repository is already initialized.
     - If you check "Create a git repository" when creating a New Project then you can skip this step.
 - Run `git add --all` to stage all project files.
-- Run `git commit -m "initial commit"` to make our first commit.
-- Run `git branch -M main` to declare the branch ("main" is the default).
-- Run `git remote add origin https://github.com/username/reponame.git` to link the remote repository to the local repository.
+- Run `git commit -m "initial commit"` to save our changes to our local repository.
+- Run `git branch -M main` to create the main branch of our repository ("main" is the default).
+- Run `git remote add origin https://github.com/username/reponame.git` to add a connection between the local repository and the specified remote repository.
+    - git now knows where to push or pull changes in the repository.
+    - `origin` is the name we have given to our remote repository (this is standard but not required).
     - Replace `username` and `reponame` with the correct text.
 - Run `git push -u origin main` to push the commit from the local repository to GitHub.
-
+    - The `push` commands sends our local commits to the remote repository.
+    - The `-u` tells git to set the specified remote branch as the default branch to push and pull repositor changes. 
+    - `origin` is the name of our remote repository.
+    - `main` indicates the branch to push or pull from.
+    
 In order the commands are:
 
 ```
-git init
 git add --all
 git commit -m "initial commit"
 git branch -M main
