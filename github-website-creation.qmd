@@ -33,7 +33,7 @@ We will walk through the process of creating a very simple professional website 
 
 ## What is Quarto? (Video: [YouTube](https://youtu.be/e9qCS8ODs4o), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=7bc5015f-627c-46f7-89bc-af55016accbe))
 
-<img src="./figures/quarto_logo.jpg" height="200" />
+<img src="./figures/quarto_logo.jpg" height="100%" />
 
 The Quarto website ([https://quarto.org/docs/faq/](https://quarto.org/docs/faq/)) states:
 
@@ -48,7 +48,7 @@ More helpfully, Quarto is the spiritual successor to R Markdown that was built f
 
 Quarto's development is sponsored by Posit ([https://posit.co/](https://posit.co/)), which was formally known as R Studio.
 
-<img src="./figures/posit_logo.svg" height="100" />
+<img src="./figures/posit_logo.svg" height="100%" />
 
 You can use Quarto to create: 
 
@@ -167,7 +167,7 @@ The "docs" folder will now appear in the Files pane.
 
 You are now ready to push your website to GitHub so that it can be rendered using GitHub Pages.
 
-## Publishing a Quarto website on GitHub Pages (Video: [YouTube](https://youtu.be/uimdXPZc40I), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=7e0f5d3e-cbfd-44c6-b8a1-b2490006a5fd))
+## Publishing a Quarto website on GitHub Pages (Video: [YouTube](https://youtu.be/wZ9pZOFSCko), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=7e0f5d3e-cbfd-44c6-b8a1-b2490006a5fd))
 
 GitHub Pages ([https://pages.github.com/](https://pages.github.com/)) is a feature of GitHub that allows you to host websites for you and your projects.
 
@@ -214,8 +214,10 @@ Once we have pushed our local repository to GitHub, we need to setup GitHub Page
 - On GitHub.com, navigate to your website's repository.
 - Click on the Settings button, <img style="height:2em;" src="./figures/github_settings_button.png" />.
 - On the Navigation bar, click "Pages".
-- If you've set the output directory for your website to "docs" (which you should), then toggle the "/(root)" option to "/docs" and click the "Save" button. 
-
+- Under the Branches section of Build and deployment:
+    - Where it says None, select "main" to deploy the website from the main branch.
+    - Toggle the "/(root)" option to "/docs".
+    - Click the "Save" button. 
 This is demonstrated in the graphic below.
 
 <img src="./figures/github_pages.png" width="100%" />
