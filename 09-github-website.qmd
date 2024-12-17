@@ -186,7 +186,7 @@ The "docs" folder will now appear in the Files pane.
 
 You are now ready to push your website to GitHub so that it can be rendered using GitHub Pages.
 
-## Publishing a Quarto website on GitHub Pages (Video: [YouTube](https://youtu.be/uimdXPZc40I), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=e30956c1-5ab6-4418-b6f4-af5b0181bf5e))
+## Publishing a Quarto website on GitHub Pages (Video: [YouTube](https://youtu.be/wZ9pZOFSCko), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=7e0f5d3e-cbfd-44c6-b8a1-b2490006a5fd))
 
 GitHub Pages ([https://pages.github.com/](https://pages.github.com/)) is a feature of GitHub that allows you to host websites for you and your projects.
 
