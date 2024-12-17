@@ -20,10 +20,9 @@ wrap: 'none'
 
 To open this information in an interactive Colab notebook, click or scan the QR code below. 
 
-<a href="https://colab.research.google.com/github/jfrench/DataWrangleViz/blob/master/09-github-website.ipynb">
-   <img src="https://raw.githubusercontent.com/jfrench/DataWrangleViz/64f16034325c26455a9348ceaed1324ce31ab742/qr_codes/qr-github-website.svg">
+<a href="https://colab.research.google.com/github/jfrench/DataWrangleViz/blob/master/github-website-creation.ipynb">
+   <img src="https://raw.githubusercontent.com/jfrench/DataWrangleViz/b787658003c3cefaf50e6fcba49bc6585942d5ca/qr_codes/qr-github-website-creation.svg">
 </a>
-
 ---
 
 Many data scientists have a website to market themselves. This is helpful for distinguishing yourself from competitors by showcasing who you are and what you've done.
