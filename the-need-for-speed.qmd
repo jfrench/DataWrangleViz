@@ -3,114 +3,82 @@ title: "The Need for Speed"
 author: "Joshua P. French"
 date: today
 date-format: long
+engine: knitr
 # format: html
+jupyter:
+  kernelspec:
+    display_name: R
+    language: R
+    name: ir
 format: ipynb
-jupyter: ir
 execute:
   output: false
 self-contained: true
 title-block-banner: true
+wrap: 'none'
 bibliography:
 - packages_matrices_arrays_lists.bib
 - dwv.bib
 - packages_control_iteration_apply.bib
-engine: knitr
 ---
 
-To open this information in an interactive Colab notebook, click the Open in Colab graphic below.
+A condensed, interactive version of this content is available as a Colab notebook, which can be accessed by clicking or scanning the QR code below. 
 
 <a href="https://colab.research.google.com/github/jfrench/DataWrangleViz/blob/master/the-need-for-speed.ipynb">
-   <img src="https://colab.research.google.com/assets/colab-badge.svg">
+   <img src="https://raw.githubusercontent.com/jfrench/DataWrangleViz/refs/heads/master/qr_codes/qr-need-for-speed.svg" width="300">
 </a>
 
 ---
 
 <img src="figures/lightning_mcqueen.jpg">
 
-## Tips for optimizing matrix algebra operations ([YouTube](https://youtu.be/cBovzIQvw78), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=5e2bb274-0855-40ef-a60e-b09e015fec12))
-
-It is straightforward to perform matrix algebra in R. However, it is more difficult to write *efficient* (faster) matrix code. We provide some basic tips below.
-
-### `crossprod` and `tcrossprod`
-
-The `crossprod` and `tcrossprod` functions are faster approaches to performing matrix multiplication when one of the matrices must first be transposed.
-
-If we have matrices `A` and `B` of compatible dimensions, then:
-
-- `t(A) %*% B` is equivalent to `crossprod(A, B)`.
-- `A %*% t(B)` is equivalent to `tcrossprod(A, B)`.
-
-`crossprod` and `tcrossprod` are faster than their equivalent approaches because the equivalent approaches compute the transpose of matrix in memory before performing the multiplication. The `crossprod` and `tcrossprod` functions modify their multiplication algorithms so that the transpose matrix doesn't have to be created prior to multiplication.
-
-To illustrate this difference, we create `A`, a $50\times 2$ matrix of values and `B`, a $50 \times 2$ matrix of values by drawing the appropriate number of values from a standard normal distribution. We use the `set.seed` function to make the example reproducible.
-
 ```{r}
-set.seed(314)
-A <- matrix(rnorm(100), ncol = 2)
-B <- matrix(rnorm(100), ncol = 2)
+# see if microbenchmark package is available
+if (!require("microbenchmark", quietly = TRUE)) {
+  # if not, then install package
+  install.packages(
+    "microbenchmark",
+    repos = "https://cran.rstudio.com/"
+    )
+}
+```
+```{r}
+# see if pbapply package is available
+if (!require("pbapply", quietly = TRUE)) {
+  # if not, then install package
+  install.packages(
+    "pbapply",
+    repos = "https://cran.rstudio.com/"
+    )
+}
+```
+```{r}
+# see if future package is available
+if (!require("future", quietly = TRUE)) {
+  # if not, then install package
+  install.packages(
+    "future",
+    repos = "https://cran.rstudio.com/"
+    )
+}
+```
+```{r}
+# see if future.apply package is available
+if (!require("future.apply", quietly = TRUE)) {
+  # if not, then install package
+  install.packages(
+    "future.apply",
+    repos = "https://cran.rstudio.com/"
+    )
+}
 ```
 
-First, we use the `all.equal` function to confirm that the standard and optimized approaches produce the same results. `all.equal` confirms that the supplied objects are equal to each other.
-
-```{r}
-all.equal(t(A) %*% B, crossprod(A, B))
-```
-
-```{r}
-all.equal(A %*% t(B), tcrossprod(A, B))
-```
-
-We will use the `microbenchmark` function from the **microbenchmark** package [@R-microbenchmark] to time the optimized and standard approaches to computing $\mathbf{A}^T \mathbf{B}$ and $\mathbf{A} \mathbf{B}^T$.
+We will use the `microbenchmark` function from the **microbenchmark** package [@R-microbenchmark] to time various computational approaches below.
 
 We start by loading the **microbenchmark** package.
 
 ```{r}
 library(microbenchmark)
-```
-
-We now compute $\mathbf{A}^T \mathbf{B}$ using the standard approach and using `crossprod` within the `microbenchmark` function. The `microbenchmark` function will perform each computation 100 times by default to determine the typical speed. We then use the `plot` function to plot the results.
-
-```{r}
-t1 <- microbenchmark::microbenchmark(t(A) %*% B, crossprod(A, B))
-plot(t1)
-```
-
-While the results shown in the above plot will depend on the speed of the computer used to perform the calculation, the boxplot shown for `crossprod(A, B)` should be lower then `t(A) %*% B`, which means the `crossprod` approach is faster than the standard approach.
-
-We perform a simialr analysis for computing $\mathbf{A}\mathbf{B}^T$.
-
-```{r}
-t2 <- microbenchmark(A %*% t(B), tcrossprod(A, B))
-plot(t2)
-```
-
-Once again, the plot of our timing results should show that `tcrossprod(A, B)` can be computed faster than `A %*% t(B)`. 
-
-### Order of matrix multiplication
-
-Matrix multiplication is associative, meaning that if we have compatible matrices $\mathbf{A}$, $\mathbf{B}$ and $\mathbf{C}$, then $$(\mathbf{A B})\mathbf{C} = \mathbf{A} (\mathbf{B C}).$$
-
-The order of matrix multiplication can greatly impact how long it takes to perform the operations.
-
-**Prioritize performing operations that produce smaller matrices first.** Smaller can mean the total number of rows/columns or long/thin matrices, depending on the context.
-
-We create three matrices below filled with random values: `A` is a matrix of size $500\times 2$, `B` is a matrix of size $2 \times 50$, `C` is a $50\times 1$ column vector.
-
-```{r}
-set.seed(1999)
-A <- matrix(rnorm(1000), ncol = 2)
-B <- matrix(rnorm(100), nrow = 2)
-C <- rnorm(50)
-```
-
-Computing $\mathbf{A}(\mathbf{BC})$ is much faster than computing $(\mathbf{AB})\mathbf{C}$ because $\mathbf{BC}$ first produces a $2\times 1$ matrix while $\mathbf{AB}$ produces a much larger $500 \times 50$ matrix.
-
-We confirm this by timing these operations using the `microbenchmark` function and plotting the results.
-
-```{r}
-t3 <- microbenchmark((A %*% B) %*% C,
-                     A %*% (B %*% C))
-plot(t3, las = 2, cex.axis = 0.5)
 ```
 
 ## Loops versus vectorization ([YouTube](https://youtu.be/0AlZW5ZGvvg), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=4bf55aac-da5d-4824-92f2-b0af01266aec))
@@ -163,15 +131,13 @@ The `cumsum` function is a vectorized version of a cumulative sum that relies on
 cumsum(c(1, 2, 4))
 ```
 
-We use the `microbenchmark` function in the **microbenchmark** package [@R-microbenchmark] to compare the timings of `cumsum_loop` and `cumsum`. The `microbenchmark` function will run the provided functions 100 times, by default.
+We use the `microbenchmark` function to compare the timings of `cumsum_loop` and `cumsum`. The `microbenchmark` function will run the provided functions 100 times, by default.
 
 - We sample 1000 values from a standard normal distribution., 
 - We use `microbenchmark` to time how long it takes to compute the cumulative sum of the sampled values using both cumulative sum functions. We repeat this timing 100 times for each function.
 - We plot the results for comparison.
 
 ```{r}
-# attach microbenchmark
-library(microbenchmark) 
 # draw 1000 values from a N(0, 1) distribution
 x <- rnorm(1000)
 # compute the cumulative sum 100 times using both approaches
@@ -680,4 +646,82 @@ We run the function with parallelization.
 
 ```{r}
 system.time(bootstrap_ci_cl(x, B = 100000, cl = cl))
+```
+
+## Tips for optimizing matrix algebra operations ([YouTube](https://youtu.be/cBovzIQvw78), [Panopto](https://ucdenver.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=5e2bb274-0855-40ef-a60e-b09e015fec12))
+
+It is straightforward to perform matrix algebra in R. However, it is more difficult to write *efficient* (faster) matrix code. We provide some basic tips below.
+
+### `crossprod` and `tcrossprod`
+
+The `crossprod` and `tcrossprod` functions are faster approaches to performing matrix multiplication when one of the matrices must first be transposed.
+
+If we have matrices `A` and `B` of compatible dimensions, then:
+
+- `t(A) %*% B` is equivalent to `crossprod(A, B)`.
+- `A %*% t(B)` is equivalent to `tcrossprod(A, B)`.
+
+`crossprod` and `tcrossprod` are faster than their equivalent approaches because the equivalent approaches compute the transpose of matrix in memory before performing the multiplication. The `crossprod` and `tcrossprod` functions modify their multiplication algorithms so that the transpose matrix doesn't have to be created prior to multiplication.
+
+To illustrate this difference, we create `A`, a $50\times 2$ matrix of values and `B`, a $50 \times 2$ matrix of values by drawing the appropriate number of values from a standard normal distribution. We use the `set.seed` function to make the example reproducible.
+
+```{r}
+set.seed(314)
+A <- matrix(rnorm(100), ncol = 2)
+B <- matrix(rnorm(100), ncol = 2)
+```
+
+First, we use the `all.equal` function to confirm that the standard and optimized approaches produce the same results. `all.equal` confirms that the supplied objects are equal to each other.
+
+```{r}
+all.equal(t(A) %*% B, crossprod(A, B))
+```
+
+```{r}
+all.equal(A %*% t(B), tcrossprod(A, B))
+```
+
+We now compute $\mathbf{A}^T \mathbf{B}$ using the standard approach and using `crossprod` within the `microbenchmark` function. The `microbenchmark` function will perform each computation 100 times by default to determine the typical speed. We then use the `plot` function to plot the results.
+
+```{r}
+t1 <- microbenchmark::microbenchmark(t(A) %*% B, crossprod(A, B))
+plot(t1)
+```
+
+While the results shown in the above plot will depend on the speed of the computer used to perform the calculation, the boxplot shown for `crossprod(A, B)` should be lower then `t(A) %*% B`, which means the `crossprod` approach is faster than the standard approach.
+
+We perform a simialr analysis for computing $\mathbf{A}\mathbf{B}^T$.
+
+```{r}
+t2 <- microbenchmark(A %*% t(B), tcrossprod(A, B))
+plot(t2)
+```
+
+Once again, the plot of our timing results should show that `tcrossprod(A, B)` can be computed faster than `A %*% t(B)`. 
+
+### Order of matrix multiplication
+
+Matrix multiplication is associative, meaning that if we have compatible matrices $\mathbf{A}$, $\mathbf{B}$ and $\mathbf{C}$, then $$(\mathbf{A B})\mathbf{C} = \mathbf{A} (\mathbf{B C}).$$
+
+The order of matrix multiplication can greatly impact how long it takes to perform the operations.
+
+**Prioritize performing operations that produce smaller matrices first.** Smaller can mean the total number of rows/columns or long/thin matrices, depending on the context.
+
+We create three matrices below filled with random values: `A` is a matrix of size $500\times 2$, `B` is a matrix of size $2 \times 50$, `C` is a $50\times 1$ column vector.
+
+```{r}
+set.seed(1999)
+A <- matrix(rnorm(1000), ncol = 2)
+B <- matrix(rnorm(100), nrow = 2)
+C <- rnorm(50)
+```
+
+Computing $\mathbf{A}(\mathbf{BC})$ is much faster than computing $(\mathbf{AB})\mathbf{C}$ because $\mathbf{BC}$ first produces a $2\times 1$ matrix while $\mathbf{AB}$ produces a much larger $500 \times 50$ matrix.
+
+We confirm this by timing these operations using the `microbenchmark` function and plotting the results.
+
+```{r}
+t3 <- microbenchmark((A %*% B) %*% C,
+                     A %*% (B %*% C))
+plot(t3, las = 2, cex.axis = 0.5)
 ```
